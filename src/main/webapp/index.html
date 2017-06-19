@@ -1,0 +1,185 @@
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<head>
+<title>互联网+政务服务门户</title>
+<style type='text/css'>
+	body {
+	     background-color: #CCC;
+	}
+</style>
+<link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css" >
+<link rel="stylesheet" href="js/bootstrap/css/bootstrap-theme.min.css" >
+<link rel="stylesheet" href="js/bootstraptable/css/bootstrap-table.min.css">
+<link rel="stylesheet" href="js/bootstrapselect/css/bootstrap-select.min.css">
+<script src="js/jquery/js/jquery-3.2.1.min.js"></script>
+<script src="js/jquery/js/jquery-rest.js"></script>
+<script src="js/bootstrap/js/bootstrap.min.js"></script>
+<script src="js/bootstraptable/js/tableExport.js"></script>
+<script src="js/bootstraptable/js/bootstrap-table.js"></script>
+<script src="js/bootstraptable/js/bootstrap-table-export.js"></script>
+<script src="js/knockout/js/knockout-3.4.2.js"></script>
+<script src="js/knockout/js/knockout.mapping-latest.js"></script>
+<script src="js/bootstraptable/js/knockout.bootstraptable.js"></script>
+<script src="js/bootstrapselect/js/bootstrap-select.min.js"></script>
+<script src="js/bootstrapselect/js/i18n/defaults-zh_CN.min.js"></script>
+<script src="js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
+<script src="js/xjl/js/xjl.js"></script>
+<script src="js/xjl/js/xjl-table.js"></script>
+<script src="js/xjl/js/cloud/terminalSimulator.js"></script>
+<script type="text/javascript">
+//排队取号机
+function detectionPDQHJ(){
+	addTitle("正在检测 排队取号机");
+	cleanGroup();
+	addItem("终端信息",true);
+	var idCard = XJL.IDCard.reader();
+	addItem("身份证读卡器",true);
+	XJL.ThermalPrinters.print();
+	addItem("小票打印机",true);
+}
+//电子宣传屏
+function detectionDZXCP(){
+	addTitle("正在检测 电子宣传屏");
+	cleanGroup();
+	addItem("终端信息",true);
+}
+//大厅导航机
+function detectionDTDHJ(){
+	addTitle("正在检测 大厅导航机");
+	cleanGroup();
+	addItem("终端信息",true);
+	addItem("身份证读卡器",true);
+	addItem("小票打印机",true);
+	
+}//自助办理终端
+function detectionZZBLZD(){
+	addTitle("正在检测 自助办理终端");
+	cleanGroup();
+	addItem("终端信息",true);
+	addItem("身份证读卡器",true);
+	addItem("高拍仪",true);
+	addItem("A4打印机",true);
+	addItem("小票打印机",true);
+	addItem("摄像头",true);
+	
+}//自助打表终端
+function detectionZZDBZD(){
+	addTitle("正在检测 自助打表终端");
+	cleanGroup();
+	addItem("终端信息",true);
+	addItem("身份证读卡器",true);
+	addItem("A4打印机",true);
+	addItem("摄像头",true);
+	
+}//自助取证终端
+function detectionZZQZZD(){
+	addTitle("正在检测 自助取证终端",4);
+	cleanGroup();
+	addItem("终端信息",true);
+	addItem("身份证读卡器",true);
+	addItem("A4打印机",true);
+	addItem("摄像头",true);
+}
+var itemCount;
+var itemNow;
+function cleanGroup(){
+	$("#detectionContentGroup").empty();
+}
+function addTitle(title,count){
+	$("#detectionContentTitle").text(title);
+	itemCount = count;
+	itemNow = 0;
+}
+function addItem(item,state){
+	$("#detectionContentGroup").append($('<li class="list-group-item"><span class="badge">'+(state?'OK':'X')+'</span>'+item+'</li>'));
+	itemNow++;
+	showProgressbar(itemNow/itemCount*100);
+
+}
+function showProgressbar(value){
+	$("#progressbar").attr("aria-valuenow",value);
+	$("#progressbar").attr("style","width: "+value+"%");
+	$("#progressbar").empty();
+	$("#progressbar").append($("<span>"+value+"% Complete (success)</span>"));
+}
+</script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img class="navbar-brand" src="images/xjl.png" height="30px">
+      <label class="navbar-brand">云检测中心</label>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">出厂检测 <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">故障诊断</a></li>
+        <li><a href="#">使用帮助</a></li>
+      </ul>
+      
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+	<div class="row">
+	  <div class="col-xs-6 col-md-2">
+	    <a href="#" class="thumbnail" onclick="detectionPDQHJ()">
+	       排队取号机
+	    </a>
+	  </div>
+	  <div class="col-xs-6 col-md-2">
+	    <a href="#" class="thumbnail" onclick="detectionDZXCP()">
+	      电子宣传屏
+	    </a>
+	  </div>
+	  <div class="col-xs-6 col-md-2">
+	    <a href="#" class="thumbnail" onclick="detectionDTDHJ()">
+	      大厅导航机
+		</a>
+	  </div>
+	  <div class="col-xs-6 col-md-2">
+	    <a href="#" class="thumbnail" onclick="detectionZZBLZD()">
+	      自助办理终端
+	    </a>
+	  </div>
+	  <div class="col-xs-6 col-md-2">
+	    <a href="#" class="thumbnail" onclick="detectionZZDBZD()">
+	      自助打表终端
+	    </a>
+	  </div>
+	  <div class="col-xs-6 col-md-2">
+	    <a href="#" class="thumbnail" onclick="detectionZZQZZD()">
+	      自助取证终端
+	    </a>
+	  </div>
+	</div>
+	<div id="detectionContent">
+		<div class="panel panel-default">
+		  <div class="panel-heading" id="detectionContentTitle"></div>
+		  <div class="panel-body">
+		  	<div class="progress">
+			  <div id="progressbar" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+			    <span>0% Complete (success)</span>
+			  </div>
+			</div>
+		  </div>
+	       <ul class="list-group" id="detectionContentGroup">
+			  
+			</ul>
+		</div>
+	</div>
+</div>
+</body>
+</html>
