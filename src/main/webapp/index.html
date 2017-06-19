@@ -50,7 +50,7 @@ function detectionDTDHJ(){
 	addTitle("正在检测 大厅导航机",3);
 	cleanGroup();
 	addItem("终端信息",true);
-	addItem("身份证读卡器",true);
+	addItem("身份证读卡器",false);
 	addItem("小票打印机",true);
 	
 }//自助办理终端
@@ -71,16 +71,16 @@ function detectionZZDBZD(){
 	addItem("终端信息",true);
 	addItem("身份证读卡器",true);
 	addItem("A4打印机",true);
-	addItem("摄像头",true);
+	addItem("摄像头",false);
 	
 }//自助取证终端
 function detectionZZQZZD(){
 	addTitle("正在检测 自助取证终端",4);
 	cleanGroup();
-	addItem("终端信息",true);
+	addItem("终端信息",false);
 	addItem("身份证读卡器",true);
-	addItem("A4打印机",true);
-	addItem("摄像头",true);
+	addItem("A4打印机",false);
+	addItem("摄像头",false);
 }
 var itemCount;
 var itemNow;
@@ -95,12 +95,14 @@ function addTitle(title,count){
 }
 function addItem(item,state){
 	$("#detectionContentGroup").append($('<li class="list-group-item"><span class="badge">'+(state?'OK':'X')+'</span>'+item+'</li>'));
-	itemNow++;
+	if (state){
+		itemNow++;
+	}
 	showProgressbar();
 
 }
 function showProgressbar(){
-	var value = itemNow/itemCount*100;
+	var value = (itemNow/itemCount).toFixed(2)*100;
 	$("#progressbar").attr("aria-valuenow",value);
 	$("#progressbar").attr("style","width: "+value+"%");
 	$("#progressbar").empty();
