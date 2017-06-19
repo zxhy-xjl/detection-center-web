@@ -31,7 +31,7 @@
 <script type="text/javascript">
 //排队取号机
 function detectionPDQHJ(){
-	addTitle("正在检测 排队取号机");
+	addTitle("正在检测 排队取号机",3);
 	cleanGroup();
 	addItem("终端信息",true);
 	var idCard = XJL.IDCard.reader();
@@ -41,13 +41,13 @@ function detectionPDQHJ(){
 }
 //电子宣传屏
 function detectionDZXCP(){
-	addTitle("正在检测 电子宣传屏");
+	addTitle("正在检测 电子宣传屏",1);
 	cleanGroup();
 	addItem("终端信息",true);
 }
 //大厅导航机
 function detectionDTDHJ(){
-	addTitle("正在检测 大厅导航机");
+	addTitle("正在检测 大厅导航机",3);
 	cleanGroup();
 	addItem("终端信息",true);
 	addItem("身份证读卡器",true);
@@ -55,7 +55,7 @@ function detectionDTDHJ(){
 	
 }//自助办理终端
 function detectionZZBLZD(){
-	addTitle("正在检测 自助办理终端");
+	addTitle("正在检测 自助办理终端",6);
 	cleanGroup();
 	addItem("终端信息",true);
 	addItem("身份证读卡器",true);
@@ -66,7 +66,7 @@ function detectionZZBLZD(){
 	
 }//自助打表终端
 function detectionZZDBZD(){
-	addTitle("正在检测 自助打表终端");
+	addTitle("正在检测 自助打表终端",4);
 	cleanGroup();
 	addItem("终端信息",true);
 	addItem("身份证读卡器",true);
@@ -91,14 +91,16 @@ function addTitle(title,count){
 	$("#detectionContentTitle").text(title);
 	itemCount = count;
 	itemNow = 0;
+	showProgressbar();
 }
 function addItem(item,state){
 	$("#detectionContentGroup").append($('<li class="list-group-item"><span class="badge">'+(state?'OK':'X')+'</span>'+item+'</li>'));
 	itemNow++;
-	showProgressbar(itemNow/itemCount*100);
+	showProgressbar();
 
 }
-function showProgressbar(value){
+function showProgressbar(){
+	var value = itemNow/itemCount*100;
 	$("#progressbar").attr("aria-valuenow",value);
 	$("#progressbar").attr("style","width: "+value+"%");
 	$("#progressbar").empty();
