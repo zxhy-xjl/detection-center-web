@@ -29,61 +29,179 @@
 <script src="js/xjl/js/xjl-table.js"></script>
 <script src="js/xjl/js/cloud/terminalSimulator.js"></script>
 <script type="text/javascript">
+function testTerminalInfo(){
+	var json = JSON.parse(XJL.Terminal.info());
+	var msg = "";
+	if (json.state=="ok"){
+		msg = json.data.rcu;
+	} else {
+		msg = json.error.message + "("+json.error.code+")";
+	}
+	addItem("终端信息::" + msg,json.state=="ok");
+}
+function testIDCardReader(){
+	var json = JSON.parse(XJL.IDCard.reader());
+	var msg = "";
+	if (json.state=="ok"){
+		msg = json.data.name;
+	} else {
+		msg = json.error.message + "("+json.error.code+")";
+	}
+	addItem("身份证读卡器::" + msg,json.state=='ok');
+}
+function testSICardReader(){
+	var json = JSON.parse(XJL.SICard.reader());
+	var msg = "";
+	if (json.state=="ok"){
+		msg = json.data.no;
+	} else {
+		msg = json.error.message + "("+json.error.code+")";
+	}
+	addItem("社保卡::" + msg,json.state=="ok");
+}
+function testThermalPrinters(){
+	var json = JSON.parse(XJL.ThermalPrinters.print());
+	var msg = "";
+	if (json.state=="ok"){
+		//msg = json.data;
+	} else {
+		msg = json.error.message + "("+json.error.code+")";
+	}
+	addItem("小票打印机::" + msg,json.state=="ok");
+}
+function testHSICatch(){
+	var json = JSON.parse(XJL.HSI.catch());
+	var msg = "";
+	if (json.state=="ok"){
+		msg = json.data.photos.length;
+	} else {
+		msg = json.error.message + "("+json.error.code+")";
+	}
+	addItem("高拍仪拍照::" + msg,json.state=="ok");
+}
+function testA4PrintersPrintFile(){
+	var json = JSON.parse(XJL.A4Printers.printFile());
+	var msg = "";
+	if (json.state=="ok"){
+		//msg = json.data;
+	} else {
+		msg = json.error.message + "("+json.error.code+")";
+	}
+	addItem("A4打印机打印本地文件::" + msg,json.state=="ok");
+}
+function testCertPrintersPrintFile(){
+	var json = JSON.parse(XJL.CertPrinters.printFile());
+	var msg = "";
+	if (json.state=="ok"){
+		//msg = json.data;
+	} else {
+		msg = json.error.message + "("+json.error.code+")";
+	}
+	addItem("证照打印本地文件::" + msg,json.state=="ok");
+}
+
+function testCameraWatch(){
+	var json = JSON.parse(XJL.Camera.watch());
+	addItem("摄像头拍照::" + json.state,json.state=="ok");
+}
+function testCameraVideo(){
+	var json = JSON.parse(XJL.Camera.video());
+	var msg = "";
+	if (json.state=="ok"){
+		//msg = json.data;
+	} else {
+		msg = json.error.message + "("+json.error.code+")";
+	}
+	addItem("摄像头录像::" + msg,json.state=="ok");
+}
+function testAudioPlay(){
+	var json = JSON.parse(XJL.Audio.play());
+	var msg = "";
+	if (json.state=="ok"){
+		//msg = json.data;
+	} else {
+		msg = json.error.message + "("+json.error.code+")";
+	}
+	addItem("喇叭播放声音::" + msg,json.state=="ok");
+}
+function testBarCodeScan(){
+	var json = JSON.parse(XJL.BarCode.scan());
+	var msg = "";
+	if (json.state=="ok"){
+		msg = json.data.barcode;
+	} else {
+		msg = json.error.message + "("+json.error.code+")";
+	}
+	addItem("扫码::" + msg,json.state=="ok");
+}
+
+
 //排队取号机
 function detectionPDQHJ(){
-	addTitle("正在检测 排队取号机",3);
+	addTitle("正在检测 排队取号机",4);
 	cleanGroup();
-	addItem("终端信息",true);
-	var idCard = XJL.IDCard.reader();
-	addItem("身份证读卡器",true);
-	XJL.ThermalPrinters.print();
-	addItem("小票打印机",true);
+	testTerminalInfo();
+	testIDCardReader();
+	testThermalPrinters();
+	testAudioPlay();
 }
 //电子宣传屏
 function detectionDZXCP(){
-	addTitle("正在检测 电子宣传屏",1);
+	addTitle("正在检测 电子宣传屏",2);
 	cleanGroup();
-	addItem("终端信息",true);
+	testTerminalInfo();
+	testAudioPlay();
 }
 //大厅导航机
 function detectionDTDHJ(){
-	addTitle("正在检测 大厅导航机",3);
+	addTitle("正在检测 大厅导航机",4);
 	cleanGroup();
-	addItem("终端信息",true);
-	addItem("身份证读卡器",false);
-	addItem("小票打印机",true);
+	testTerminalInfo();
+	testIDCardReader();
+	testThermalPrinters();
+	testAudioPlay();
 	
 }//自助办理终端
 function detectionZZBLZD(){
-	addTitle("正在检测 自助办理终端",6);
+	addTitle("正在检测 自助办理终端",10);
 	cleanGroup();
-	addItem("终端信息",true);
-	addItem("身份证读卡器",true);
-	addItem("高拍仪",true);
-	addItem("A4打印机",true);
-	addItem("小票打印机",true);
-	addItem("摄像头",true);
-	
+	testTerminalInfo();
+	testIDCardReader();
+	testHSICatch();
+	testThermalPrinters();
+	testA4PrintersPrintFile();
+	testCameraWatch();
+	testCameraVideo();
+	testAudioPlay();
+	testBarCodeScan();
+	testSICardReader();
 }//自助打表终端
 function detectionZZDBZD(){
-	addTitle("正在检测 自助打表终端",4);
+	addTitle("正在检测 自助打表终端",5);
 	cleanGroup();
-	addItem("终端信息",true);
-	addItem("身份证读卡器",true);
-	addItem("A4打印机",true);
-	addItem("摄像头",false);
+	testTerminalInfo();
+	testIDCardReader();
+	testA4PrintersPrintFile();
+	testCameraWatch();
+	testAudioPlay();
 	
 }//自助取证终端
 function detectionZZQZZD(){
-	addTitle("正在检测 自助取证终端",4);
+	addTitle("正在检测 自助取证终端",6);
 	cleanGroup();
-	addItem("终端信息",false);
-	addItem("身份证读卡器",true);
-	addItem("A4打印机",false);
-	addItem("摄像头",false);
+	testTerminalInfo();
+	testIDCardReader();
+	testA4PrintersPrintFile();
+	testCameraWatch();
+	testAudioPlay();
+	testCertPrintersPrintFile();
 }
+//总检测数量
 var itemCount;
+//当前是第几个检测
 var itemNow;
+//成功的检测数量
+var itemSuccess;
 function cleanGroup(){
 	$("#detectionContentGroup").empty();
 }
@@ -91,18 +209,28 @@ function addTitle(title,count){
 	$("#detectionContentTitle").text(title);
 	itemCount = count;
 	itemNow = 0;
+	itemSuccess = 0;
 	showProgressbar();
 }
 function addItem(item,state){
-	$("#detectionContentGroup").append($('<li class="list-group-item"><span class="badge">'+(state?'OK':'X')+'</span>'+item+'</li>'));
-	if (state){
-		itemNow++;
-	}
-	showProgressbar();
+	setTimeout(function(){
+		if (state){
+			itemSuccess++;
+		}
+		if (state){
+			$("#detectionContentGroup").append($('<li class="list-group-item"><span class="badge">OK</span>'+item+'</li>'));
+			
+		} else {
+			$("#detectionContentGroup").append($('<li class="list-group-item list-group-item-danger"><span class="badge" style="color:red">&nbsp;&nbsp;X&nbsp;&nbsp;</span>'+item+'</li>'));
+			
+		}
+		showProgressbar();
+	},2000*(++itemNow));
 
 }
 function showProgressbar(){
-	var value = (itemNow/itemCount).toFixed(2)*100;
+	console.log("显示进度条:",itemNow);
+	var value = (itemSuccess/itemCount).toFixed(2)*100;
 	$("#progressbar").attr("aria-valuenow",value);
 	$("#progressbar").attr("style","width: "+value+"%");
 	$("#progressbar").empty();
