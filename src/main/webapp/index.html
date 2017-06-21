@@ -138,7 +138,7 @@ function testBarCodeScan(){
 
 //排队取号机
 function detectionPDQHJ(){
-	addTitle("正在检测 排队取号机",4);
+	addTitle("A1","排队取号机",4);
 	cleanGroup();
 	testTerminalInfo();
 	testIDCardReader();
@@ -147,14 +147,14 @@ function detectionPDQHJ(){
 }
 //电子宣传屏
 function detectionDZXCP(){
-	addTitle("正在检测 电子宣传屏",2);
+	addTitle("A2","电子宣传屏",2);
 	cleanGroup();
 	testTerminalInfo();
 	testAudioPlay();
 }
 //大厅导航机
 function detectionDTDHJ(){
-	addTitle("正在检测 大厅导航机",4);
+	addTitle("A3","大厅导航机",4);
 	cleanGroup();
 	testTerminalInfo();
 	testIDCardReader();
@@ -163,7 +163,7 @@ function detectionDTDHJ(){
 	
 }//自助办理终端
 function detectionZZBLZD(){
-	addTitle("正在检测 自助办理终端",10);
+	addTitle("B1","自助办理终端",10);
 	cleanGroup();
 	testTerminalInfo();
 	testIDCardReader();
@@ -177,7 +177,7 @@ function detectionZZBLZD(){
 	testSICardReader();
 }//自助打表终端
 function detectionZZDBZD(){
-	addTitle("正在检测 自助打表终端",5);
+	addTitle("B2","自助打表终端",5);
 	cleanGroup();
 	testTerminalInfo();
 	testIDCardReader();
@@ -187,7 +187,7 @@ function detectionZZDBZD(){
 	
 }//自助取证终端
 function detectionZZQZZD(){
-	addTitle("正在检测 自助取证终端",6);
+	addTitle("B3","自助取证终端",6);
 	cleanGroup();
 	testTerminalInfo();
 	testIDCardReader();
@@ -196,6 +196,8 @@ function detectionZZQZZD(){
 	testAudioPlay();
 	testCertPrintersPrintFile();
 }
+var itemCode;
+var itemTitle;
 //总检测数量
 var itemCount;
 //当前是第几个检测
@@ -205,8 +207,10 @@ var itemSuccess;
 function cleanGroup(){
 	$("#detectionContentGroup").empty();
 }
-function addTitle(title,count){
-	$("#detectionContentTitle").text(title);
+function addTitle(code,title,count){
+	itemCode = code;
+	itemTitle = title;
+	$("#detectionContentTitle").text("正在检测 " + title);
 	itemCount = count;
 	itemNow = 0;
 	itemSuccess = 0;
@@ -235,7 +239,34 @@ function showProgressbar(){
 	$("#progressbar").attr("style","width: "+value+"%");
 	$("#progressbar").empty();
 	$("#progressbar").append($("<span>"+value+"% Complete (success)</span>"));
+	if (value == 100){
+		$("#deployTerminal").text("发布为" + itemTitle + "类型");
+	}
 }
+$(function () {
+	//获取当前自动终端类型
+	var json = JSON.parse(XJL.Terminal.info());
+	$.restGet({
+        url: 'rest/cdcTerminal/query/guid/'+json.data.terminal,
+        success: function (data, status) {
+        	console.log("data",data);
+        		$("#terminalType").text("当前终端类型:"+data.terminalType$name);
+        }
+    });
+	$('#deployTerminal').on("click", function () {
+		if (!$("#deployTerminal").text()){
+			console.log("内容为空，不处理点击事件");
+			return;
+		}
+		$.restPut({
+	        url: 'rest/cdcTerminal/deploy/'+itemCode + '/'+json.data.terminal,
+	        success: function (data, status) {
+	        	$("#terminalType").text("当前终端类型:"+itemTitle);
+	        	$("#deployTerminal").text("");
+	        }
+	    });
+	});
+});
 </script>
 </head>
 <body>
@@ -260,7 +291,10 @@ function showProgressbar(){
         <li><a href="#">故障诊断</a></li>
         <li><a href="#">使用帮助</a></li>
       </ul>
-      
+      <ul class="nav navbar-nav navbar-right">
+       <li><p id="terminalType" class="navbar-text">当前终端类型:未知</p></li>
+       <li><a href="#" id="deployTerminal"></a></li>
+      </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
