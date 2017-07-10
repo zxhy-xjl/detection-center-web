@@ -28,32 +28,24 @@ var RCU = {
 			}
 		},
 		A4Printers:{//A4打印机
-			printFile:function(){//打印本地文件，word或者图片等
-				console.log("A4打印机打印本地文件成功");
+			printContent:function(json){//打印内容，可以为图片或者word内容，经过base64编码
+				console.log("A4打印机打印内容成功");
 				return JSON.stringify({
 					state:"ok",
 					data:{},
 					error:{}
 				});
 			},
-			printURLFile:function(){//打印网上文件，word或者图片等 
+			printFile:function(json){//打印本地文件，word或者图片等
+				console.log("A4打印机打印本地文件成功:");
+				return JSON.stringify({
+					state:"ok",
+					data:{},
+					error:{}
+				});
+			},
+			printUrl:function(json){//打印网上文件，word或者图片等 
 				console.log("A4打印机打印网上文件成功");
-				return JSON.stringify({
-					state:"ok",
-					data:{},
-					error:{}
-				});
-			},
-			printString:function(){// 打印一段字符串
-				console.log("A4打印机打印一段字符串成功");
-				return JSON.stringify({
-					state:"ok",
-					data:{},
-					error:{}
-				});
-			},
-			printHTMLPage:function(){//打印某个HTML5网页效果，非源码。
-				console.log("A4打印机打印某个HTML5网页效果成功");
 				return JSON.stringify({
 					state:"ok",
 					data:{},
@@ -72,8 +64,24 @@ var RCU = {
 			}
 		},
 		Camera:{//摄像头
-			watch:function(){
+			play:function(){
+				console.log("摄像头播放");
+				return JSON.stringify({
+					state:"ok",
+					data:{photo:"照片"},
+					error:{}
+				});
+			},
+			snap:function(){
 				console.log("摄像头拍照");
+				return JSON.stringify({
+					state:"ok",
+					data:{photo:"照片"},
+					error:{}
+				});
+			},
+			stop:function(){
+				console.log("摄像头停止");
 				return JSON.stringify({
 					state:"ok",
 					data:{photo:"照片"},
