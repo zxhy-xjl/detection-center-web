@@ -1,6 +1,6 @@
 var XJL = {
 		getUrlParam:function (name){
-			console.log("getUrlParam方法开始调用");
+			console.log("getUrlParam方法开始调用:"+name);
 			if (!this.urlParams){
 				console.log("urlParams为空，开始构建");
 				this.urlParams=new Object();   

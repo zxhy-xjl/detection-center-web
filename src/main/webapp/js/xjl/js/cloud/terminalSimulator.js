@@ -1,9 +1,9 @@
-var XJL = {
+var RCU = {
 		Terminal:{//终端信息
 			info:function(){//终端信息,使用字符串拼接方法
 				return '{' +
 						'"state":"ok",' +
-						'"data":{"rcu":"1.0","terminal":"机器唯一编码"},' +
+						'"data":{"rcu":"1.0","terminal":"'+XJL.getUrlParam("clientID")+'"},' +
 						'"error":{}' +
 						'}';
 			}

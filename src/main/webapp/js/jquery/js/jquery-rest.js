@@ -21,7 +21,7 @@ jQuery.extend({
 		$.extend(options, {
 			dataType:'json',
 			contentType:'application/json;charset=utf-8',
-			processData: false,
+			//processData: false,
 			type:'post',
 			data:JSON.stringify(options.data)
 		});

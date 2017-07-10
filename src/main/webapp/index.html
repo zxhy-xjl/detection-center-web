@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="zh-CN">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,7 +31,7 @@
 <script src="js/xjl/js/cloud/terminalSimulator.js"></script>
 <script type="text/javascript">
 function testTerminalInfo(){
-	var json = JSON.parse(XJL.Terminal.info());
+	var json = JSON.parse(RCU.Terminal.info());
 	var msg = "";
 	if (json.state=="ok"){
 		msg = json.data.rcu;
@@ -40,7 +41,7 @@ function testTerminalInfo(){
 	addItem("终端信息::" + msg,json.state=="ok");
 }
 function testIDCardReader(){
-	var json = JSON.parse(XJL.IDCard.reader());
+	var json = JSON.parse(RCU.IDCard.reader());
 	var msg = "";
 	if (json.state=="ok"){
 		msg = json.data.name;
@@ -50,7 +51,7 @@ function testIDCardReader(){
 	addItem("身份证读卡器::" + msg,json.state=='ok');
 }
 function testSICardReader(){
-	var json = JSON.parse(XJL.SICard.reader());
+	var json = JSON.parse(RCU.SICard.reader());
 	var msg = "";
 	if (json.state=="ok"){
 		msg = json.data.no;
@@ -60,7 +61,7 @@ function testSICardReader(){
 	addItem("社保卡::" + msg,json.state=="ok");
 }
 function testThermalPrinters(){
-	var json = JSON.parse(XJL.ThermalPrinters.print());
+	var json = JSON.parse(RCU.ThermalPrinters.print());
 	var msg = "";
 	if (json.state=="ok"){
 		//msg = json.data;
@@ -70,7 +71,7 @@ function testThermalPrinters(){
 	addItem("小票打印机::" + msg,json.state=="ok");
 }
 function testHSICatch(){
-	var json = JSON.parse(XJL.HSI.catch());
+	var json = JSON.parse(RCU.HSI.catch());
 	var msg = "";
 	if (json.state=="ok"){
 		msg = json.data.photos.length;
@@ -80,7 +81,7 @@ function testHSICatch(){
 	addItem("高拍仪拍照::" + msg,json.state=="ok");
 }
 function testA4PrintersPrintFile(){
-	var json = JSON.parse(XJL.A4Printers.printFile());
+	var json = JSON.parse(RCU.A4Printers.printFile());
 	var msg = "";
 	if (json.state=="ok"){
 		//msg = json.data;
@@ -90,7 +91,7 @@ function testA4PrintersPrintFile(){
 	addItem("A4打印机打印本地文件::" + msg,json.state=="ok");
 }
 function testCertPrintersPrintFile(){
-	var json = JSON.parse(XJL.CertPrinters.printFile());
+	var json = JSON.parse(RCU.CertPrinters.printFile());
 	var msg = "";
 	if (json.state=="ok"){
 		//msg = json.data;
@@ -101,11 +102,11 @@ function testCertPrintersPrintFile(){
 }
 
 function testCameraWatch(){
-	var json = JSON.parse(XJL.Camera.watch());
+	var json = JSON.parse(RCU.Camera.watch());
 	addItem("摄像头拍照::" + json.state,json.state=="ok");
 }
 function testCameraVideo(){
-	var json = JSON.parse(XJL.Camera.video());
+	var json = JSON.parse(RCU.Camera.video());
 	var msg = "";
 	if (json.state=="ok"){
 		//msg = json.data;
@@ -115,7 +116,7 @@ function testCameraVideo(){
 	addItem("摄像头录像::" + msg,json.state=="ok");
 }
 function testAudioPlay(){
-	var json = JSON.parse(XJL.Audio.play());
+	var json = JSON.parse(RCU.Audio.play());
 	var msg = "";
 	if (json.state=="ok"){
 		//msg = json.data;
@@ -125,7 +126,7 @@ function testAudioPlay(){
 	addItem("喇叭播放声音::" + msg,json.state=="ok");
 }
 function testBarCodeScan(){
-	var json = JSON.parse(XJL.BarCode.scan());
+	var json = JSON.parse(RCU.BarCode.scan());
 	var msg = "";
 	if (json.state=="ok"){
 		msg = json.data.barcode;
@@ -245,7 +246,8 @@ function showProgressbar(){
 }
 $(function () {
 	//获取当前自动终端类型
-	var json = JSON.parse(XJL.Terminal.info());
+	
+	var json = JSON.parse(RCU.Terminal.info());
 	$.restGet({
         url: 'rest/cdcTerminal/query/guid/'+json.data.terminal,
         success: function (data, status) {
