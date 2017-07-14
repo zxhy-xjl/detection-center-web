@@ -43,7 +43,7 @@ $(function () {
 	var terminalID = JSON.parse(RCU.Terminal.info()).data.terminal;
 	console.log("abc");
 	if (!terminalID){
-		$("#terminalInfo").text("终端信息为空");
+		$("#terminalInfo").text("终端信息为空，请在符合RCU标准规范的平台上运行");
 		return true;
 	}
 	$.restGet({
