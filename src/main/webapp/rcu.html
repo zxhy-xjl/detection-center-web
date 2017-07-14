@@ -28,12 +28,19 @@
 <script src="js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
 <script src="js/xjl/js/xjl.js"></script>
 <script src="js/xjl/js/xjl-table.js"></script>
-<script src="js/xjl/js/cloud/terminalSimulator.js"></script>
 <script type="text/javascript">
 console.log("XJL",XJL);
-var terminalID = XJL.getUrlParam("clientID");
+
 $(function () {
 	//获取当前自动终端类型
+	if (typeof RCU == "undefined"){
+		console.log("RCU为定义");
+		$("#terminalInfo").empty();
+		$("#terminalInfo").text("RCU未定义，请在符合RCU标准规范的平台上运行");
+		return;
+	}
+	//获取当前自动终端类型
+	var terminalID = JSON.parse(RCU.Terminal.info()).data.terminal;
 	console.log("abc");
 	if (!terminalID){
 		$("#terminalInfo").text("终端信息为空");
@@ -51,7 +58,7 @@ $(function () {
         			window.location.href="home.html?clientID="+terminalID;
         		} else {
         			//做出厂检测
-        			window.location.href="index.html?clientID="+terminalID;
+        			window.location.href="detection.html?clientID="+terminalID;
         		}
         },
         error:function(){
@@ -62,6 +69,36 @@ $(function () {
 </script>
 </head>
 <body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img class="navbar-brand" src="images/xjl.png" height="30px">
+      <label class="navbar-brand">云政务终端</label>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">RCU平台 <span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="rcu.html">出厂检测</a></li>
+        <li><a href="#">故障诊断</a></li>
+        <li><a href="#">使用场景</a></li>
+        <li><a href="#">使用帮助</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+       <li><p id="terminalType" class="navbar-text"></p></li>
+       <li><a href="rcuSimulator.html">在线模拟检测</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 <div class="container">
 <div id="terminalInfo">
 正在检测终端信息

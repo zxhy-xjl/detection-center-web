@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <head>
-<title>互联网+政务服务门户</title>
+<title>XJL</title>
 <style type='text/css'>
 	body {
 	     background-color: #CCC;
@@ -29,291 +29,7 @@
 <script src="js/xjl/js/xjl.js"></script>
 <script src="js/xjl/js/xjl-table.js"></script>
 <script type="text/javascript">
-function testTerminalInfo(){
-	var json = JSON.parse(RCU.Terminal.info());
-	var msg = "";
-	if (json.state=="ok"){
-		msg = json.data.rcu;
-	} else {
-		msg = json.error.message + "("+json.error.code+")";
-	}
-	addItem("终端信息::" + msg,json.state=="ok");
-}
-function testIDCardReader(){
-	var json = JSON.parse(RCU.IDCard.reader());
-	var msg = "";
-	if (json.state=="ok"){
-		msg = json.data.name;
-	} else {
-		msg = json.error.message + "("+json.error.code+")";
-	}
-	addItem("身份证读卡器::" + msg,json.state=='ok');
-}
-function testSICardReader(){
-	var json = JSON.parse(RCU.SICard.reader());
-	var msg = "";
-	if (json.state=="ok"){
-		msg = json.data.no;
-	} else {
-		msg = json.error.message + "("+json.error.code+")";
-	}
-	addItem("社保卡::" + msg,json.state=="ok");
-}
-function testThermalPrinters(){
-	var json = JSON.parse(RCU.ThermalPrinters.print());
-	var msg = "";
-	if (json.state=="ok"){
-		//msg = json.data;
-	} else {
-		msg = json.error.message + "("+json.error.code+")";
-	}
-	addItem("小票打印机::" + msg,json.state=="ok");
-}
-function testHSICatch(){
-	var json = JSON.parse(RCU.HSI.catch());
-	var msg = "";
-	if (json.state=="ok"){
-		msg = json.data.photos.length;
-	} else {
-		msg = json.error.message + "("+json.error.code+")";
-	}
-	addItem("高拍仪拍照::" + msg,json.state=="ok");
-}
-function testA4PrintersPrintFile(){
-	var json = JSON.parse(RCU.A4Printers.printFile());
-	var msg = "";
-	if (json.state=="ok"){
-		//msg = json.data;
-	} else {
-		msg = json.error.message + "("+json.error.code+")";
-	}
-	addItem("A4打印机打印本地文件::" + msg,json.state=="ok");
-}
-function testA4PrintersPrintUrl(){
-	var json = JSON.parse(RCU.A4Printers.printUrl());
-	var msg = "";
-	if (json.state=="ok"){
-		//msg = json.data;
-	} else {
-		msg = json.error.message + "("+json.error.code+")";
-	}
-	addItem("A4打印机打印网络资源::" + msg,json.state=="ok");
-}
-function testA4PrintersPrintContent(){
-	var json = JSON.parse(RCU.A4Printers.printContent());
-	var msg = "";
-	if (json.state=="ok"){
-		//msg = json.data;
-	} else {
-		msg = json.error.message + "("+json.error.code+")";
-	}
-	addItem("A4打印机打印内容::" + msg,json.state=="ok");
-}
-function testCertPrintersPrintFile(){
-	var json = JSON.parse(RCU.CertPrinters.printFile());
-	var msg = "";
-	if (json.state=="ok"){
-		//msg = json.data;
-	} else {
-		msg = json.error.message + "("+json.error.code+")";
-	}
-	addItem("证照打印本地文件::" + msg,json.state=="ok");
-}
 
-
-function testCameraPlay(){
-	var json = JSON.parse(RCU.Camera.play());
-	addItem("摄像头播放::" + json.state,json.state=="ok");
-}
-function testCameraSnap(){
-	var json = JSON.parse(RCU.Camera.snap());
-	addItem("摄像头拍照::" + json.state,json.state=="ok");
-}
-function testCameraStop(){
-	var json = JSON.parse(RCU.Camera.stop());
-	addItem("摄像头停止::" + json.state,json.state=="ok");
-}
-function testCameraVideo(){
-	var json = JSON.parse(RCU.Camera.video());
-	var msg = "";
-	if (json.state=="ok"){
-		//msg = json.data;
-	} else {
-		msg = json.error.message + "("+json.error.code+")";
-	}
-	addItem("摄像头录像::" + msg,json.state=="ok");
-}
-function testAudioPlay(){
-	var json = JSON.parse(RCU.Audio.play());
-	var msg = "";
-	if (json.state=="ok"){
-		//msg = json.data;
-	} else {
-		msg = json.error.message + "("+json.error.code+")";
-	}
-	addItem("喇叭播放声音::" + msg,json.state=="ok");
-}
-function testBarCodeScan(){
-	var json = JSON.parse(RCU.BarCode.scan());
-	var msg = "";
-	if (json.state=="ok"){
-		msg = json.data.barcode;
-	} else {
-		msg = json.error.message + "("+json.error.code+")";
-	}
-	addItem("扫码::" + msg,json.state=="ok");
-}
-
-
-//排队取号机
-function detectionPDQHJ(){
-	addTitle("A1","排队取号机",4);
-	cleanGroup();
-	testTerminalInfo();
-	testIDCardReader();
-	testThermalPrinters();
-	testAudioPlay();
-}
-//电子宣传屏
-function detectionDZXCP(){
-	addTitle("A2","电子宣传屏",2);
-	cleanGroup();
-	testTerminalInfo();
-	testAudioPlay();
-}
-//大厅导航机
-function detectionDTDHJ(){
-	addTitle("A3","大厅导航机",4);
-	cleanGroup();
-	testTerminalInfo();
-	testIDCardReader();
-	testThermalPrinters();
-	testAudioPlay();
-	
-}//自助办理终端
-function detectionZZBLZD(){
-	addTitle("B1","自助办理终端",10);
-	cleanGroup();
-	testTerminalInfo();
-	testIDCardReader();
-	testHSICatch();
-	testThermalPrinters();
-	//testA4PrintersPrintContent();
-	testA4PrintersPrintFile();
-	testA4PrintersPrintUrl();
-	testCameraPlay();
-	testCameraSnap();
-	testCameraStop();
-	//testCameraVideo();
-	testAudioPlay();
-	//testBarCodeScan();
-	//testSICardReader();
-}//自助打表终端
-function detectionZZDBZD(){
-	addTitle("B2","自助打表终端",8);
-	cleanGroup();
-	testTerminalInfo();
-	testIDCardReader();
-	//testA4PrintersPrintContent();
-	testA4PrintersPrintFile();
-	testA4PrintersPrintUrl();
-	testCameraPlay();
-	testCameraSnap();
-	testCameraStop();
-	testAudioPlay();
-	
-}//自助取证终端
-function detectionZZQZZD(){
-	addTitle("B3","自助取证终端",	7);
-	cleanGroup();
-	testTerminalInfo();
-	testIDCardReader();
-	//testA4PrintersPrintContent();
-	//testA4PrintersPrintFile();
-	testA4PrintersPrintUrl();
-	testCameraPlay();
-	testCameraSnap();
-	testCameraStop();
-	testAudioPlay();
-	//testCertPrintersPrintFile();
-}
-var itemCode;
-var itemTitle;
-//总检测数量
-var itemCount;
-//当前是第几个检测
-var itemNow;
-//成功的检测数量
-var itemSuccess;
-function cleanGroup(){
-	$("#detectionContentGroup").empty();
-}
-function addTitle(code,title,count){
-	itemCode = code;
-	itemTitle = title;
-	$("#detectionContentTitle").text("正在检测 " + title);
-	itemCount = count;
-	itemNow = 0;
-	itemSuccess = 0;
-	showProgressbar();
-}
-function addItem(item,state){
-	setTimeout(function(){
-		if (state){
-			itemSuccess++;
-		}
-		if (state){
-			$("#detectionContentGroup").append($('<li class="list-group-item"><span class="badge">OK</span>'+item+'</li>'));
-			
-		} else {
-			$("#detectionContentGroup").append($('<li class="list-group-item list-group-item-danger"><span class="badge" style="color:red">&nbsp;&nbsp;X&nbsp;&nbsp;</span>'+item+'</li>'));
-			
-		}
-		showProgressbar();
-	},2000*(++itemNow));
-
-}
-function showProgressbar(){
-	console.log("显示进度条:",itemNow);
-	var value = (itemSuccess/itemCount).toFixed(2)*100;
-	$("#progressbar").attr("aria-valuenow",value);
-	$("#progressbar").attr("style","width: "+value+"%");
-	$("#progressbar").empty();
-	$("#progressbar").append($("<span>"+value+"% Complete (success)</span>"));
-	if (value == 100){
-		$("#deployTerminal").text("发布为" + itemTitle + "类型");
-	}
-}
-$(function () {
-	//获取当前自动终端类型
-	if (typeof RCU == "undefined"){
-		console.log("RCU为定义");
-		$("#container").empty();
-		$("#container").text("RCU未定义，请在符合RCU标准规范的平台上运行");
-		return;
-	}
-	var json = JSON.parse(RCU.Terminal.info());
-	$.restGet({
-        url: 'rest/cdcTerminal/query/guid/'+json.data.terminal,
-        success: function (data, status) {
-        	console.log("data",data);
-        		$("#terminalType").text("当前终端类型:"+data.terminalType$name);
-        }
-    });
-	$('#deployTerminal').on("click", function () {
-		if (!$("#deployTerminal").text()){
-			console.log("内容为空，不处理点击事件");
-			return;
-		}
-		$.restPut({
-	        url: 'rest/cdcTerminal/deploy/'+itemCode + '/'+json.data.terminal,
-	        success: function (data, status) {
-	        	$("#terminalType").text("当前终端类型:"+itemTitle);
-	        	$("#deployTerminal").text("");
-	        }
-	    });
-	});
-});
 </script>
 </head>
 <body>
@@ -328,70 +44,293 @@ $(function () {
         <span class="icon-bar"></span>
       </button>
       <img class="navbar-brand" src="images/xjl.png" height="30px">
-      <label class="navbar-brand">云检测中心</label>
+      <label class="navbar-brand">云政务终端</label>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">出厂检测 <span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="index.html">RCU平台 <span class="sr-only">(current)</span></a></li>
+        <li><a href="rcu.html">出厂检测</a></li>
         <li><a href="#">故障诊断</a></li>
+        <li><a href="#">使用场景</a></li>
         <li><a href="#">使用帮助</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-       <li><p id="terminalType" class="navbar-text">当前终端类型:未知</p></li>
-       <li><a href="#" id="deployTerminal"></a></li>
+       <li><p id="terminalType" class="navbar-text"></p></li>
+       <li><a href="rcuSimulator.html">在线模拟检测</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
 <div class="container" id="container">
-	<div class="row">
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionPDQHJ()">
-	       排队取号机
-	    </a>
+	<ul class="nav nav-tabs" role="tablist">
+	    <li role="presentation" class="active"><a href="#终端标识" aria-controls="终端标识" role="tab" data-toggle="tab">终端标识</a></li>
+	    <li role="presentation"><a href="#身份证读卡器" aria-controls="身份证读卡器" role="tab" data-toggle="tab">身份证读卡器</a></li>
+	    <li role="presentation"><a href="#热敏打印机" aria-controls="热敏打印机" role="tab" data-toggle="tab">热敏打印机</a></li>
+	    <li role="presentation"><a href="#A4打印机" aria-controls="A4打印机" role="tab" data-toggle="tab">A4打印机</a></li>
+	    <li role="presentation"><a href="#高拍仪" aria-controls="高拍仪" role="tab" data-toggle="tab">高拍仪</a></li>
+	    <li role="presentation"><a href="#摄像头" aria-controls="摄像头" role="tab" data-toggle="tab">摄像头</a></li>
+	  </ul>
+	<div class="tab-content">
+	  <div role="tabpanel" class="tab-pane fade in active" id="终端标识">
+	  
+        <pre>
+        
+    方法名称：RCU.Terminal.info() 读取终端信息
+    输入参数：无
+    输出结果：终端rcu版本和终端唯一编码信息（json对象经序列化后的字符串）
+    异常
+        1没有找到rcu
+        9其他
+        
+	{
+	  state:ok/error,
+	  data:{
+	    rcu:1.0,
+	    terminal:终端唯一编码信息
+	  },
+	  error:{
+	    code:1,
+	    message:没找到RCU
+	  }
+	}
+        </pre>
 	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionDZXCP()">
-	      电子宣传屏
-	    </a>
+	  <div role="tabpanel" class="tab-pane fade" id="身份证读卡器">
+		<pre>
+			    方法名称：RCU.IDCard.reader() 读取身份证信息
+			    输入参数：无
+			    输出结果：输出结果为序列化后的json对象，如下：
+			
+			 {
+			   state:ok/error,
+			   data:{
+			     no:<身份证号>,
+			     name:<姓名>,
+			     sex:<性别 男/女>,
+			     birthday:<出生年月 格式YYYYMMDD>,
+			     validThrough:<有效期至 格式YYYYMMDD>,
+			     photo:<经过base64编码后的照片>
+			   },
+			   error:{
+			     code:<异常代码>,
+			     message:<异常消息>
+			   }
+			 }
+			
+			    异常代码：
+			        1没有找到设备
+			        2无效身份证
+			        9其他
+		</pre>
 	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionDTDHJ()">
-	      大厅导航机
-		</a>
-	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionZZBLZD()">
-	      自助办理终端
-	    </a>
-	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionZZDBZD()">
-	      自助打表终端
-	    </a>
-	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionZZQZZD()">
-	      自助取证终端
-	    </a>
-	  </div>
+	  <div role="tabpanel" class="tab-pane fade" id="热敏打印机">
+<pre>
+    方法名称：RCU.ThermalPrinter.print() 打印小票
+
+    输入参数:序列化后的json对象：
+
+ {
+   content: <经过base64编码过的图片数据> ,
+   callback:回调函数名称
+ }
+
+    输出结果：无
+    
+    样例
+//调用打印
+var img = 'base64编码的图片';
+var content = {content:img,callbackName:'callbackName'};
+var cont = JSON.stringify(content);
+
+RCU.ThermoPrinter.print(cont);
+
+//获取打印结果
+function callbackName(code, message){
+   if (code == 0){
+     console.log("打印成功");
+   } else {
+     console.log("打印失败", code + "(" + message + ")");
+   }
+}
+    
+</pre>
 	</div>
-	<div id="detectionContent">
-		<div class="panel panel-default">
-		  <div class="panel-heading" id="detectionContentTitle"></div>
-		  <div class="panel-body">
-		  	<div class="progress">
-			  <div id="progressbar" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-			    <span>0% Complete (success)</span>
-			  </div>
-			</div>
-		  </div>
-	       <ul class="list-group" id="detectionContentGroup">
-			  
-			</ul>
-		</div>
+	  <div role="tabpanel" class="tab-pane fade" id="A4打印机">
+<pre>
+    1.打印内容
+
+方法名称：RCU.A4Printers.printContent() 
+输入参数:json数据格式（与热敏打印机一致）
+{
+   content:<base64编码后的内容，可以为图片或word文档>,
+   callbackName:<回调函数名称>
+}
+输出结果：无
+
+    2.打印文件
+
+方法名称：RCU.A4Printers.printFile() 
+输入参数:json数据格式
+{
+   filePath:<文件的全路径，比如E:\test.doc>,
+   callbackName:<回调函数名称>
+}
+输出结果：无
+
+    3.打印远端url
+
+方法名称：RCU.A4Printers.printUrl() 
+输入参数:json数据格式
+{
+   fileUrl:<远端文件的地址，比如http://homepages.inf.ed.ac.uk/neilb/TestWordDoc.doc>,
+   callbackName:<回调函数名称>
+}
+输出结果：无
+
+    回调函数
+
+// code:代码，message:消息
+function callbackName (code, message) {
+}
+
+code代码
+0:打印机等待（打印成功）
+1:用户输入数据错误
+2:文件未找到
+3:打印机离线
+4:打印机忙碌
+5:打印机缺纸
+99:其他错误
+
+    示例
+
+//打印内容
+var img = 'base64编码的图片';
+var content = {content:img,callbackName:'callbackName'};
+var cont = JSON.stringify(content);
+RCU.A4Printer.printContent(cont);
+
+//打印本地文件
+var file = 'E:\\test.doc';
+var content = {filePath:file,callbackName:'callbackName'};
+var cont = JSON.stringify(content);
+
+RCU.A4Printer.printFile(cont);
+
+//打印远端url
+var url = 'http://homepages.inf.ed.ac.uk/neilb/TestWordDoc.doc';
+var content = {fileUrl:url,callbackName:'callbackName'};
+var cont = JSON.stringify(content);
+RCU.A4Printer.printUrl(cont);
+
+//回调函数获取打印结果
+function callbackName(code, message){
+  if (code == 0){
+    console.log("打印成功");
+  } else {
+    console.log("打印失败", code + "(" + message + ")");
+  }
+}
+
+</pre>
+</div>
+	  <div role="tabpanel" class="tab-pane fade" id="高拍仪">
+<pre>
+    方法名称：RCU.HSI.open(callbackName) 打开高拍仪
+
+输入参数：回调函数名称
+输出结果：无
+返回结果：json数据格式
+{
+  success: <true/false>,
+  error: {
+    code: <错误代码>,
+    message: <错误消息>
+  } 
+}
+
+code代码
+1：高拍仪打开失败
+2：回调函数为空
+9：其他错误
+
+    回调函数
+
+// img: 经过base64编码的图像数据
+function callbackName (img) {
+}
+
+    示例
+
+var ret = RCU.HSI.open('HSINewImage');
+var result = JSON.parse(ret);
+if (result.success != true) {
+  alert('高拍仪打开错误'+ result.error.code + '(' + result.error.message + ')');
+}
+
+ //回调函数获取图片
+function callbackName(image){
+  img.src = 'data:image/jpeg;base64,' + image;
+}
+
+</pre>
+</div>
+	  <div role="tabpanel" class="tab-pane fade" id="摄像头">
+<pre>
+    方法名称1：RCU.Camera.play(videoId, callback) 播放摄像头画面
+        输入参数：videoId:video元素的id; callback:回调函数名称
+        输出结果：视频在html上的video元素上播放
+        播放的结果会通过callback返回给用户
+
+    方法名称2：RCU.Camera.snap(video, canvas) 拍照
+        输入参数：videoId：video元素的id；canvasId：canvas元素的Id
+        输出结果：拍照的内容在canvas元素上显示
+
+    方法名称3：RCU.Camera.stop() 停止
+        输入参数：无
+        输出结果：无（摄像头停止）
+
+    回调函数：function callback (result) {}
+        输入参数：result:播放摄像头画面的结果，一个序列化后的json对象，如下：
+
+{
+  success:<true/false>,
+  error:{
+    code:<errcode>,
+    message:<errmessage>
+  }
+}
+
+    样例
+
+// html元素样例
+<video id="video" width="320" height="240" autoplay><video>  
+<canvas id="canvas" width="640" height="480"></canvas>
+
+// 播放摄像头视频
+RCU.Camera.play('video', 'cameraCallback');
+
+// 拍照
+RCU.Camera.snap('video', 'canvas');
+
+// 停止
+RCU.Camera.stop();
+
+// 回调函数
+function cameraCallback (result) {
+  var res = JSON.parse(result);
+  if (res.success == true) {
+    alert("摄像头已打开");
+  }
+  else {
+    alert("摄像头打开失败(" + res.error.code + ")");
+  }
+}
+
+</pre>
+</div>
 	</div>
 </div>
 </body>
