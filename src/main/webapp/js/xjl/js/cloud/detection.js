@@ -178,9 +178,9 @@ function detectionZZBLZD(){
 	//testA4PrinterPrintContent();
 	//testA4PrinterPrintFile();
 	testA4PrinterPrintUrl();
-	//testCameraPlay();
-	//testCameraSnap();
-	//testCameraStop();
+	testCameraPlay();
+	testCameraSnap();
+	testCameraStop();
 	//testCameraVideo();
 	testAudioPlay();
 	//testBarCodeScan();
@@ -194,9 +194,9 @@ function detectionZZDBZD(){
 	//testA4PrinterPrintContent();
 	//testA4PrinterPrintFile();
 	testA4PrinterPrintUrl();
-	//testCameraPlay();
-	//testCameraSnap();
-	//testCameraStop();
+	testCameraPlay();
+	testCameraSnap();
+	testCameraStop();
 	testAudioPlay();
 	
 }//自助取证终端
@@ -208,9 +208,9 @@ function detectionZZQZZD(){
 	//testA4PrinterPrintContent();
 	//testA4PrinterPrintFile();
 	testA4PrinterPrintUrl();
-	//testCameraPlay();
-	//testCameraSnap();
-	//testCameraStop();
+	testCameraPlay();
+	testCameraSnap();
+	testCameraStop();
 	testAudioPlay();
 	//testCertPrintersPrintFile();
 }
