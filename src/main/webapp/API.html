@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<head>
+<title>RCU</title>
+<style type='text/css'>
+	body {
+	     background-color: #CCC;
+	}
+</style>
+<link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css" >
+<link rel="stylesheet" href="js/bootstrap/css/bootstrap-theme.min.css" >
+<link rel="stylesheet" href="js/bootstraptable/css/bootstrap-table.min.css">
+<link rel="stylesheet" href="js/bootstrapselect/css/bootstrap-select.min.css">
+<script src="js/jquery/js/jquery-3.2.1.min.js"></script>
+<script src="js/jquery/js/jquery-rest.js"></script>
+<script src="js/bootstrap/js/bootstrap.min.js"></script>
+<script src="js/bootstraptable/js/tableExport.js"></script>
+<script src="js/bootstraptable/js/bootstrap-table.js"></script>
+<script src="js/bootstraptable/js/bootstrap-table-export.js"></script>
+<script src="js/knockout/js/knockout-3.4.2.js"></script>
+<script src="js/knockout/js/knockout.mapping-latest.js"></script>
+<script src="js/bootstraptable/js/knockout.bootstraptable.js"></script>
+<script src="js/bootstrapselect/js/bootstrap-select.min.js"></script>
+<script src="js/bootstrapselect/js/i18n/defaults-zh_CN.min.js"></script>
+<script src="js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
+<script src="js/xjl/js/xjl.js"></script>
+<script src="js/xjl/js/xjl-table.js"></script>
+<script type="text/javascript">
+
+</script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img class="navbar-brand" src="images/RCU.png" height="30px">
+      <label class="navbar-brand">自助服务云终端</label>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">RCU平台 <span class="sr-only">(current)</span></a></li>
+        <li><a href="rcu.html">出厂检测</a></li>
+        <li><a href="rcuSimulator.html">在线模拟检测</a></li>
+        <li class="active"><a href="API.html">API接口</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container" id="container">
+	<ul class="nav nav-tabs" role="tablist">
+	    <li role="presentation" class="active"><a href="#终端标识" aria-controls="终端标识" role="tab" data-toggle="tab">终端标识</a></li>
+	    <li role="presentation"><a href="#身份证读卡器" aria-controls="身份证读卡器" role="tab" data-toggle="tab">身份证读卡器</a></li>
+	    <li role="presentation"><a href="#热敏打印机" aria-controls="热敏打印机" role="tab" data-toggle="tab">热敏打印机</a></li>
+	    <li role="presentation"><a href="#A4打印机" aria-controls="A4打印机" role="tab" data-toggle="tab">A4打印机</a></li>
+	    <li role="presentation"><a href="#高拍仪" aria-controls="高拍仪" role="tab" data-toggle="tab">高拍仪</a></li>
+	  </ul>
+	<div class="tab-content">
+	  <div role="tabpanel" class="tab-pane fade in active" id="终端标识">
+	  
+        <pre>
+        
+方法名称：RCU.Terminal.info() 读取终端信息
+输入参数：无
+输出结果：终端rcu版本和终端唯一编码信息（json对象经序列化后的字符串）
+	{
+	  state:ok/error,
+	  data:{
+	    rcu:1.0,
+	    terminal:终端唯一编码信息
+	  },
+	  error:{
+	    code:1,
+	    message:没找到RCU
+	  }
+	}
+异常
+    1没有找到rcu
+    9其他	
+        </pre>
+	  </div>
+	  <div role="tabpanel" class="tab-pane fade" id="身份证读卡器">
+		<pre>
+方法名称：RCU.IDCard.reader() 读取身份证信息
+输入参数：无
+输出结果：输出结果为序列化后的json对象，如下：
+	{
+	  state:ok/error,
+	  data:{
+	    no:<身份证号>,
+	    name:<姓名>,
+	    sex:<性别 男/女>,
+	    birthday:<出生年月 格式YYYYMMDD>,
+	    validThrough:<有效期至 格式YYYYMMDD>,
+	    photo:<经过base64编码后的照片>
+	  },
+	  error:{
+	    code:<异常代码>,
+	    message:<异常消息>
+	  }
+	}
+
+异常代码：
+    1没有找到设备
+    2无效身份证
+    9其他
+		</pre>
+	  </div>
+	  <div role="tabpanel" class="tab-pane fade" id="热敏打印机">
+<pre>
+方法名称：RCU.ThermoPrinter.print() 打印小票
+
+输入参数:序列化后的json对象：
+
+	{
+	  content: <经过base64编码过的图片数据> ,
+	  callback:回调函数名称
+	}
+
+输出结果：无
+
+样例
+	//调用打印
+	var img = 'base64编码的图片';
+	var content = {content:img,callbackName:'callbackName'};
+	var cont = JSON.stringify(content);
+	
+	RCU.ThermoPrinter.print(cont);
+	
+	//获取打印结果
+	function callbackName(code, message){
+	   if (code == 0){
+	     console.log("打印成功");
+	   } else {
+	     console.log("打印失败", code + "(" + message + ")");
+	   }
+	}
+    
+</pre>
+	</div>
+	  <div role="tabpanel" class="tab-pane fade" id="A4打印机">
+<pre>
+
+方法名称：RCU.A4Printer.printUrl() 
+输入参数:json数据格式
+	{
+	   fileUrl:<远端文件的地址，比如http://homepages.inf.ed.ac.uk/neilb/TestWordDoc.doc>,
+	   callbackName:<回调函数名称>
+	}
+输出结果：无
+
+回调函数
+
+	// code:代码，message:消息
+	function callbackName (code, message) {
+	}
+
+	code代码
+	0:打印机等待（打印成功）
+	1:用户输入数据错误
+	2:文件未找到
+	3:打印机离线
+	4:打印机忙碌
+	5:打印机缺纸
+	99:其他错误
+
+示例
+
+	var url = 'http://homepages.inf.ed.ac.uk/neilb/TestWordDoc.doc';
+	var content = {fileUrl:url,callbackName:'callbackName'};
+	var cont = JSON.stringify(content);
+	RCU.A4Printer.printUrl(cont);
+
+	//回调函数获取打印结果
+	function callbackName(code, message){
+	  if (code == 0){
+	    console.log("打印成功");
+	  } else {
+	    console.log("打印失败", code + "(" + message + ")");
+	  }
+	}
+
+</pre>
+</div>
+	  <div role="tabpanel" class="tab-pane fade" id="高拍仪">
+<pre>
+方法名称：RCU.HSI.open() 
+输入参数：回调函数名称
+	{
+	  callbackName:HSICallback
+	}
+输出结果：高拍仪状态
+	{
+	  state:ok/error,
+	  error: {
+	    code: <错误代码>,
+	    message: <错误消息>
+	  } 
+	}
+
+	code代码
+	1：高拍仪打开失败
+	2：回调函数为空
+	9：其他错误
+
+回调函数（点击拍摄之后调用该回调函数）
+	// img: 经过base64编码的图像数据
+	function callbackName (img) {
+	}
+
+示例
+	var content = {callbackName:'HSINewImage'};
+	var cont = JSON.stringify(content);
+	var ret = RCU.HSI.open(cont);
+	var result = JSON.parse(ret);
+	if (result.success != true) {
+	  alert('高拍仪打开错误'+ result.error.code + '(' + result.error.message + ')');
+	}
+
+ 	//回调函数获取图片
+	function HSINewImage(image){
+	  img.src = 'data:image/jpeg;base64,' + image;
+	}
+
+</pre>
+</div>
+
+	</div>
+</div>
+</body>
+</html>

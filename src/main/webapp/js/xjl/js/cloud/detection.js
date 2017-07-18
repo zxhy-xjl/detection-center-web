@@ -50,9 +50,9 @@ function ThermoPrinterCallback(code,message){
 }
 function testHSICatch(){
 	addItem("高拍仪拍照::<span id='HSICatch'>正在拍摄</span>","");
-	var ret = RCU.HSI.open('HSICatchCallback');
+	var ret = RCU.HSI.open(JSON.stringify({callbackName:'HSICatchCallback'}));
 	var result = JSON.parse(ret);
-	if (result.success != true) {
+	if (result.state != "ok") {
 		resetItemStatus("HSICatch",false,result.error.code + '(' + result.error.message + ')');
 	}
 }

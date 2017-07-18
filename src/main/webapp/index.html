@@ -52,287 +52,35 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="index.html">RCU平台 <span class="sr-only">(current)</span></a></li>
         <li><a href="rcu.html">出厂检测</a></li>
-        <li><a href="#">故障诊断</a></li>
-        <li><a href="#">使用场景</a></li>
-        <li><a href="#">使用帮助</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-       <li><p id="terminalType" class="navbar-text"></p></li>
-       <li><a href="rcuSimulator.html">在线模拟检测</a></li>
+        <li><a href="rcuSimulator.html">在线模拟检测</a></li>
+        <li><a href="API.html">API接口</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
 <div class="container" id="container">
-	<ul class="nav nav-tabs" role="tablist">
-	    <li role="presentation" class="active"><a href="#终端标识" aria-controls="终端标识" role="tab" data-toggle="tab">终端标识</a></li>
-	    <li role="presentation"><a href="#身份证读卡器" aria-controls="身份证读卡器" role="tab" data-toggle="tab">身份证读卡器</a></li>
-	    <li role="presentation"><a href="#热敏打印机" aria-controls="热敏打印机" role="tab" data-toggle="tab">热敏打印机</a></li>
-	    <li role="presentation"><a href="#A4打印机" aria-controls="A4打印机" role="tab" data-toggle="tab">A4打印机</a></li>
-	    <li role="presentation"><a href="#高拍仪" aria-controls="高拍仪" role="tab" data-toggle="tab">高拍仪</a></li>
-	    <li role="presentation"><a href="#摄像头" aria-controls="摄像头" role="tab" data-toggle="tab">摄像头</a></li>
-	  </ul>
-	<div class="tab-content">
-	  <div role="tabpanel" class="tab-pane fade in active" id="终端标识">
-	  
-        <pre>
-        
-    方法名称：RCU.Terminal.info() 读取终端信息
-    输入参数：无
-    输出结果：终端rcu版本和终端唯一编码信息（json对象经序列化后的字符串）
-    异常
-        1没有找到rcu
-        9其他
-        
-	{
-	  state:ok/error,
-	  data:{
-	    rcu:1.0,
-	    terminal:终端唯一编码信息
-	  },
-	  error:{
-	    code:1,
-	    message:没找到RCU
-	  }
-	}
-        </pre>
-	  </div>
-	  <div role="tabpanel" class="tab-pane fade" id="身份证读卡器">
-		<pre>
-			    方法名称：RCU.IDCard.reader() 读取身份证信息
-			    输入参数：无
-			    输出结果：输出结果为序列化后的json对象，如下：
-			
-			 {
-			   state:ok/error,
-			   data:{
-			     no:<身份证号>,
-			     name:<姓名>,
-			     sex:<性别 男/女>,
-			     birthday:<出生年月 格式YYYYMMDD>,
-			     validThrough:<有效期至 格式YYYYMMDD>,
-			     photo:<经过base64编码后的照片>
-			   },
-			   error:{
-			     code:<异常代码>,
-			     message:<异常消息>
-			   }
-			 }
-			
-			    异常代码：
-			        1没有找到设备
-			        2无效身份证
-			        9其他
-		</pre>
-	  </div>
-	  <div role="tabpanel" class="tab-pane fade" id="热敏打印机">
-<pre>
-    方法名称：RCU.ThermoPrinter.print() 打印小票
-
-    输入参数:序列化后的json对象：
-
- {
-   content: <经过base64编码过的图片数据> ,
-   callback:回调函数名称
- }
-
-    输出结果：无
-    
-    样例
-//调用打印
-var img = 'base64编码的图片';
-var content = {content:img,callbackName:'callbackName'};
-var cont = JSON.stringify(content);
-
-RCU.ThermoPrinter.print(cont);
-
-//获取打印结果
-function callbackName(code, message){
-   if (code == 0){
-     console.log("打印成功");
-   } else {
-     console.log("打印失败", code + "(" + message + ")");
-   }
-}
-    
-</pre>
-	</div>
-	  <div role="tabpanel" class="tab-pane fade" id="A4打印机">
-<pre>
-    1.打印内容
-
-	方法名称：RCU.A4Printer.printContent() 
-	输入参数:json数据格式（与热敏打印机一致）
-	{
-	   content:<base64编码后的内容，可以为图片或word文档>,
-	   callbackName:<回调函数名称>
-	}
-	输出结果：无
-
-    2.打印文件
-
-	方法名称：RCU.A4Printer.printFile() 
-	输入参数:json数据格式
-	{
-	   filePath:<文件的全路径，比如E:\test.doc>,
-	   callbackName:<回调函数名称>
-	}
-	输出结果：无
-
-    3.打印远端url
-
-	方法名称：RCU.A4Printer.printUrl() 
-	输入参数:json数据格式
-	{
-	   fileUrl:<远端文件的地址，比如http://homepages.inf.ed.ac.uk/neilb/TestWordDoc.doc>,
-	   callbackName:<回调函数名称>
-	}
-	输出结果：无
-
-    回调函数
-
-	// code:代码，message:消息
-	function callbackName (code, message) {
-	}
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">RCU介绍</div>
+  <div class="panel-body">
+    <p>RCU是自助服务终端运行的基础环境标准规范，是连接底层硬件和上层应用的接口层，屏蔽底层设备的差异，让终端系统更好的访问本地硬件资源，如身份证读卡器/热敏打印机/高拍仪等。
+	</p>
+	<p>
+	RCU为<span style="color:red">硬件厂家</span>提供集成化的出厂检测工具，为<span style="color:red">软件厂家</span>提供基础运行环境和统一的API接口，为<span style="color:red">最终用户</span>提供一体化的运维平台。
+	</p>
+	<p>
+	RCU常应用于政务大厅/移动营业厅/医院/社区/楼宇等场所的排队取号机/电子宣传屏/大厅导航机/自助办理终端/自助打表终端/自助取证终端/自助取报告机/自助缴费机/取票机等设备上，为办事人员提供快捷便利的服务。
+	</p>
 	
-	code代码
-	0:打印机等待（打印成功）
-	1:用户输入数据错误
-	2:文件未找到
-	3:打印机离线
-	4:打印机忙碌
-	5:打印机缺纸
-	99:其他错误
-	
-	    示例
-	
-	//打印内容
-	var img = 'base64编码的图片';
-	var content = {content:img,callbackName:'callbackName'};
-	var cont = JSON.stringify(content);
-	RCU.A4Printer.printContent(cont);
-	
-	//打印本地文件
-	var file = 'E:\\test.doc';
-	var content = {filePath:file,callbackName:'callbackName'};
-	var cont = JSON.stringify(content);
-	
-	RCU.A4Printer.printFile(cont);
-	
-	//打印远端url
-	var url = 'http://homepages.inf.ed.ac.uk/neilb/TestWordDoc.doc';
-	var content = {fileUrl:url,callbackName:'callbackName'};
-	var cont = JSON.stringify(content);
-	RCU.A4Printer.printUrl(cont);
-	
-	//回调函数获取打印结果
-	function callbackName(code, message){
-	  if (code == 0){
-	    console.log("打印成功");
-	  } else {
-	    console.log("打印失败", code + "(" + message + ")");
-	  }
-	}
+  </div>
 
-</pre>
+  <!-- List group -->
+  <ul class="list-group">
+    <li class="list-group-item">RCU支持标准的HTML5，提供标准的硬件JS接口（参考<a href="API.html">API接口</a>）</li>
+    <li class="list-group-item">我们按照标准提供统一的出厂检测和远程故障诊断功能，让设备运维更加轻松快捷。（参考<a href="rcu.html">出厂检测</a>）</li>
+    <li class="list-group-item">为了更好的体现RCU和云端的效果，我们提供了在线模拟检测动画效果。（参考在<a href="rcuSimulator.html">线模拟检测</a>）</li>
+  </ul>
 </div>
-	  <div role="tabpanel" class="tab-pane fade" id="高拍仪">
-<pre>
-    方法名称：RCU.HSI.open(callbackName) 打开高拍仪
-
-	输入参数：回调函数名称
-	输出结果：无
-	返回结果：json数据格式
-	{
-	  success: <true/false>,
-	  error: {
-	    code: <错误代码>,
-	    message: <错误消息>
-	  } 
-	}
-	
-	code代码
-	1：高拍仪打开失败
-	2：回调函数为空
-	9：其他错误
-	
-	    回调函数
-	
-	// img: 经过base64编码的图像数据
-	function callbackName (img) {
-	}
-	
-	    示例
-	
-	var ret = RCU.HSI.open('HSINewImage');
-	var result = JSON.parse(ret);
-	if (result.success != true) {
-	  alert('高拍仪打开错误'+ result.error.code + '(' + result.error.message + ')');
-	}
-	
-	 //回调函数获取图片
-	function callbackName(image){
-	  img.src = 'data:image/jpeg;base64,' + image;
-	}
-
-</pre>
 </div>
-	  <div role="tabpanel" class="tab-pane fade" id="摄像头">
-<pre>
-    方法名称1：RCU.Camera.play(videoId, callback) 播放摄像头画面
-        输入参数：videoId:video元素的id; callback:回调函数名称
-        输出结果：视频在html上的video元素上播放
-        播放的结果会通过callback返回给用户
-
-    方法名称2：RCU.Camera.snap(video, canvas) 拍照
-        输入参数：videoId：video元素的id；canvasId：canvas元素的Id
-        输出结果：拍照的内容在canvas元素上显示
-
-    方法名称3：RCU.Camera.stop() 停止
-        输入参数：无
-        输出结果：无（摄像头停止）
-
-    回调函数：function callback (result) {}
-        输入参数：result:播放摄像头画面的结果，一个序列化后的json对象，如下：
-
-{
-  success:<true/false>,
-  error:{
-    code:<errcode>,
-    message:<errmessage>
-  }
-}
-
-    样例
-
-// html元素样例
-<video id="video" width="320" height="240" autoplay><video>  
-<canvas id="canvas" width="640" height="480"></canvas>
-
-// 播放摄像头视频
-RCU.Camera.play('video', 'cameraCallback');
-
-// 拍照
-RCU.Camera.snap('video', 'canvas');
-
-// 停止
-RCU.Camera.stop();
-
-// 回调函数
-function cameraCallback (result) {
-  var res = JSON.parse(result);
-  if (res.success == true) {
-    alert("摄像头已打开");
-  }
-  else {
-    alert("摄像头打开失败(" + res.error.code + ")");
-  }
-}
-
-</pre>
-</div>
-	</div>
-</div>
-<img src="data:image/png;base64,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";/>
 </body>
 </html>
