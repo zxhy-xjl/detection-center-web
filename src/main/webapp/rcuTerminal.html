@@ -3,8 +3,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
 <head>
-<title>RCU云检测中心</title>
+<title>RCU客户端</title>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="bookmark" href="/favicon.ico"/>
 <style type='text/css'>
 	body {
 	     background-color: #CCC;
@@ -28,7 +31,9 @@
 <script src="js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
 <script src="js/xjl/js/xjl.js"></script>
 <script src="js/xjl/js/xjl-table.js"></script>
-<script src="js/xjl/js/cloud/detection.js"></script>
+<script type="text/javascript">
+
+</script>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -49,8 +54,8 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a href="index.html">RCU平台 <span class="sr-only">(current)</span></a></li>
-        <li><a href="rcuTerminal.html">RCU客户端</a></li>
-        <li class="active"><a href="rcu.html">出厂检测</a></li>
+        <li class="active"><a href="rcuTerminal.html">RCU客户端</a></li>
+        <li><a href="rcu.html">出厂检测</a></li>
         <li><a href="rcuSimulator.html">在线模拟检测</a></li>
         <li><a href="API.html">API接口</a></li>
       </ul>
@@ -58,55 +63,22 @@
   </div><!-- /.container-fluid -->
 </nav>
 <div class="container" id="container">
-	<div class="row">
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionPDQHJ()">
-	       排队取号机
-	    </a>
-	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionDZXCP()">
-	      电子宣传屏
-	    </a>
-	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionDTDHJ()">
-	      大厅导航机
-		</a>
-	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionZZBLZD()">
-	      自助办理终端
-	    </a>
-	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionZZDBZD()">
-	      自助打表终端
-	    </a>
-	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionZZQZZD()">
-	      自助取证终端
-	    </a>
-	  </div>
-	</div>
-	<div id="detectionContent">
-		<div class="panel panel-default">
-		  <div class="panel-heading" id="detectionContentTitle"></div>
-		  <div class="panel-body">
-		  	<div class="progress">
-			  <div id="progressbar" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-			    <span>0% Complete (success)</span>
-			  </div>
-			</div>
-		  </div>
-	       <ul class="list-group" id="detectionContentGroup">
-			  
-			</ul>
-		</div>
-	</div>
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">RCU客户端</div>
+  <div class="panel-body">
+    <p>RCU启动加载www.xjlcloud.com/rcu.html,剩下的事情全部交给云端来做
+	</p>
+  </div>
+
+  <!-- List group -->
+  <ul class="list-group">
+  	<li class="list-group-item">通常步骤如下：</li>
+  	<li class="list-group-item">1、硬件厂家：集成RCU客户端，并启动RCU，RCU会自动连接云端，提示需要做出厂检测，出厂检测成功之后，硬件厂家即可发货到项目现场。</li>
+  	<li class="list-group-item">2、软件厂家：货到项目现场后，按照终端使用说明进行设备组装，启动机器，机器会自动运行RCU客户端，并连接云端，提示需要做项目选择，选择成功后，即会转向实际项目服务器。</li>
+  	<li class="list-group-item">3、业主单位：在日常运维过程中，不需要做任何设置，如果在使用过程遇到任何问题都可以到云端查看对应的解决方法，并监控设备状态。</li>
+  </ul>
 </div>
-<video id="video" width="320" height="240" autoplay><video>  
-<canvas id="canvas" width="640" height="480"></canvas>
+</div>
 </body>
 </html>
