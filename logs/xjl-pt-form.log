@@ -1,0 +1,157 @@
+[DEBUG] [2017-08-01 12:05:04][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 12:05:04][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 12:05:04][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 12:05:04][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 12:05:05][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 12:05:05][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 12:05:05][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: 587a01f6-f19c-48f5-9f93-4d5907f6a00f(String), 自助终端(String), 1(String), 06245e00-0321-4db5-b555-03fb077699c1(String), 76b0b5db-c3f0-44e6-b333-29925aa250b6(String), 2017-08-01 12:05:05.272(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 12:05:05][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 12:09:33][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 12:09:33][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 12:09:33][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 12:09:33][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 12:09:33][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 12:09:33][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 12:09:33][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: 24ae5307-35f4-4b38-8eab-1089cdc16bfe(String), 自助终端2(String), 1(String), 06245e00-0321-4db5-b555-03fb077699c1(String), da51dc3c-bc99-4689-815c-536a64105841(String), 2017-08-01 12:09:33.501(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 12:09:33][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 17:16:38][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 17:16:38][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 17:16:38][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 17:16:38][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 17:16:38][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 17:16:39][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 17:16:39][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: 13430d94-cbdf-48a7-869b-f93eff109fcf(String), 11(String), 1(String), 06245e00-0321-4db5-b555-03fb077699c1(String), 17f860bb-34a9-438a-9034-6c5ee0416a1c(String), 2017-08-01 17:16:39.111(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 17:16:39][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 17:17:13][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 17:17:13][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 17:17:13][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 17:17:13][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 17:17:13][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 17:17:13][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 17:17:13][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: 283ed02b-c57e-49ba-8a1e-69ba88d74bdd(String), 11(String), 1(String), 06245e00-0321-4db5-b555-03fb077699c1(String), fea66b54-c909-433b-a142-dff2fa9c706c(String), 2017-08-01 17:17:13.558(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 17:17:13][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 17:24:17][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 17:24:17][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 17:24:17][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 17:24:17][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 17:24:17][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 17:24:17][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 17:24:17][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: 5bff1ce8-368a-406a-a837-fde88f4f6e0e(String), 11(String), 1(String), 06245e00-0321-4db5-b555-03fb077699c1(String), a6815135-a8fd-4f59-91e0-fbf08baa6aa1(String), 2017-08-01 17:24:17.643(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 17:24:18][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 17:27:04][com.xjl.cdc.cloud.mapper.CdcTerminalMapper.selectByGUID]==>  Preparing: select terminal_id as terminalId,terminal_guid as terminalGuid,terminal_type as terminalType,terminal_state as terminalState,terminal_url as terminalUrl,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_cdc_terminal where terminal_guid=? 
+[DEBUG] [2017-08-01 17:27:04][com.xjl.cdc.cloud.mapper.CdcTerminalMapper.selectByGUID]==> Parameters: terminal-simulator-123(String)
+[DEBUG] [2017-08-01 17:27:04][com.xjl.cdc.cloud.mapper.CdcTerminalMapper.selectByGUID]<==      Total: 1
+[DEBUG] [2017-08-01 17:27:04][com.xjl.pt.core.mapper.DictItemMapper.selectByDictId_COUNT]==>  Preparing: SELECT count(*) FROM xjl_pt_dict_item WHERE dict_id = ? AND state = 'A' 
+[DEBUG] [2017-08-01 17:27:04][com.xjl.pt.core.mapper.DictItemMapper.selectByDictId_COUNT]==> Parameters: 5997cff9-5353-4974-8992-27c5b40f8ea1(String)
+[DEBUG] [2017-08-01 17:27:04][com.xjl.pt.core.mapper.DictItemMapper.selectByDictId_COUNT]<==      Total: 1
+[DEBUG] [2017-08-01 17:27:04][com.xjl.pt.core.mapper.DictItemMapper.selectByDictId]==>  Preparing: select dict_id as dictId, dict_item_id as dictItemId,dict_item_code as dictItemCode,dict_item_name as dictItemName, org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_dict_item where dict_id=? and state='A' limit ? offset ? 
+[DEBUG] [2017-08-01 17:27:04][com.xjl.pt.core.mapper.DictItemMapper.selectByDictId]==> Parameters: 5997cff9-5353-4974-8992-27c5b40f8ea1(String), 1000(Integer), 0(Integer)
+[DEBUG] [2017-08-01 17:27:04][com.xjl.pt.core.mapper.DictItemMapper.selectByDictId]<==      Total: 7
+[DEBUG] [2017-08-01 17:28:05][com.xjl.cdc.cloud.mapper.CdcTerminalMapper.selectByGUID]==>  Preparing: select terminal_id as terminalId,terminal_guid as terminalGuid,terminal_type as terminalType,terminal_state as terminalState,terminal_url as terminalUrl,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_cdc_terminal where terminal_guid=? 
+[DEBUG] [2017-08-01 17:28:05][com.xjl.cdc.cloud.mapper.CdcTerminalMapper.selectByGUID]==> Parameters: terminal-simulator-123(String)
+[DEBUG] [2017-08-01 17:28:05][com.xjl.cdc.cloud.mapper.CdcTerminalMapper.selectByGUID]<==      Total: 1
+[DEBUG] [2017-08-01 17:28:05][com.xjl.pt.core.mapper.DictItemMapper.selectByDictId_COUNT]==>  Preparing: SELECT count(*) FROM xjl_pt_dict_item WHERE dict_id = ? AND state = 'A' 
+[DEBUG] [2017-08-01 17:28:05][com.xjl.pt.core.mapper.DictItemMapper.selectByDictId_COUNT]==> Parameters: 5997cff9-5353-4974-8992-27c5b40f8ea1(String)
+[DEBUG] [2017-08-01 17:28:05][com.xjl.pt.core.mapper.DictItemMapper.selectByDictId_COUNT]<==      Total: 1
+[DEBUG] [2017-08-01 17:28:05][com.xjl.pt.core.mapper.DictItemMapper.selectByDictId]==>  Preparing: select dict_id as dictId, dict_item_id as dictItemId,dict_item_code as dictItemCode,dict_item_name as dictItemName, org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_dict_item where dict_id=? and state='A' limit ? offset ? 
+[DEBUG] [2017-08-01 17:28:05][com.xjl.pt.core.mapper.DictItemMapper.selectByDictId]==> Parameters: 5997cff9-5353-4974-8992-27c5b40f8ea1(String), 1000(Integer), 0(Integer)
+[DEBUG] [2017-08-01 17:28:05][com.xjl.pt.core.mapper.DictItemMapper.selectByDictId]<==      Total: 7
+[DEBUG] [2017-08-01 17:30:05][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 17:30:05][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 17:30:05][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 17:30:05][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 17:30:05][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 17:30:05][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 17:30:05][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: 0dfb503f-3be9-4207-8e06-ae9218484444(String), 11(String), 1(String), 06245e00-0321-4db5-b555-03fb077699c1(String), a50ca92f-5386-4cf5-88ff-4a996f15af47(String), 2017-08-01 17:30:05.609(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 17:30:05][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 17:30:06][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==>  Preparing: select project_id as projectId,project_name as projectName,project_state as projectState,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_cdc_project where state='A' order by create_date desc 
+[DEBUG] [2017-08-01 17:30:06][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==> Parameters: 
+[DEBUG] [2017-08-01 17:30:06][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]<==      Total: 6
+[DEBUG] [2017-08-01 17:30:54][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 17:30:54][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 17:30:54][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 17:30:54][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 17:30:54][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 17:30:55][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 17:30:55][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: f7a87866-231a-4946-844e-7a63bfd015c9(String), 11(String), 1(String), 06245e00-0321-4db5-b555-03fb077699c1(String), 5eb8a2e9-eddb-432a-b9d5-0a63f0d5c45c(String), 2017-08-01 17:30:54.85(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 17:30:55][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 17:30:55][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==>  Preparing: select project_id as projectId,project_name as projectName,project_state as projectState,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_cdc_project where state='A' order by create_date desc 
+[DEBUG] [2017-08-01 17:30:55][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==> Parameters: 
+[DEBUG] [2017-08-01 17:30:55][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]<==      Total: 7
+[DEBUG] [2017-08-01 17:32:15][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 17:32:15][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 17:32:16][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 17:32:16][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 17:32:16][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 17:32:16][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 17:32:16][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: 53356fec-5f4a-4445-9bb7-883e8dfbc02b(String), 11(String), 1(String), 06245e00-0321-4db5-b555-03fb077699c1(String), 8494d79b-b811-4f72-a020-07d7bd35e502(String), 2017-08-01 17:32:16.294(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 17:32:16][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 17:32:16][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==>  Preparing: select project_id as projectId,project_name as projectName,project_state as projectState,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_cdc_project where state='A' order by create_date desc 
+[DEBUG] [2017-08-01 17:32:16][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==> Parameters: 
+[DEBUG] [2017-08-01 17:32:16][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]<==      Total: 8
+[DEBUG] [2017-08-01 17:38:08][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 17:38:08][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 17:38:09][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 17:38:09][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 17:38:09][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 17:38:09][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 17:38:09][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: 18b4f573-26d8-48a1-9831-2eab0ce5d48b(String), 11(String), 1(String), 06245e00-0321-4db5-b555-03fb077699c1(String), f0dda7d8-04b7-49e9-a061-e2e3490a5f4d(String), 2017-08-01 17:38:09.293(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 17:38:09][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 17:38:09][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==>  Preparing: select project_id as projectId,project_name as projectName,project_state as projectState,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_cdc_project where state='A' order by create_date desc 
+[DEBUG] [2017-08-01 17:38:09][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==> Parameters: 
+[DEBUG] [2017-08-01 17:38:09][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]<==      Total: 9
+[DEBUG] [2017-08-01 17:39:08][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 17:39:08][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 17:39:08][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 17:39:08][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 17:39:08][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 17:39:09][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 17:39:09][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: d8758d61-a17e-4721-af8c-ff154a15f483(String), 11(String), 1(String), 06245e00-0321-4db5-b555-03fb077699c1(String), dd7b8c78-17be-44fa-8051-cf856f9198e9(String), 2017-08-01 17:39:09.079(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 17:39:09][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 17:39:09][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==>  Preparing: select project_id as projectId,project_name as projectName,project_state as projectState,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_cdc_project where state='A' order by create_date desc 
+[DEBUG] [2017-08-01 17:39:09][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==> Parameters: 
+[DEBUG] [2017-08-01 17:39:09][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]<==      Total: 10
+[DEBUG] [2017-08-01 17:39:30][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 17:39:30][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 17:39:30][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 17:39:30][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 17:39:30][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 17:39:31][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 17:39:31][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: 95b9c4dc-f618-4470-a43a-ae6157d52437(String), 11(String), 1(String), 06245e00-0321-4db5-b555-03fb077699c1(String), 69601d0b-afb6-4782-9883-424a992f68aa(String), 2017-08-01 17:39:30.913(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 17:39:31][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 17:39:31][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==>  Preparing: select project_id as projectId,project_name as projectName,project_state as projectState,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_cdc_project where state='A' order by create_date desc 
+[DEBUG] [2017-08-01 17:39:31][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==> Parameters: 
+[DEBUG] [2017-08-01 17:39:31][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]<==      Total: 11
+[DEBUG] [2017-08-01 17:44:07][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 17:44:07][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 17:44:07][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 17:44:07][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 17:44:07][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 17:44:07][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 17:44:07][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: 3d8174c0-58bc-4d9e-a31a-b3c8e8727bc1(String), 112121212(String), 1(String), 06245e00-0321-4db5-b555-03fb077699c1(String), ef799491-d3db-4eb7-a9c4-0e19c2045905(String), 2017-08-01 17:44:07.508(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 17:44:07][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 17:44:08][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==>  Preparing: select project_id as projectId,project_name as projectName,project_state as projectState,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_cdc_project where state='A' order by create_date desc 
+[DEBUG] [2017-08-01 17:44:08][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==> Parameters: 
+[DEBUG] [2017-08-01 17:44:08][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]<==      Total: 12
+[DEBUG] [2017-08-01 17:44:27][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 17:44:27][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 17:44:27][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 17:44:27][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 17:44:27][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 17:44:27][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 17:44:27][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: 2aa83a0b-103d-4174-9a2b-cdcbee837a34(String), 112121212(String), 0(String), 06245e00-0321-4db5-b555-03fb077699c1(String), e49dd90a-8526-4d0a-811d-b453f24eba03(String), 2017-08-01 17:44:27.435(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 17:44:27][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 17:44:27][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==>  Preparing: select project_id as projectId,project_name as projectName,project_state as projectState,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_cdc_project where state='A' order by create_date desc 
+[DEBUG] [2017-08-01 17:44:27][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==> Parameters: 
+[DEBUG] [2017-08-01 17:44:28][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]<==      Total: 13
+[DEBUG] [2017-08-01 17:45:46][com.xjl.pt.form.controller.SessionTools]用户还没有登录，从session中没有获取到值，从数据库中临时获取一个，便于测试
+[DEBUG] [2017-08-01 17:45:46][com.xjl.pt.form.controller.SessionTools]在用户登录功能完成之后，需要把这个临时用户去除
+[DEBUG] [2017-08-01 17:45:46][com.xjl.pt.core.mapper.UserMapper.selectById]==>  Preparing: select user_id as userId, user_name userName,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_pt_user where user_id=? 
+[DEBUG] [2017-08-01 17:45:46][com.xjl.pt.core.mapper.UserMapper.selectById]==> Parameters: 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String)
+[DEBUG] [2017-08-01 17:45:46][com.xjl.pt.core.mapper.UserMapper.selectById]<==      Total: 1
+[DEBUG] [2017-08-01 17:45:47][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==>  Preparing: insert into xjl_cdc_project(project_id,project_name,project_state,org,master,create_date,create_user_id,state) values(?,?,?,?,?,?,?,?) 
+[DEBUG] [2017-08-01 17:45:47][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]==> Parameters: 16c23e0f-6360-4e3d-87fe-93fd97ea59fc(String), wu(String), 0(String), 06245e00-0321-4db5-b555-03fb077699c1(String), bfc50ba0-837e-4734-b5f0-6b3145bd68b1(String), 2017-08-01 17:45:46.724(Timestamp), 9fcfdb3e-3bdb-4234-a0c4-f91d023c308e(String), A(String)
+[DEBUG] [2017-08-01 17:45:47][com.xjl.cdc.cloud.mapper.CdcProjectMapper.insert]<==    Updates: 1
+[DEBUG] [2017-08-01 17:45:47][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==>  Preparing: select project_id as projectId,project_name as projectName,project_state as projectState,org as org,master as master,create_date as createDate,create_user_id as createUserId,cancel_date as cancelDate,cancel_user_id as cancelUserId,state as state from xjl_cdc_project where state='A' order by create_date desc 
+[DEBUG] [2017-08-01 17:45:47][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]==> Parameters: 
+[DEBUG] [2017-08-01 17:45:47][com.xjl.cdc.cloud.mapper.CdcProjectMapper.selectAll]<==      Total: 14

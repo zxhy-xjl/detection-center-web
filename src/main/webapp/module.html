@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<head>
+<title>项目模块设置</title>
+<style type='text/css'>
+	body {
+	     background-color: #CCC;
+	}
+</style>
+<link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css" >
+<link rel="stylesheet" href="js/bootstrap/css/bootstrap-theme.min.css" >
+<!-- <link rel="stylesheet" href="js/bootstraptable/css/bootstrap-table.min.css"> -->
+<link rel="stylesheet" href="js/bootstraptable/css/bootstrap-table-1.11.css">
+<!-- <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css"> -->
+<link rel="stylesheet" href="js/bootstrapselect/css/bootstrap-select.min.css">
+<script src="js/jquery/js/jquery-3.2.1.min.js"></script>
+<script src="js/jquery/js/jquery-rest.js"></script>
+<script src="js/bootstrap/js/bootstrap.min.js"></script>
+<script src="js/bootstraptable/js/tableExport.js"></script>
+<script src="js/bootstraptable/js/bootstrap-table-1.11.js"></script>
+<script src="js/bootstraptable/js/bootstrap-table-zh-CN.js"></script>
+<!-- <script src="js/bootstraptable/js/bootstrap-table-editable.js"></script>
+<script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script> -->
+<script src="js/bootstraptable/js/bootstrap-table-export.js"></script>
+<script src="js/knockout/js/knockout-3.4.2.js"></script>
+<script src="js/knockout/js/knockout.mapping-latest.js"></script>
+<script src="js/bootstraptable/js/knockout.bootstraptable.js"></script>
+<script src="js/bootstrapselect/js/bootstrap-select.min.js"></script>
+<script src="js/bootstrapselect/js/i18n/defaults-zh_CN.min.js"></script>
+<script src="js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
+<script type="text/javascript">
+
+$(function () {
+	$('#addProject').on("click", function () {
+		/* var data = [{"moduleName":"自助终端","moduleUrl":"项目","moduleState":""}];
+		$('#moduleTable').bootstrapTable({
+            data: data
+        }); */
+        $('#projectModal').modal('show');
+	});
+	$('#addModule').on("click", function () {
+		
+		$('#moduleModal').modal('show');
+        
+	});
+
+	$("#projectSave").on("click", function () {
+
+        var projectName = $.trim($("#PROJECT_NAME").val());
+        var projectState = $("#PROJECT_STATE").val();
+        if(projectName==''){
+        	alert("项目名称不能为空！");
+        	return;
+        }
+        $.restPost({
+	        url: 'rest/cdcProject/add',
+	        data:{"projectName":projectName,"projectState":projectState},
+	        success: function (data, status) {
+	        	/* console.log("设置成功："+data);
+	            $('#projectTable').bootstrapTable('append',data); */
+	        	queryProject();
+	        	$('#projectModal').modal('hide');
+	        }
+	    });
+	});
+	
+	$("#moduleSave").on("click", function () {
+
+		var data = [{"id":"11222","moduleName":"自助终端","moduleUrl":"http://111111","moduleState":"1"}];
+        $('#moduleTable').bootstrapTable('append',data);
+	});
+	
+	initTable();
+});
+function stateFormatter(value) {
+	if(value=='1'){
+		return '启用';
+	}else{
+		return '停用';
+	}
+}
+function operateFormatter(value, row, index) {
+    return [
+        '<a class="edit" href="javascript:void(0)" title="Like">',
+        '<i class="glyphicon glyphicon-heart"></i>',
+        '</a>  ',
+        '<a class="remove" href="javascript:void(0)" title="Remove">',
+        '<i class="glyphicon glyphicon-remove"></i>',
+        '</a>'
+    ].join('');
+}
+function queryProject(){
+	$.restGet({
+        url: 'rest/cdcProject/query',
+        success: function (data, status) {
+        	console.log("查询成功："+data);
+        	$('#projectTable').bootstrapTable('removeAll');
+            $('#projectTable').bootstrapTable('append',data.rows);
+        }
+    });
+}
+function initTable() {
+   $('#projectTable').bootstrapTable({
+	   columns: 
+	       [
+	           {
+	               field: 'id',
+	               checkbox: true,
+	               align: 'center',
+	               valign: 'middle'
+	           }, {
+	        	   field: 'projectName',
+	               title: '名称',
+	               sortable: true,
+	               align: 'center',
+	               editable: true
+	               /* editable: {
+	                   type: 'text',
+	                   title: '名称',
+	                   validate: function (value) {
+	                       value = $.trim(value);
+	                       if (!value) {
+	                           return 'This field is required';
+	                       }
+	                       if (!/^\$/.test(value)) {
+	                           return 'This field needs to start width $.'
+	                       }
+	                       var data = $('#projectTable').bootstrapTable('getData'),
+	                           index = $(this).parents('tr').data('index');
+	                       console.log(data[index]);
+	                       return '';
+	                   }
+	               } */
+	           }, {
+	               field: 'projectState',
+	               title: '状态',
+	               align: 'center',
+	               valign: 'middle',
+	               sortable: true,
+	               editable: true,
+	               formatter: stateFormatter
+	           }, {
+	               field: 'operate',
+	               title: '操作',
+	               align: 'center',
+	               events: operateEvents,
+	               formatter: operateFormatter
+	           }
+	       ]
+	   
+	});
+}
+window.operateEvents = {
+    'click .edit': function (e, value, row, index) {
+        /* alert('You click like action, row: ' + JSON.stringify(row)); */
+    	$('#projectModal').modal('show');
+    },
+    'click .remove': function (e, value, row, index) {
+    	$('#projectTable').bootstrapTable('remove', {
+            field: 'id',
+            values: [row.id]
+        });
+    }
+};
+</script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img class="navbar-brand" src="images/RCU.png" height="30px">
+      <label class="navbar-brand">自助服务云终端</label>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">RCU平台 <span class="sr-only">(current)</span></a></li>
+        <li><a href="rcu.html">出厂检测</a></li>
+        <li><a href="rcuSimulator.html">在线模拟检测</a></li>
+        <li><a href="API.html">API接口</a></li>
+        <li class="active"><a href="module.html">项目模块设置</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+	<div class="row">
+		<div class="col-md-5 col-sm-12">
+			<div class="col-md-12 col-sm-12" id="projectBar">
+				<div class="form-group">
+				<button class="btn btn-warning" id="addProject">添加项目</button>					               
+				</div>
+			</div>
+			<div class="col-md-12 col-sm-12">
+			<table id="projectTable"
+	           data-toolbar="#projectBar"
+	           data-search="true"
+	           data-show-refresh="true"
+	           data-show-toggle="true"
+	           data-show-columns="true"
+	           data-show-export="false"
+	           data-show-pagination-switch="true"
+	           data-pagination="true"
+	           data-id-field="id"
+	           data-page-list="[10, 5]"
+	           data-show-footer="false">
+			</table>
+			</div>
+		</div>
+		<div class="col-md-7 col-sm-12">
+			<div class="col-md-12 col-sm-12" id="moduleBar">
+				<div class="form-group">
+				<button class="btn btn-success" id="addModule">添加项目模块</button>						               
+				</div>
+			</div>
+			<div class="col-md-12 col-sm-12">
+			    <table id="moduleTable"
+			       data-toggle="table"
+           data-show-columns="true"
+           data-search="true"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-pagination="true">
+				    <thead>
+				    <tr>
+				        <th data-field="moduleName">名称</th>
+				        <th data-field="moduleUrl">URL</th>
+				        <th data-field="moduleState" data-formatter="stateFormatter">状态</th>
+				    </tr>
+				    </thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="projectModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">项目信息</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+		  <div class="form-group required">
+		    <label for="PROJECT_NAME">项目名称</label>
+		    <input type="hidden" id="PROJECT_ID" value="" />
+		    <input type="text" id="PROJECT_NAME" name="PROJECT_NAME" placeholder="项目名称" class="form-control" data-rule="required;length[1~50]" data-msg-required="项目名称不能为空" data-msg-length="请不要大于50个字符" maxlength="50" />
+		  </div>
+		  <div class="form-group required">
+		    <label for="PROJECT_STATE">项目状态</label>
+		    <select id="PROJECT_STATE" name="PROJECT_STATE" class="form-control"><option value="1">启用</option><option value="0">停用</option></select>
+		  </div>
+		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" id="projectSave">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="moduleModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><span class="label label-primary">自助终端</span>模块信息</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+		  <div class="form-group required">
+		    <label for="MODULE_NAME">模块名称</label>
+		    <input type="hidden" id="MODULE_ID" value="" />
+		    <input type="text" id="MODULE_NAME" name="MODULE_NAME" placeholder="模块名称" class="form-control" data-rule="required;length[1~50]" data-msg-required="模块名称不能为空" data-msg-length="请不要大于50个字符" maxlength="50" />
+		  </div>
+		  <div class="form-group required">
+		    <label for="MODULE_URL">模块URL</label>
+		    <input type="text" id="MODULE_URL" name="MODULE_URL" placeholder="模块URL" class="form-control" data-rule="required;length[1~500]" data-msg-required="模块URL不能为空" data-msg-length="请不要大于500个字符" maxlength="500" />
+		  </div>
+		  <div class="form-group required">
+		    <label for="MODULE_STATE">模块状态</label>
+		    <select id="MODULE_STATE" name="MODULE_STATE" class="form-control"><option value="1">启用</option><option value="0">停用</option></select>
+		  </div>
+		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" id="moduleSave">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+</body>
+</html>
