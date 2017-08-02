@@ -35,14 +35,25 @@
 
 $(function () {
 	$('#addProject').on("click", function () {
-		/* var data = [{"moduleName":"自助终端","moduleUrl":"项目","moduleState":""}];
-		$('#moduleTable').bootstrapTable({
-            data: data
-        }); */
+		$('#PROJECT_NAME').val('');
+		$('#PROJECT_STATE').val('1');
         $('#projectModal').modal('show');
 	});
 	$('#addModule').on("click", function () {
 		
+		var arr = $('#projectTable').bootstrapTable('getSelections');
+		if(arr.length<1){
+			alert("请选择项目！");
+        	return;
+		}
+		$("#PROJECT_ID").val(arr[0].projectId);
+		$('#pNameSpan').text(arr[0].projectName);
+
+		$("#moduleIndex").val('');
+		$('#MODULE_ID').val('');
+		$('#MODULE_NAME').val('');
+		$('#MODULE_URL').val('');
+		$('#MODULE_STATE').val('1');
 		$('#moduleModal').modal('show');
         
 	});
@@ -68,12 +79,51 @@ $(function () {
 	});
 	
 	$("#moduleSave").on("click", function () {
-
-		var data = [{"id":"11222","moduleName":"自助终端","moduleUrl":"http://111111","moduleState":"1"}];
-        $('#moduleTable').bootstrapTable('append',data);
+		var projectId = $("#PROJECT_ID").val();
+		if(projectId==''){
+        	alert("请选择项目！");
+        	return;
+        }
+	 	var moduleName = $.trim($("#MODULE_NAME").val());
+	 	var moduleUrl = $.trim($("#MODULE_URL").val());
+        var moduleState = $("#MODULE_STATE").val();
+        if(moduleName==''){
+        	alert("项目模块名称不能为空！");
+        	return;
+        }
+        if(moduleUrl==''){
+        	alert("项目模块URL不能为空！");
+        	return;
+        }
+        var moduleId = $("#MODULE_ID").val();
+        if(moduleId==''){
+	        $.restPost({
+		        url: 'rest/cdcProjectModule/add',
+		        data:{"projectId":projectId,"moduleName":moduleName,"moduleUrl":moduleUrl,"moduleState":moduleState},
+		        success: function (data, status) {
+		        	queryProjectModule(projectId);
+		        	$('#moduleModal').modal('hide');
+		        }
+		    });
+        }else{
+        	var row = {"moduleId":moduleId,"projectId":projectId,"moduleName":moduleName,"moduleUrl":moduleUrl,"moduleState":moduleState};
+	        $.restPost({
+		        url: 'rest/cdcProjectModule/modify',
+		        data:row,
+		        success: function (data, status) {
+		        	// queryProjectModule(projectId);
+    				var index = $("#moduleIndex").val();
+    				$('#moduleTable').bootstrapTable('updateRow',{index:index,row:row});
+		        	$('#moduleModal').modal('hide');
+		        }
+		    });
+        }
+		// var data = [{"id":"11222","moduleName":"自助终端","moduleUrl":"http://111111","moduleState":"1"}];
+  //       $('#moduleTable').bootstrapTable('append',data);
 	});
 	
 	initTable();
+	queryProject();
 });
 function stateFormatter(value) {
 	if(value=='1'){
@@ -84,23 +134,91 @@ function stateFormatter(value) {
 }
 function operateFormatter(value, row, index) {
     return [
-        '<a class="edit" href="javascript:void(0)" title="Like">',
+        /* '<a class="edit" href="javascript:void(0)" title="Like">',
         '<i class="glyphicon glyphicon-heart"></i>',
-        '</a>  ',
-        '<a class="remove" href="javascript:void(0)" title="Remove">',
+        '</a>  ', */
+        '<a class="remove" href="javascript:void(0)" title="删除">',
+        '<i class="glyphicon glyphicon-remove"></i>',
+        '</a>'
+    ].join('');
+}
+function operateFormatterModule(value, row, index) {
+    return [
+        '<a class="editModule" href="javascript:void(0)" title="修改">',
+        '<i class="glyphicon glyphicon-pencil"></i>',
+        '</a>&nbsp;&nbsp;&nbsp;&nbsp;',
+        '<a class="removeModule" href="javascript:void(0)" title="删除">',
         '<i class="glyphicon glyphicon-remove"></i>',
         '</a>'
     ].join('');
 }
 function queryProject(){
+	$('#projectTable').bootstrapTable('removeAll');
+	$('#projectTable').bootstrapTable('showLoading');
 	$.restGet({
         url: 'rest/cdcProject/query',
         success: function (data, status) {
-        	console.log("查询成功："+data);
-        	$('#projectTable').bootstrapTable('removeAll');
+        	console.log("查询成功");
             $('#projectTable').bootstrapTable('append',data.rows);
+            $('#projectTable').bootstrapTable('hideLoading');
         }
     });
+}
+function queryProjectModule(id){
+	$('#moduleTable').bootstrapTable('removeAll');
+	$('#moduleTable').bootstrapTable('showLoading');
+	$.restGet({
+        url: 'rest/cdcProjectModule/queryModule/'+id,
+        success: function (data, status) {
+        	console.log("查询成功");
+            $('#moduleTable').bootstrapTable('append',data.rows);
+            $('#moduleTable').bootstrapTable('hideLoading');
+        }
+    });
+}
+function deleteProject(id){
+	if(!confirm("您确定要删除该项目吗？项目下模块信息将同时删除！")){
+		return;
+	}
+	$.restPost({
+        url: 'rest/cdcProject/delete',
+        data:[{"projectId":id}],
+        success: function (data, status) {
+        	console.log("删除成功");
+        	$('#projectTable').bootstrapTable('remove', {
+                field: 'projectId',
+                values: [id]
+            });
+            var projectId = $("#PROJECT_ID").val();
+            if(id==projectId){
+            	$('#moduleTable').bootstrapTable('removeAll');
+            }
+        }
+    });
+}
+function deleteModule(id){
+	if(!confirm("您确定要删除该模块吗？")){
+		return;
+	}
+	$.restPost({
+        url: 'rest/cdcProjectModule/delete',
+        data:[{"moduleId":id}],
+        success: function (data, status) {
+        	console.log("删除成功");
+        	$('#moduleTable').bootstrapTable('remove', {
+                field: 'moduleId',
+                values: [id]
+            });
+        }
+    });
+}
+function editModule(row,index){
+    $("#MODULE_NAME").val(row.moduleName);
+    $("#MODULE_URL").val(row.moduleUrl);
+    $("#MODULE_STATE").val(row.moduleState);
+    $("#MODULE_ID").val(row.moduleId);
+    $("#moduleIndex").val(index);
+	$('#moduleModal').modal('show');
 }
 function initTable() {
    $('#projectTable').bootstrapTable({
@@ -108,39 +226,28 @@ function initTable() {
 	       [
 	           {
 	               field: 'id',
-	               checkbox: true,
+	               radio: true,
 	               align: 'center',
 	               valign: 'middle'
+	           }, {
+	               field: 'projectId',
+	               title: "pid",
+	               align: 'center',
+	               valign: 'middle',
+	               visible:false,
+	               cardVisible:false,
+	               switchable:false
 	           }, {
 	        	   field: 'projectName',
 	               title: '名称',
 	               sortable: true,
-	               align: 'center',
-	               editable: true
-	               /* editable: {
-	                   type: 'text',
-	                   title: '名称',
-	                   validate: function (value) {
-	                       value = $.trim(value);
-	                       if (!value) {
-	                           return 'This field is required';
-	                       }
-	                       if (!/^\$/.test(value)) {
-	                           return 'This field needs to start width $.'
-	                       }
-	                       var data = $('#projectTable').bootstrapTable('getData'),
-	                           index = $(this).parents('tr').data('index');
-	                       console.log(data[index]);
-	                       return '';
-	                   }
-	               } */
+	               align: 'center'
 	           }, {
 	               field: 'projectState',
 	               title: '状态',
 	               align: 'center',
 	               valign: 'middle',
 	               sortable: true,
-	               editable: true,
 	               formatter: stateFormatter
 	           }, {
 	               field: 'operate',
@@ -149,20 +256,69 @@ function initTable() {
 	               events: operateEvents,
 	               formatter: operateFormatter
 	           }
-	       ]
+	       ],
+	    /* onDblClickRow:function(row,$element){
+			queryProjectModule(row.projectId);
+		}, */
+		onClickRow:function(row,$element){
+			$("#PROJECT_ID").val(row.projectId);
+			queryProjectModule(row.projectId);
+		}
 	   
+	});
+   
+   $('#moduleTable').bootstrapTable({
+	   columns: 
+	       [
+	           {
+	               field: 'moduleId',
+	               title: "mid",
+	               align: 'center',
+	               valign: 'middle',
+	               visible:false,
+	               cardVisible:false,
+	               switchable:false
+	           }, {
+	        	   field: 'moduleName',
+	               title: '名称',
+	               sortable: true,
+	               align: 'center'
+	           }, {
+	               field: 'moduleUrl',
+	               title: 'URL',
+	               align: 'center',
+	               valign: 'middle',
+	               sortable: false
+	           }, {
+	               field: 'moduleState',
+	               title: '状态',
+	               align: 'center',
+	               valign: 'middle',
+	               sortable: true,
+	               formatter: stateFormatter
+	           }, {
+	               field: 'operate',
+	               title: '操作',
+	               align: 'center',
+	               events: operateEvents,
+	               formatter: operateFormatterModule
+	           }
+	       ]
 	});
 }
 window.operateEvents = {
-    'click .edit': function (e, value, row, index) {
-        /* alert('You click like action, row: ' + JSON.stringify(row)); */
+    /* 'click .edit': function (e, value, row, index) {
+        alert('You click like action, row: ' + JSON.stringify(row));
     	$('#projectModal').modal('show');
-    },
+    }, */
     'click .remove': function (e, value, row, index) {
-    	$('#projectTable').bootstrapTable('remove', {
-            field: 'id',
-            values: [row.id]
-        });
+    	deleteProject(row.projectId);
+    },
+    'click .removeModule': function (e, value, row, index) {
+    	deleteModule(row.moduleId);
+    },
+    'click .editModule': function (e, value, row, index) {
+    	editModule(row,index);
     }
 };
 </script>
@@ -207,14 +363,16 @@ window.operateEvents = {
 	           data-toolbar="#projectBar"
 	           data-search="true"
 	           data-show-refresh="true"
-	           data-show-toggle="true"
+	           data-show-toggle="false"
 	           data-show-columns="true"
 	           data-show-export="false"
-	           data-show-pagination-switch="true"
+	           data-show-pagination-switch="false"
 	           data-pagination="true"
-	           data-id-field="id"
-	           data-page-list="[10, 5]"
-	           data-show-footer="false">
+	           data-id-field="projectId"
+	           data-page-list="[5]"
+	           data-show-footer="false"
+	           data-click-to-select="true",
+	           data-single-select="true">
 			</table>
 			</div>
 		</div>
@@ -225,21 +383,21 @@ window.operateEvents = {
 				</div>
 			</div>
 			<div class="col-md-12 col-sm-12">
-			    <table id="moduleTable"
-			       data-toggle="table"
-           data-show-columns="true"
-           data-search="true"
-           data-show-refresh="true"
-           data-show-toggle="true"
-           data-pagination="true">
-				    <thead>
-				    <tr>
-				        <th data-field="moduleName">名称</th>
-				        <th data-field="moduleUrl">URL</th>
-				        <th data-field="moduleState" data-formatter="stateFormatter">状态</th>
-				    </tr>
-				    </thead>
-				</table>
+			<table id="moduleTable"
+	           data-toolbar="#moduleBar"
+	           data-search="true"
+	           data-show-refresh="true"
+	           data-show-toggle="true"
+	           data-show-columns="true"
+	           data-show-export="false"
+	           data-show-pagination-switch="true"
+	           data-pagination="true"
+	           data-id-field="moduleId"
+	           data-page-list="[5]"
+	           data-show-footer="false"
+	           data-click-to-select="true",
+	           data-single-select="true">
+			</table>
 			</div>
 		</div>
 	</div>
@@ -277,12 +435,14 @@ window.operateEvents = {
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title"><span class="label label-primary">自助终端</span>模块信息</h4>
+        <!-- <h4 class="modal-title"><span class="label label-primary" id="pNameSpan"></span><span class="label label-default">模块信息</span></h4> -->
+        <h4 class="modal-title">模块信息&nbsp;&nbsp;<span class="label label-primary" id="pNameSpan"></span></h4>
       </div>
       <div class="modal-body">
         <form>
 		  <div class="form-group required">
 		    <label for="MODULE_NAME">模块名称</label>
+		    <input type="hidden" id="moduleIndex" value="" />
 		    <input type="hidden" id="MODULE_ID" value="" />
 		    <input type="text" id="MODULE_NAME" name="MODULE_NAME" placeholder="模块名称" class="form-control" data-rule="required;length[1~50]" data-msg-required="模块名称不能为空" data-msg-length="请不要大于50个字符" maxlength="50" />
 		  </div>
