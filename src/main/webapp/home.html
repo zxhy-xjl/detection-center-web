@@ -55,7 +55,32 @@ $(function () {
 	        }
 	    });
 	});
+	createUrlSelect();
 });
+function createUrlSelect(){
+	$.restGet({
+        url: 'rest/cdcProject/query',
+        success: function (data, status) {
+            var pArr = data.rows;
+            for(var i=0;i<pArr.length;i++){
+            	$("#HomePage").append('<optgroup label="'+pArr[i].projectName+'" id="opt_'+pArr[i].projectId+'"></optgroup>');
+            	queryProjectModule(pArr[i].projectId);
+            }
+            
+        }
+    });
+}
+function queryProjectModule(id){
+	$.restGet({
+        url: 'rest/cdcProjectModule/queryModule/'+id,
+        success: function (data, status) {
+        	var mArr = data.rows;
+        	for(var i=0;i<mArr.length;i++){
+        		$("#opt_"+id).append('<option value="'+mArr[i].moduleUrl+'">'+mArr[i].moduleName+'('+mArr[i].moduleUrl+')</optgroup>');
+            }
+        }
+    });
+}
 </script>
 </head>
 <body>
@@ -86,7 +111,8 @@ $(function () {
   </div><!-- /.container-fluid -->
 </nav>
 <div class="container">
-	主页地址<input id="HomePage">
+	主页地址<!-- <input id="HomePage"> -->
+	<select id="HomePage"></select>
 	<button id="setURL">设置url</button>
 </div>
 </body>
