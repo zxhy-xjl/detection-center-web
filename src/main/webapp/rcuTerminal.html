@@ -3,8 +3,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
 <head>
-<title>RCU</title>
+<title>RCU客户端</title>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="bookmark" href="/favicon.ico"/>
 <style type='text/css'>
 	body {
 	     background-color: #CCC;
@@ -29,47 +32,7 @@
 <script src="js/xjl/js/xjl.js"></script>
 <script src="js/xjl/js/xjl-table.js"></script>
 <script type="text/javascript">
-console.log("XJL",XJL);
 
-$(function () {
-	if (typeof Worker == "undefined") {   
-		$("#terminalInfo").empty();
-		$("#terminalInfo").text("不支持HTML5，请在符合RCU标准规范的平台上运行");
-	}  
-	//获取当前自动终端类型
-	if (typeof RCU == "undefined"){
-		console.log("RCU为定义");
-		$("#terminalInfo").empty();
-		$("#terminalInfo").text("不支持RCU，请在符合RCU标准规范的平台上运行");
-		return;
-	}
-	//获取当前自动终端类型
-	var terminalID = JSON.parse(RCU.Terminal.info()).data.terminal;
-	console.log("abc");
-	if (!terminalID){
-		$("#terminalInfo").text("终端信息为空，请在符合RCU标准规范的平台上运行");
-		return true;
-	}
-	$.restGet({
-        url: 'rest/cdcTerminal/query/guid/'+terminalID,
-        success: function (data, status) {
-        	console.log("data",data);
-        		if (data.terminalState=="2"){
-        			//跳转到对应的url地址
-        			window.location.href=data.terminalUrl;
-        		} else if (data.terminalState == 1){
-        			//做主页设置
-        			window.location.href="home.html?clientID="+terminalID;
-        		} else {
-        			//做出厂检测
-        			window.location.href="detection.html?clientID="+terminalID;
-        		}
-        },
-        error:function(){
-        	console.log("发生错误");
-        }
-    });
-});
 </script>
 </head>
 <body>
@@ -83,7 +46,7 @@ $(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <img class="navbar-brand" src="images/xjl.png" height="30px">
+      <img class="navbar-brand" src="images/RCU.png" height="30px">
       <label class="navbar-brand">自助服务终端云</label>
     </div>
 
@@ -91,17 +54,30 @@ $(function () {
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a href="index.html">终端云平台 <span class="sr-only">(current)</span></a></li>
-        <li><a href="rcuTerminal.html">RCU客户端</a></li>
-        <li class="active"><a href="rcu.html">出厂检测</a></li>
+        <li class="active"><a href="rcuTerminal.html">RCU客户端</a></li>
+        <li><a href="rcu.html">出厂检测</a></li>
         <li><a href="rcuSimulator.html">在线模拟检测</a></li>
         <li><a href="API.html">API接口</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<div class="container">
-<div id="terminalInfo">
-正在检测终端信息
+<div class="container" id="container">
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">RCU客户端</div>
+  <div class="panel-body">
+    <p>RCU启动加载www.xjlcloud.com/rcu.html,剩下的事情全部交给云端来做
+	</p>
+  </div>
+
+  <!-- List group -->
+  <ul class="list-group">
+  	<li class="list-group-item">通常步骤如下：</li>
+  	<li class="list-group-item">1、硬件厂家：集成RCU客户端，并启动RCU，RCU会自动连接云端，提示需要做出厂检测，出厂检测成功之后，硬件厂家即可发货到项目现场。</li>
+  	<li class="list-group-item">2、软件厂家：货到项目现场后，按照终端使用说明进行设备组装，启动机器，机器会自动运行RCU客户端，并连接云端，提示需要做项目选择，选择成功后，即会转向实际项目服务器。</li>
+  	<li class="list-group-item">3、业主单位：在日常运维过程中，不需要做任何设置，如果在使用过程遇到任何问题都可以到云端查看对应的解决方法，并监控设备状态。</li>
+  </ul>
 </div>
 </div>
 </body>
