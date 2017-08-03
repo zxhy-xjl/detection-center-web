@@ -35,13 +35,14 @@ $(function () {
 	if (typeof Worker == "undefined") {   
 		$("#terminalInfo").empty();
 		$("#terminalInfo").text("不支持HTML5，请在符合RCU标准规范的平台上运行");
+		return true;
 	}  
 	//获取当前自动终端类型
 	if (typeof RCU == "undefined"){
-		console.log("RCU为定义");
+		console.log("RCU未定义");
 		$("#terminalInfo").empty();
 		$("#terminalInfo").text("不支持RCU，请在符合RCU标准规范的平台上运行");
-		return;
+		return true;
 	}
 	//获取当前自动终端类型
 	var terminalID = JSON.parse(RCU.Terminal.info()).data.terminal;
@@ -99,7 +100,7 @@ $(function () {
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<div class="container">
+<div class="container" id="container">
 <div id="terminalInfo">
 正在检测终端信息
 </div>

@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <head>
-<title>RCU云检测中心</title>
+<title>RCU设置主页</title>
 <style type='text/css'>
 	body {
 	     background-color: #CCC;
@@ -28,7 +28,77 @@
 <script src="js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
 <script src="js/xjl/js/xjl.js"></script>
 <script src="js/xjl/js/xjl-table.js"></script>
-<script src="js/xjl/js/cloud/detection.js"></script>
+<script src="js/xjl/js/cloud/terminalSimulator.js"></script>
+<script type="text/javascript">
+
+$(function () {
+	//获取当前自动终端类型
+	if (typeof Worker == "undefined") {   
+		$("#container").empty();
+		$("#container").text("不支持HTML5，请在符合RCU标准规范的平台上运行");
+		return true;
+	}  
+	//获取当前自动终端类型
+	if (typeof RCU == "undefined"){
+		console.log("RCU未定义");
+		$("#container").empty();
+		$("#container").text("不支持RCU，请在符合RCU标准规范的平台上运行");
+		return true;
+	}
+	var json = JSON.parse(RCU.Terminal.info());
+	var terminalID = XJL.getUrlParam("clientID");
+	if (terminalID){
+		json.data.terminal=terminalID;
+	}
+	$.restGet({
+        url: 'rest/cdcTerminal/query/guid/'+json.data.terminal,
+        success: function (data, status) {
+        	console.log("data",data);
+        		$("#terminalType").text("当前终端类型:"+data.terminalType$name);
+        }
+    });
+	$('#setURL').on("click", function () {
+		if (!$("#HomePage").val()){
+			console.log("主页内容为空，不处理点击事件");
+			return;
+		}
+		var module=$("#HomePage").val().split("$$");
+		$.restPost({
+	        url: 'rest/cdcTerminal/setURL/'+json.data.terminal,
+	        data:{moduleId:module[0],url:module[1]},
+	        success: function (data, status) {
+	        	console.log("设置成功,自动跳转到对应的url界面");
+	        	window.location.href=module[1];
+	        }
+	    });
+	});
+	createUrlSelect();
+});
+function createUrlSelect(){
+	$.restGet({
+        url: 'rest/cdcProject/query',
+        success: function (data, status) {
+            var pArr = data.rows;
+            for(var i=0;i<pArr.length;i++){
+            	$("#HomePage").append('<optgroup label="'+pArr[i].projectName+'" id="opt_'+pArr[i].projectId+'"></optgroup>');
+            	queryProjectModule(pArr[i].projectId);
+            }
+            
+        }
+    });
+}
+function queryProjectModule(id){
+	$.restGet({
+        url: 'rest/cdcProjectModule/queryModule/'+id,
+        success: function (data, status) {
+        	var mArr = data.rows;
+        	for(var i=0;i<mArr.length;i++){
+        		$("#opt_"+id).append('<option value="'+mArr[i].moduleId+'$$'+mArr[i].moduleUrl+'">'+mArr[i].moduleName+'('+mArr[i].moduleUrl+')</optgroup>');
+            }
+        }
+    });
+}
+</script>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -61,56 +131,10 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<div class="container" id="container">
-	<div class="row">
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionPDQHJ()">
-	       排队取号机
-	    </a>
-	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionDZXCP()">
-	      电子宣传屏
-	    </a>
-	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionDTDHJ()">
-	      大厅导航机
-		</a>
-	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionZZBLZD()">
-	      自助办理终端
-	    </a>
-	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionZZDBZD()">
-	      自助打表终端
-	    </a>
-	  </div>
-	  <div class="col-xs-6 col-md-2">
-	    <a href="#" class="thumbnail" onclick="detectionZZQZZD()">
-	      自助取证终端
-	    </a>
-	  </div>
-	</div>
-	<div id="detectionContent">
-		<div class="panel panel-default">
-		  <div class="panel-heading" id="detectionContentTitle"></div>
-		  <div class="panel-body">
-		  	<div class="progress">
-			  <div id="progressbar" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-			    <span>0% Complete (success)</span>
-			  </div>
-			</div>
-		  </div>
-	       <ul class="list-group" id="detectionContentGroup">
-			  
-			</ul>
-		</div>
-	</div>
+<div class="container">
+	主页地址<!-- <input id="HomePage"> -->
+	<select id="HomePage"></select>
+	<button id="setURL">设置url</button>
 </div>
-<video id="video" width="320" height="240" autoplay><video>  
-<canvas id="canvas" width="640" height="480"></canvas>
 </body>
 </html>

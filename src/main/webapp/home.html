@@ -28,12 +28,22 @@
 <script src="js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
 <script src="js/xjl/js/xjl.js"></script>
 <script src="js/xjl/js/xjl-table.js"></script>
-<script src="js/xjl/js/cloud/terminalSimulator.js"></script>
 <script type="text/javascript">
 
 $(function () {
 	//获取当前自动终端类型
-	
+	if (typeof Worker == "undefined") {   
+		$("#container").empty();
+		$("#container").text("不支持HTML5，请在符合RCU标准规范的平台上运行");
+		return true;
+	}  
+	//获取当前自动终端类型
+	if (typeof RCU == "undefined"){
+		console.log("RCU未定义");
+		$("#container").empty();
+		$("#container").text("不支持RCU，请在符合RCU标准规范的平台上运行");
+		return true;
+	}
 	var json = JSON.parse(RCU.Terminal.info());
 	$.restGet({
         url: 'rest/cdcTerminal/query/guid/'+json.data.terminal,
@@ -47,11 +57,13 @@ $(function () {
 			console.log("主页内容为空，不处理点击事件");
 			return;
 		}
+		var module=$("#HomePage").val().split("$$");
 		$.restPost({
 	        url: 'rest/cdcTerminal/setURL/'+json.data.terminal,
-	        data:{url:$("#HomePage").val()},
+	        data:{moduleId:module[0],url:module[1]},
 	        success: function (data, status) {
-	        	console.log("设置成功")
+	        	console.log("设置成功,自动跳转到对应的url界面");
+	        	window.location.href=module[1];
 	        }
 	    });
 	});
@@ -76,7 +88,7 @@ function queryProjectModule(id){
         success: function (data, status) {
         	var mArr = data.rows;
         	for(var i=0;i<mArr.length;i++){
-        		$("#opt_"+id).append('<option value="'+mArr[i].moduleUrl+'">'+mArr[i].moduleName+'('+mArr[i].moduleUrl+')</optgroup>');
+        		$("#opt_"+id).append('<option value="'+mArr[i].moduleId+'$$'+mArr[i].moduleUrl+'">'+mArr[i].moduleName+'('+mArr[i].moduleUrl+')</optgroup>');
             }
         }
     });
@@ -107,10 +119,14 @@ function queryProjectModule(id){
         <li><a href="rcuSimulator.html">在线模拟检测</a></li>
         <li><a href="API.html">API接口</a></li>
       </ul>
+      <ul class="nav navbar-nav navbar-right">
+       <li><p id="terminalType" class="navbar-text">当前终端类型:未知</p></li>
+       <li><a href="#" id="deployTerminal"></a></li>
+	  </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<div class="container">
+<div class="container" id="container">
 	主页地址<!-- <input id="HomePage"> -->
 	<select id="HomePage"></select>
 	<button id="setURL">设置url</button>

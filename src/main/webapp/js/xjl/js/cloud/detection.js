@@ -285,6 +285,10 @@ $(function () {
 	//获取当前自动终端类型
 	
 	var json = JSON.parse(RCU.Terminal.info());
+	var terminalID = XJL.getUrlParam("clientID");
+	if (terminalID){
+		json.data.terminal=terminalID;
+	}
 	$.restGet({
         url: 'rest/cdcTerminal/query/guid/'+json.data.terminal,
         success: function (data, status) {
