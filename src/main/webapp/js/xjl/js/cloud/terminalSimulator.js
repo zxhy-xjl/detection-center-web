@@ -12,7 +12,7 @@ var RCU = {
 			reader:function(){//读取身份证，使用json对象转换方式
 				return JSON.stringify({
 					state:"ok", 
-					data:{no:'身份证号码',name:'张三',sex:'男',birthday:'2010.8.1',validThrough:'2026.8.1',photo:'经过base64编码的照片'},
+					data:{no:'32010620101111288X',name:'张三',sex:'男',birthday:'2010.8.1',validThrough:'2026.8.1',photo:'经过base64编码的照片'},
 					error:{}
 				});
 			}
@@ -35,7 +35,8 @@ var RCU = {
 					var keyIndex = parseInt(5*Math.random());
 					console.log("keyIndex:" + keyIndex);
 					RCU.ThermoPrinter.printerCurrentStatus=RCU.ThermoPrinter.printerStatus[keyIndex];
-					if (keyIndex == 0){
+					RCU.ThermoPrinter.printerReset();
+					if (RCU.ThermoPrinter.printerCurrentStatus.code == "0"){
 						RCU.ThermoPrinter.printerCurrentStatus.message="打印完成";
 					}
 					console.log("currentStatus:" + RCU.ThermoPrinter.printerCurrentStatus.code+":"+RCU.ThermoPrinter.printerCurrentStatus.message);
@@ -49,11 +50,13 @@ var RCU = {
 			print:function(jsonString){//打印小票
 				console.log("调用热敏打印机");
 				var json = JSON.parse(jsonString);
+				console.log("参数:",json);
 				//首先判断打印机是否是就绪状态，如果是就绪状态则打印，否则直接返回错误。
 				if (RCU.ThermoPrinter.printerCurrentStatus.code == "0"){
 					console.log("当前打印机可用，开始打印");
 					RCU.ThermoPrinter.printerStartPrint(json.callbackName);
 				} else {
+					console.log("当前打印机不可用，直接调用回调函数");
 					eval(json.callbackName+"('"+RCU.ThermoPrinter.printerCurrentStatus.code+"','"+RCU.ThermoPrinter.printerCurrentStatus.message+"')");
 				}
 			}
@@ -101,7 +104,7 @@ var RCU = {
 					console.log("当前打印机可用，开始打印");
 					RCU.ThermoPrinter.printerStartPrint(json.callbackName);
 				} else {
-					//如果当前打印机不可用，则直接调用回调函数，告诉他错误
+					console.log("如果当前打印机不可用，则直接调用回调函数，告诉他错误");
 					eval(json.callbackName+"('"+RCU.A4Printer.printerCurrentStatus.code+"','"+RCU.ThermoPrinter.printerCurrentStatus.message+"')");
 				}
 			}

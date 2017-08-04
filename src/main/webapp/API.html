@@ -134,13 +134,13 @@
 样例
 	//调用打印
 	var img = 'base64编码的图片';
-	var content = {content:img,callbackName:'callbackName'};
+	var content = {content:img,callbackName:'aCallbackName'};
 	var cont = JSON.stringify(content);
 	
 	RCU.ThermoPrinter.print(cont);
 	
 	//获取打印结果
-	function callbackName(code, message){
+	function aCallbackName(code, message){
 	   if (code == 0){
 	     console.log("打印成功");
 	   } else {
