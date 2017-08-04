@@ -18,7 +18,7 @@ function testIDCardReader(){
 	var json = JSON.parse(RCU.IDCard.reader());
 	var msg = "";
 	if (json.state=="ok"){
-		msg = json.data.name;
+		msg = "姓名:" + json.data.name;
 	} else {
 		msg = json.error.message + "("+json.error.code+")";
 	}
@@ -121,13 +121,21 @@ function testAudioPlay(){
 		addItem("喇叭播放声音::该接口未实现","error");
 		return;
 	}
-	var json = JSON.parse(RCU.Audio.play());
+	//检测播放声音方法
+	var mp3Url="sound/audioDemo2.mp3";
+	var json = JSON.parse(RCU.Audio.play({url:mp3Url}));
+	if (json.state=="ok"){
+		//继续检测播放文字
+		var json = JSON.parse(RCU.Audio.playText({text:"请刷身份证"}));
+	}
 	var msg = "";
 	if (json.state=="ok"){
-		//msg = json.data;
+		msg = "成功";
+		
 	} else {
 		msg = json.error.message + "("+json.error.code+")";
 	}
+	
 	addItem("喇叭播放声音::" + msg,json.state);
 }
 function testBarCodeScan(){

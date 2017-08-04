@@ -12,7 +12,7 @@ var RCU = {
 			reader:function(){//读取身份证，使用json对象转换方式
 				return JSON.stringify({
 					state:"ok", 
-					data:{no:'身份证号码',name:'姓名',sex:'性别男女',birthday:'出生日期年月日',validThrough:'有效期年月日',photo:'经过base64编码的照片'},
+					data:{no:'身份证号码',name:'张三',sex:'男',birthday:'2010.8.1',validThrough:'2026.8.1',photo:'经过base64编码的照片'},
 					error:{}
 				});
 			}
@@ -145,13 +145,21 @@ var RCU = {
 			}
 		},
 		Audio:{//喇叭
-			play:function(){
-				console.log("喇叭播放声音");
+			play:function(json){//播放声音文件
+				console.log("喇叭播放声音地址:"+json.url);
+				new Audio(json.url).play();
 				return JSON.stringify({
 					state:"ok",
 					data:{},
-					error:{code:"2",message:"文件或者URL资源打不开"}
+					error:{}
 				});
+			},
+			playText:function(json){//根据文字合成声音进行播放
+				console.log("喇叭播放声音内容:"+json.text);
+				var text = json.text;
+				var terminal = JSON.parse(RCU.Terminal.info()).data.terminal;
+				var soundURL="http://tsn.baidu.com/text2audio?tex="+text+"&lan=zh&cuid="+terminal+"&ctp=1&tok=24.80f7710159b1c0a7f6bafe0f7ac965e8.2592000.1504408047.282335-9968802";
+				return this.play({url:soundURL});
 			}
 		},
 		BarCode:{//扫码器(枪)
