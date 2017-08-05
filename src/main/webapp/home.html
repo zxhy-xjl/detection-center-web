@@ -31,27 +31,10 @@
 <script type="text/javascript">
 
 $(function () {
-	//获取当前自动终端类型
-	if (typeof Worker == "undefined") {   
-		$("#container").empty();
-		$("#container").text("不支持HTML5，请在符合RCU标准规范的平台上运行");
-		return true;
-	}  
-	//获取当前自动终端类型
-	if (typeof RCU == "undefined"){
-		console.log("RCU未定义");
-		$("#container").empty();
-		$("#container").text("不支持RCU，请在符合RCU标准规范的平台上运行");
-		return true;
-	}
-	var json = JSON.parse(RCU.Terminal.info());
-	$.restGet({
-        url: 'rest/cdcTerminal/query/guid/'+json.data.terminal,
-        success: function (data, status) {
-        	console.log("data",data);
-        		$("#terminalType").text("当前终端类型:"+data.terminalType$name);
-        }
-    });
+	XJL.loadSimulator("init");
+});
+function init(){
+	XJL.initTerminalInfo();
 	$('#setURL').on("click", function () {
 		if (!$("#HomePage").val()){
 			console.log("主页内容为空，不处理点击事件");
@@ -68,7 +51,7 @@ $(function () {
 	    });
 	});
 	createUrlSelect();
-});
+}
 function createUrlSelect(){
 	$.restGet({
         url: 'rest/cdcProject/query',
@@ -117,11 +100,18 @@ function queryProjectModule(id){
         <li><a href="rcuTerminal.html">RCU客户端</a></li>
         <li class="active"><a href="rcu.html">出厂检测</a></li>
         <li><a href="rcuSimulator.html">在线模拟检测</a></li>
-        <li><a href="API.html">API接口</a></li>
+        <li class="active"><a href="API.html">API接口</a></li>
+        <li><a href="demo">演示系统</a></li>
+      	<li><a id="loadInfoPanel"></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-       <li><p id="terminalType" class="navbar-text">当前终端类型:未知</p></li>
-       <li><a href="#" id="deployTerminal"></a></li>
+       <li class="dropdown">
+       		<a id="terminalNo" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">终端信息 <span class="caret"></span></a>
+	       <ul class="dropdown-menu">
+		       <li><a id="rcuNo">RCU</a></li>
+		       <li><a id="terminalType">类型</a></li>
+	       </ul>
+       </li>
 	  </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

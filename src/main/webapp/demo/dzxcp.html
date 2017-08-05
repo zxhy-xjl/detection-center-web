@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<head>
+<title>终端机器系统演示Demo-电子宣传屏</title>
+<style type='text/css'>
+	body {
+	     background-color: #CCC;
+	}
+</style>
+<link rel="stylesheet" href="../js/bootstrap/css/bootstrap.min.css" >
+<link rel="stylesheet" href="../js/bootstrap/css/bootstrap-theme.min.css" >
+<link rel="stylesheet" href="../js/bootstraptable/css/bootstrap-table.min.css">
+<link rel="stylesheet" href="../js/bootstrapselect/css/bootstrap-select.min.css">
+<script src="../js/jquery/js/jquery-3.2.1.min.js"></script>
+<script src="../js/jquery/js/jquery-rest.js"></script>
+<script src="../js/bootstrap/js/bootstrap.min.js"></script>
+<script src="../js/bootstraptable/js/tableExport.js"></script>
+<script src="../js/bootstraptable/js/bootstrap-table.js"></script>
+<script src="../js/bootstraptable/js/bootstrap-table-export.js"></script>
+<script src="../js/knockout/js/knockout-3.4.2.js"></script>
+<script src="../js/knockout/js/knockout.mapping-latest.js"></script>
+<script src="../js/bootstraptable/js/knockout.bootstraptable.js"></script>
+<script src="../js/bootstrapselect/js/bootstrap-select.min.js"></script>
+<script src="../js/bootstrapselect/js/i18n/defaults-zh_CN.min.js"></script>
+<script src="../js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
+<script src="../js/xjl/js/xjl.js"></script>
+<script src="../js/xjl/js/xjl-table.js"></script>
+<script src="demo.js"></script>
+<script type="text/javascript">
+$(function () {
+	Demo.loadSimulator("../js/xjl/js/cloud/terminalSimulator.js","init");
+});
+function init(){
+	Demo.initTerminalInfo();
+	
+}
+</script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="../../"><img class="navbar-brand" src="../images/xjl.png" height="30px"></a>
+    </div>
+	<!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+      	<li><a href="../">RCU</a></li>
+      	<li><a href="">DEMO</a></li>
+        <li><span class="navbar-text" id="loadInfoPanel"></span></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+       <li class="dropdown">
+       		<a id="terminalNo" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">终端信息 <span class="caret"></span></a>
+	       <ul class="dropdown-menu">
+		       <li><a id="rcuNo">RCU</a></li>
+		       <li><a id="terminalType">类型</a></li>
+	       </ul>
+       </li>
+	  </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container" id="container"  style="padding-top: 80px">
+	<div class="jumbotron">
+	  <h1>万达影院!<img src="万达电影.png"></img></h1>
+	  <p>办理会员卡享受7折电影优惠，星期一VIP专场服务，3D，IMAX抢先看</p>
+	  <p><a class="btn btn-primary btn-lg" href="#" role="button">了解更多</a></p>
+	</div>
+	<div class="row">
+	  <div class="col-sm-6 col-md-4">
+	    <div class="thumbnail">
+	      <img src="sjb.png" alt="摔跤吧 爸爸">
+	      <div class="caption">
+	        <h3>摔跤吧 爸爸</h3>
+	        <p>上映第一天突破20个亿的票房收入，刷新100年历史新高</p>
+	        <p><a href="#" class="btn btn-primary" role="button">购票</a> <a href="#" class="btn btn-default" role="button">详情</a></p>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-sm-6 col-md-4">
+	    <div class="thumbnail">
+	      <img src="sqnx.jpg" alt="...">
+	      <div class="caption">
+	        <h3>神奇女侠</h3>
+	        <p>导演派蒂.杰金斯在电影的构图上极为考究，成功展现了戴安娜的勇猛和柔情</p>
+	        <p><a href="#" class="btn btn-primary" role="button">购票</a> <a href="#" class="btn btn-default" role="button">详情</a></p>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-sm-6 col-md-4">
+	    <div class="thumbnail">
+	      <img src="dyhj.png" alt="...">
+	      <div class="caption">
+	        <h3>最新电影合集</h3>
+	        <p>1927年四一二反革命政变导致国共第一次合作破裂，大革命也从胜利走向失败。在共产党员、国民党右派以及革命群众被蒋介石为首的国民党大肆屠杀期间，共产党人总结了经验教训，决定独立领导武装斗争和创建革命队伍。由周恩来、贺龙、叶挺、朱德等人在8月1日发起南昌起义，打响了武装反抗国民党反动派的第一枪。毛泽东和卢德铭也于9月9日在湖南东部和江西西部发动秋收起义。一幕幕波澜壮阔的战役和动人心魄的革命历史也由此展开……</p>
+	        <p><a href="#" class="btn btn-primary" role="button">购票</a> <a href="#" class="btn btn-default" role="button">详情</a></p>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>
+
+</body>
+</html>

@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <head>
-<title>排队取号机Demo</title>
+<title>终端机器系统演示Demo-大厅取号</title>
 <style type='text/css'>
 	body {
 	     background-color: #CCC;
@@ -28,7 +28,7 @@
 <script src="../js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
 <script src="../js/xjl/js/xjl.js"></script>
 <script src="../js/xjl/js/xjl-table.js"></script>
-<script src="../js/xjl/js/cloud/terminalSimulator.js"></script>
+<script src="demo.js"></script>
 <script type="text/javascript">
 //窗口是否打开，如果窗口关闭，终止当前业务
 modalCloseState=true;
@@ -47,39 +47,18 @@ function QHCallbackName(code, message){
 	},2000);
 }
 $(function () {
-	if (typeof Worker == "undefined") {   
-		$("#terminalInfo").empty();
-		$("#terminalInfo").text("不支持HTML5，请在符合RCU标准规范的平台上运行");
-		return true;
-	}  
-	//获取当前自动终端类型
-	if (typeof RCU == "undefined"){
-		console.log("RCU未定义");
-		$("#terminalInfo").empty();
-		$("#terminalInfo").text("不支持RCU，请在符合RCU标准规范的平台上运行");
-		return true;
-	}
-	//获取当前自动终端类型
-	var terminalID = JSON.parse(RCU.Terminal.info()).data.terminal;
-	if (!terminalID){
-		$("#terminalInfo").text("终端信息为空，请在符合RCU标准规范的平台上运行");
-		return true;
-	}
-	$.restGet({
-        url: '../rest/cdcTerminal/query/guid/'+terminalID,
-        success: function (data, status) {
-        	$("#terminalType").text("当前终端类型:"+data.terminalType$name);
-        },
-        error:function(){
-        	console.log("发生错误");
-        }
-    });
+	Demo.loadSimulator("../js/xjl/js/cloud/terminalSimulator.js","init");
+});
+function init(){
+	Demo.initTerminalInfo();
 	$('#XCQH').on("click", function () {
 		window.location.href="pdqhj-xcqh.html";
 	});
 	$('#WYQH').on("click", function () {
 		$("#myModal").modal().on("shown.bs.modal", function () {
 			modalCloseState=false;
+			$("#提示信息").text("请刷身份证");
+			RCU.Audio.playText(JSON.stringify({text:"请刷身份证"}));
 			setTimeout(function(){
 				if (modalCloseState){
 					return;
@@ -122,12 +101,11 @@ $(function () {
 		});
 		
 	});
-});
-
+}
 </script>
 </head>
 <body>
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -137,19 +115,28 @@ $(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <img class="navbar-brand" src="../images/xjl.png" height="30px">
-      <label class="navbar-brand">排队取号系统V0.1</label>
+     <a href="../../"><img class="navbar-brand" src="../images/xjl.png" height="30px"></a>
     </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
+	<!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+      	<li><a href="../">RCU</a></li>
+      	<li><a href="">DEMO</a></li>
+        <li><span class="navbar-text" id="loadInfoPanel"></span></li>
+      </ul>
       <ul class="nav navbar-nav navbar-right">
-       <li><p id="terminalType" class="navbar-text">当前终端类型:未知</p></li>
+       <li class="dropdown">
+       		<a id="terminalNo" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">终端信息 <span class="caret"></span></a>
+	       <ul class="dropdown-menu">
+		       <li><a id="rcuNo">RCU</a></li>
+		       <li><a id="terminalType">类型</a></li>
+	       </ul>
+       </li>
 	  </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<div class="container" id="container">
+<div class="container" id="container"  style="padding-top: 80px">
 	<div class="well center-block" style="max-width: 500px;">
 	      <button id="WYQH" type="button" class="btn btn-primary btn-lg btn-block" style="height: 200px;font-size: 60pt">网约取号</button>
 	      <p>&nbsp;</p><p>&nbsp;</p>

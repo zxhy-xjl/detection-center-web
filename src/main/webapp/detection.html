@@ -29,6 +29,27 @@
 <script src="js/xjl/js/xjl.js"></script>
 <script src="js/xjl/js/xjl-table.js"></script>
 <script src="js/xjl/js/cloud/detection.js"></script>
+<script type="text/javascript">
+$(function () {
+	XJL.loadSimulator("init");
+});
+function init(){
+	XJL.initTerminalInfo();
+	$('#deployTerminal').on("click", function () {
+		if (!$("#deployTerminal").text()){
+			console.log("内容为空，不处理点击事件");
+			return;
+		}
+		$.restPut({
+	        url: 'rest/cdcTerminal/deploy/'+itemCode + '/'+json.data.terminal,
+	        success: function (data, status) {
+	        	$("#terminalType").text("当前终端类型:"+itemTitle);
+	        	$("#deployTerminal").text("");
+	        }
+	    });
+	});
+}
+</script>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -53,9 +74,16 @@
         <li class="active"><a href="rcu.html">出厂检测</a></li>
         <li><a href="rcuSimulator.html">在线模拟检测</a></li>
         <li><a href="API.html">API接口</a></li>
+        <li><a href="demo">演示系统</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-       <li><p id="terminalType" class="navbar-text">当前终端类型:未知</p></li>
+       <li class="dropdown">
+       		<a id="terminalNo" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">终端信息 <span class="caret"></span></a>
+	       <ul class="dropdown-menu">
+		       <li><a id="rcuNo">RCU</a></li>
+		       <li><a id="terminalType">类型</a></li>
+	       </ul>
+       </li>
        <li><a href="#" id="deployTerminal"></a></li>
 	  </ul>
     </div><!-- /.navbar-collapse -->

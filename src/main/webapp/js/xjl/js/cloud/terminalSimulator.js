@@ -148,7 +148,8 @@ var RCU = {
 			}
 		},
 		Audio:{//喇叭
-			play:function(json){//播放声音文件
+			play:function(jsonString){//播放声音文件
+				var json = JSON.parse(jsonString);
 				console.log("喇叭播放声音地址:"+json.url);
 				new Audio(json.url).play();
 				return JSON.stringify({
@@ -157,12 +158,13 @@ var RCU = {
 					error:{}
 				});
 			},
-			playText:function(json){//根据文字合成声音进行播放
+			playText:function(jsonString){//根据文字合成声音进行播放
+				var json = JSON.parse(jsonString);
 				console.log("喇叭播放声音内容:"+json.text);
 				var text = json.text;
 				var terminal = JSON.parse(RCU.Terminal.info()).data.terminal;
 				var soundURL="http://tsn.baidu.com/text2audio?tex="+text+"&lan=zh&cuid="+terminal+"&ctp=1&tok=24.80f7710159b1c0a7f6bafe0f7ac965e8.2592000.1504408047.282335-9968802";
-				return this.play({url:soundURL});
+				return this.play(JSON.stringify({url:soundURL}));
 			}
 		},
 		BarCode:{//扫码器(枪)

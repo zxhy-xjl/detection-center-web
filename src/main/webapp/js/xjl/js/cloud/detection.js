@@ -289,32 +289,3 @@ function resetItemStatus(id,success,errorMessage){
 	}
 	
 }
-$(function () {
-	//获取当前自动终端类型
-	
-	var json = JSON.parse(RCU.Terminal.info());
-	var terminalID = XJL.getUrlParam("clientID");
-	if (terminalID){
-		json.data.terminal=terminalID;
-	}
-	$.restGet({
-        url: 'rest/cdcTerminal/query/guid/'+json.data.terminal,
-        success: function (data, status) {
-        	console.log("data",data);
-        		$("#terminalType").text("当前终端类型:"+data.terminalType$name);
-        }
-    });
-	$('#deployTerminal').on("click", function () {
-		if (!$("#deployTerminal").text()){
-			console.log("内容为空，不处理点击事件");
-			return;
-		}
-		$.restPut({
-	        url: 'rest/cdcTerminal/deploy/'+itemCode + '/'+json.data.terminal,
-	        success: function (data, status) {
-	        	$("#terminalType").text("当前终端类型:"+itemTitle);
-	        	$("#deployTerminal").text("");
-	        }
-	    });
-	});
-});
