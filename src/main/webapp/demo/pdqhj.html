@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="../js/bootstrap/css/bootstrap-theme.min.css" >
 <link rel="stylesheet" href="../js/bootstraptable/css/bootstrap-table.min.css">
 <link rel="stylesheet" href="../js/bootstrapselect/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="css/demo.css">
 <script src="../js/jquery/js/jquery-3.2.1.min.js"></script>
 <script src="../js/jquery/js/jquery-rest.js"></script>
 <script src="../js/bootstrap/js/bootstrap.min.js"></script>
@@ -28,7 +29,7 @@
 <script src="../js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
 <script src="../js/xjl/js/xjl.js"></script>
 <script src="../js/xjl/js/xjl-table.js"></script>
-<script src="demo.js"></script>
+<script src="js/demo.js"></script>
 <script type="text/javascript">
 //窗口是否打开，如果窗口关闭，终止当前业务
 modalCloseState=true;
@@ -47,10 +48,10 @@ function QHCallbackName(code, message){
 	},2000);
 }
 $(function () {
-	Demo.loadSimulator("../js/xjl/js/cloud/terminalSimulator.js","init");
+	XJL.loadSimulator("init","../");
 });
 function init(){
-	Demo.initTerminalInfo();
+	XJL.initTerminalInfo();
 	$('#XCQH').on("click", function () {
 		window.location.href="pdqhj-xcqh.html";
 	});
@@ -121,7 +122,9 @@ function init(){
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
       	<li><a href="../">RCU</a></li>
-      	<li><a href="../demo">DEMO</a></li>
+      	<li><a href="index.html">DEMO</a></li>
+      </ul>
+      <ul class="nav navbar-nav">
         <li><span class="navbar-text" id="loadInfoPanel"></span></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -136,7 +139,7 @@ function init(){
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<div class="container" id="container"  style="padding-top: 80px">
+<div class="container" id="container" >
 	<div class="well center-block" style="max-width: 500px;">
 	      <button id="WYQH" type="button" class="btn btn-primary btn-lg btn-block" style="height: 200px;font-size: 60pt">网约取号</button>
 	      <p>&nbsp;</p><p>&nbsp;</p>

@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="../js/bootstrap/css/bootstrap-theme.min.css" >
 <link rel="stylesheet" href="../js/bootstraptable/css/bootstrap-table.min.css">
 <link rel="stylesheet" href="../js/bootstrapselect/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="css/demo.css">
 <script src="../js/jquery/js/jquery-3.2.1.min.js"></script>
 <script src="../js/jquery/js/jquery-rest.js"></script>
 <script src="../js/bootstrap/js/bootstrap.min.js"></script>
@@ -28,18 +29,18 @@
 <script src="../js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
 <script src="../js/xjl/js/xjl.js"></script>
 <script src="../js/xjl/js/xjl-table.js"></script>
-<script src="demo.js"></script>
+<script src="js/demo.js"></script>
 <script type="text/javascript">
-
-$(function () {
-	Demo.loadSimulator("../js/xjl/js/cloud/terminalSimulator.js","init");
-});
 var demoList = [
 	{name:"排队取号机",url:"pdqhj.html"},
-	{name:"电子宣传屏",url:"dzxcp.html"}
+	{name:"电子宣传屏",url:"dzxcp.html"},
+	{name:"大厅导航机",url:"大厅导航机.html"}
 ];
+$(function () {
+	XJL.loadSimulator("init","../");
+});
 function init(){
-	Demo.initTerminalInfo();
+	XJL.initTerminalInfo();
 	var html="";
 	for (var i = 0;i<demoList.length;i++){
 	   html += '<div class="col-md-4" style="padding:10px;margin:10px;" onclick="showDemo(\''+i+'\')">'+
@@ -89,7 +90,7 @@ function showDemo(i){
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<div class="container" id="container"  style="padding-top: 80px">
+<div class="container" id="container" >
 	<div class="panel panel-default">
 	  <!-- Default panel contents -->
 	  <div class="panel-heading">自助终端系统演示Demo</div>
