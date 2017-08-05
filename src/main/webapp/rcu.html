@@ -28,6 +28,8 @@
 <script src="js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
 <script src="js/xjl/js/xjl.js"></script>
 <script src="js/xjl/js/xjl-table.js"></script>
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script> 
+
 <script type="text/javascript">
 console.log("XJL",XJL);
 
@@ -54,6 +56,7 @@ $(function () {
 	$.restGet({
         url: 'rest/cdcTerminal/query/guid/'+terminalID,
         success: function (data, status) {
+			recordTerminalLog(terminalID,data.terminalState);
         	console.log("data",data);
         		if (data.terminalState=="2"){
         			//跳转到对应的url地址
@@ -71,6 +74,53 @@ $(function () {
         }
     });
 });
+function recordTerminalLog(terminalGuid,operateType){
+	var ip = returnCitySN["cip"];
+	var location = returnCitySN["cname"];
+	var locationCode = returnCitySN["cid"];
+	var province = returnCitySN["cname"];
+	var lng = "",lat = "",city="",country="",town="",village="";
+	// 在设备未传入经纬度时，先通过百度的IP定位服务获取所在经纬度，但是位置很不准确，一般是城市中心点的坐标
+	$.ajax({
+		url:"http://api.map.baidu.com/location/ip?ip="+ip+"&ak=bFNYmleHunu49WxpIlCN8QxTpzs93c8V&coor=bd09ll",
+		type:"POST",
+		dataType:"jsonp",
+		success:function(data){
+			// ip定位只能到省、市+不准确的经纬度
+			lat = data.content.point.x;
+			lng = data.content.point.y;
+			var latlon=lng+","+lat;
+			province = data.content.address_detail.province;
+			city = data.content.address_detail.city;
+			location = province+city;
+			// 根据经纬度获取省市区街道这些更详细的地址
+			$.ajax({
+				type: "POST",
+				dataType: "jsonp",
+				url: 'http://api.map.baidu.com/geocoder/v2/?ak=C93b5178d7a8ebdb830b9b557abce78b&callback=renderReverse&location='+latlon+'&output=json&pois=0',
+				complete:function(rep, textStatus){
+					if(rep.status==200){
+						var json = rep.responseJSON;
+						if(json.status==0){
+							console.log(json.result.addressComponent.district);
+							location = json.result.formatted_address;
+							country=json.result.addressComponent.district;
+						}
+					}
+					$.restPost({
+				        url: 'rest/cdcTerminalLog/add',
+				        data:{"terminalGuid":terminalGuid,"operateType":operateType,
+				        	ip:ip,location:location,locationCode:locationCode,lng:lng,lat:lat,
+				        	province:province,city:city,country:country,town:town,village:village},
+				        success: function (data, status) {
+				        	console.log("终端访问日志记录成功！");
+				        }
+				    });
+				}
+			});
+		}
+	});
+}
 </script>
 </head>
 <body>
