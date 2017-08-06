@@ -14,6 +14,7 @@ function testTerminalInfo(){
 	addItem("终端信息::" + msg,json.state);
 }
 //身份证读卡器
+//适合0.1.1版本
 function testIDCardReader(){
 	var json = JSON.parse(RCU.IDCard.reader());
 	var msg = "";
@@ -22,8 +23,28 @@ function testIDCardReader(){
 	} else {
 		msg = json.error.message + "("+json.error.code+")";
 	}
-	addItem("身份证读卡器::" + msg,json.state);
+	addItem("身份证读卡器::"+msg,json.state);
 }
+/**0.1.2的时候开启
+function testIDCardReader(){
+	RCU.IDCard.reader('testIdCardReaderCallback');
+	addItem("身份证读卡器::<span id='IDCard'>正在读取身份证</span>","ok");
+}
+function testIdCardReaderCallback(jsonString){
+	setTimeout(function(){
+		console.log("jsonString",jsonString);
+		var json = JSON.parse(jsonString);
+		var msg = "";
+		if (json.state=="ok"){
+			msg = "姓名:" + json.data.name;
+		} else {
+			msg = json.error.message + "("+json.error.code+")";
+		}
+		
+		resetItemStatus("IDCard",json.state=="ok",msg);
+	},2000*(itemNow));
+}
+*/
 function testSICardReader(){
 	var json = JSON.parse(RCU.SICard.reader());
 	var msg = "";
@@ -123,10 +144,10 @@ function testAudioPlay(){
 	}
 	//检测播放声音方法
 	var mp3Url="sound/audioDemo2.mp3";
-	var json = JSON.parse(RCU.Audio.play({url:mp3Url}));
+	var json = JSON.parse(RCU.Audio.play(JSON.stringify({url:mp3Url})));
 	if (json.state=="ok"){
 		//继续检测播放文字
-		var json = JSON.parse(RCU.Audio.playText({text:"请刷身份证"}));
+		var json = JSON.parse(RCU.Audio.playText(JSON.stringify({text:"请刷身份证"})));
 	}
 	var msg = "";
 	if (json.state=="ok"){

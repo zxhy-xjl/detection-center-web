@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <head>
-<title>自助终端系统演示Demo</title>
+<title>终端机器系统演示Demo-临时身份证办理</title>
 <style type='text/css'>
 	body {
 	     background-color: #CCC;
@@ -31,31 +31,11 @@
 <script src="../js/xjl/js/xjl-table.js"></script>
 <script src="js/demo.js"></script>
 <script type="text/javascript">
-var demoList = [
-	{name:"排队取号机",url:"pdqhj.html"},
-	{name:"电子宣传屏",url:"dzxcp.html"},
-	{name:"大厅导航机",url:"大厅导航机.html"},
-	{name:"自助办理终端",url:"自助办理终端.html"}
-];
 $(function () {
 	XJL.loadSimulator("init","../");
 });
 function init(){
 	XJL.initTerminalInfo();
-	var html="";
-	for (var i = 0;i<demoList.length;i++){
-	   html += '<div class="col-md-4" style="padding:10px;margin:10px;" onclick="showDemo(\''+i+'\')">'+
-	   '<button type="button" class="btn btn-primary btn-lg btn-block" style="height: 100px;font-size: 20pt">'+
-	   demoList[i].name+
-	   '</button>'+
-	   '</div>';
-	  
-	}
-	$("#bodyRow").html(html);
-	
-}
-function showDemo(i){
-	window.location.href=demoList[i].url;
 }
 </script>
 </head>
@@ -74,33 +54,27 @@ function showDemo(i){
     </div>
 	<!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
+ 	  <ul class="nav navbar-nav">
       	<li><a href="../">RCU</a></li>
-      	<li><a href="">DEMO</a></li>
-        <li><span class="navbar-text" id="loadInfoPanel"></span></li>
+      	<li><a href="index.html">DEMO</a></li>
+      </ul>
+      <ul class="nav navbar-nav">
+       <li><span class="navbar-text" id="loadInfoPanel"></span></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-	       <li class="dropdown">
-	       		<a id="terminalNo" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">终端信息 <span class="caret"></span></a>
-		       <ul class="dropdown-menu">
-			       <li><a id="rcuNo">RCU</a></li>
-			       <li><a id="terminalType">类型</a></li>
-		       </ul>
-	       </li>
-		</ul>
+       <li class="dropdown">
+       		<a id="terminalNo" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">终端信息 <span class="caret"></span></a>
+	       <ul class="dropdown-menu">
+		       <li><a id="rcuNo">RCU</a></li>
+		       <li><a id="terminalType">类型</a></li>
+	       </ul>
+       </li>
+	  </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
 <div class="container" id="container" >
-	<div class="panel panel-default">
-	  <!-- Default panel contents -->
-	  <div class="panel-heading">自助终端系统演示Demo</div>
-	  <div class="panel-body">
-	      <div class="row" id="bodyRow">
-          
-          </div>
-      </div>
-    </div>
+ 	
 </div>
 
 </body>

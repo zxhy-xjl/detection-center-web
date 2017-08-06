@@ -9,12 +9,21 @@ var RCU = {
 			}
 		},
 		IDCard:{//身份证读卡器
-			reader:function(){//读取身份证，使用json对象转换方式
-				return JSON.stringify({
+			reader:function(callbackName){//读取身份证，使用json对象转换方式
+				var json =  JSON.stringify({
 					state:"ok", 
 					data:{no:'32010620101111288X',name:'张三',sex:'男',birthday:'2010.8.1',validThrough:'2026.8.1',photo:'经过base64编码的照片'},
 					error:{}
 				});
+				//0.1.1使用下面的代码
+				return json;
+				/**0.1.2版本开启
+				//模拟等待两秒返回数据
+				setTimeout(function(){
+					console.log("json",json);
+					eval(callbackName+"('"+json+"')");
+				},1000);
+				*/
 			}
 		},
 		ThermoPrinter:{//热敏打印机
