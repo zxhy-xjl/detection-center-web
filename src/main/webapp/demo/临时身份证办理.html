@@ -31,11 +31,70 @@
 <script src="../js/xjl/js/xjl-table.js"></script>
 <script src="js/demo.js"></script>
 <script type="text/javascript">
+var formData = {
+		身份证号码:ko.observable(),
+		姓名:ko.observable(),
+		手机:ko.observable(),
+		验证码提示:ko.observable(),
+		验证码:ko.observable(),
+		验证码2:ko.observable(),
+		办理时间:ko.observable(),
+		打印状态:ko.observable()
+};
 $(function () {
 	XJL.loadSimulator("init","../");
+	ko.applyBindings(formData, document.getElementById("form"));
+	ko.applyBindings(formData, document.getElementById("myModal"));
+	$("#获取验证码").on("click",function(){
+		formData.验证码提示("请输入2+4等于几");
+		formData.验证码2(6);
+	});
+	$("#确定").on("click",function(){
+		if (formData.身份证号码()){
+			$("#身份证号码表单域").removeClass("has-error");
+			$("#身份证号码表单域").removeClass("has-feedback");
+			$("#身份证号码表单域状态").removeClass("glyphicon-remove");
+			$("#身份证号码表单域").addClass("has-success");
+			$("#身份证号码表单域").addClass("has-feedback");
+			$("#身份证号码表单域状态").addClass("glyphicon-ok");
+		} else {
+			$("#身份证号码表单域").removeClass("has-success");
+			$("#身份证号码表单域").removeClass("has-feedback");
+			$("#身份证号码表单域状态").removeClass("glyphicon-ok");
+			$("#身份证号码表单域").addClass("has-error");
+			$("#身份证号码表单域").addClass("has-feedback");
+			$("#身份证号码表单域状态").addClass("glyphicon-remove");
+			return;
+		}
+		if (formData.验证码() == formData.验证码2()){
+			 var date = new Date(); 
+			 var datetime = date.getFullYear() + "-" + ((date.getMonth() + 1) > 10 ? (date.getMonth() + 1) : "0"
+                     + (date.getMonth() + 1)) + "-" + (date.getDate() < 10 ? "0" + date.getDate() : date.getDate());
+			formData.办理时间(datetime);
+			
+			$("#myModal").modal('show');
+			formData.打印状态("正在打印身份证");
+			RCU.A4Printer.printUrl(JSON.stringify({callbackName:'printCallback'}));
+		} else {
+			formData.验证码提示("验证码输入错误，请输入2+4等于几");
+		}
+		
+	});
+	$("#取消").on("click",function(){
+		window.location.href="自助办理终端.html";
+	});
 });
 function init(){
 	XJL.initTerminalInfo();
+}
+function printCallback(code,message){
+	console.log("code",code);
+	console.log("message",message);
+	formData.打印状态("打印成功");
+	setTimeout(function(){
+		$("#myModal").modal('hide');
+		window.location.href="自助办理终端.html";
+	},2000);
 }
 </script>
 </head>
@@ -74,8 +133,64 @@ function init(){
   </div><!-- /.container-fluid -->
 </nav>
 <div class="container" id="container" >
- 	
+	<form class="form-horizontal" id="form">
+	 	<div class="form-group" id="身份证号码表单域">
+	        <label for="txt_身份证号码" class="col-sm-2 control-label">身份证号码</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_身份证号码" data-bind="value:身份证号码" class="form-control" id="txt_身份证号码" placeholder="身份证号码">
+	    		<span class="glyphicon form-control-feedback" aria-hidden="true" id="身份证号码表单域状态"></span>
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_姓名" class="col-sm-2 control-label">姓名</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_姓名" data-bind="value:姓名" class="form-control" id="txt_姓名" placeholder="姓名">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_手机" class="col-sm-2 control-label">手机</label>
+	        <div class="col-sm-8">
+		        <input name="txt_手机" data-bind="value:手机" class="form-control" id="txt_手机" placeholder="手机">
+		    </div>
+		    <div class="col-sm-2">
+		    	<button type="button" class="btn btn-primary" id="获取验证码">获取验证码</button>
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_验证码" class="col-sm-2 control-label">验证码</label>
+	        <div class="col-sm-8">
+		        <input name="txt_验证码" data-bind="value:验证码" class="form-control" id="txt_验证码" placeholder="验证码" aria-describedby="helpBlock">
+		    </div>
+		    <span id="helpBlock" class="help-block col-sm-offset-2 col-sm-8" data-bind="text:验证码提示" ></span>
+	    </div>
+		<div class="form-group">
+		  <div class="col-sm-offset-2 col-sm-8 text-center">
+		    <button type="button" class="btn btn-default" id="确定">确定</button>
+		    &nbsp;&nbsp;
+		    <button type="button" class="btn btn-default" id="取消">取消</button>
+		  </div>
+		</div>
+    </form>
 </div>
-
+<div data-backdrop="false" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               <h4 class="modal-title" id="myModalLabel">正在打印临时身份证</h4>
+            </div>
+            <div class="modal-body" id="modalBody">
+            	<span data-bind="text:姓名"></span> 于 <span data-bind="text:办理时间"></span>办理临时身份证<p>
+            	身份证号码：<span data-bind="text:身份证号码"></span><p>
+            	该临时身份证只使用于临时通行使用，有效期3天<p>
+            	<h1 data-bind="text:打印状态"></h1>
+            	
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

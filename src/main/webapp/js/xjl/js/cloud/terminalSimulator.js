@@ -81,10 +81,11 @@ var RCU = {
 				{code:"5",message:"打印机缺纸"},
 				{code:"99",message:"其他错误"}
 			],
-			printerStartPrint:function(callbackName){
+			printerStartPrint:function(json){
 				//随机设置一个打印机状态，并在5秒钟之后回复可以使用的状态
-				
+				console.log("printerStartPrint json",json);
 				setTimeout(function(){
+					console.log("printerStartPrint json::",json);
 					var keyIndex = parseInt(5*Math.random());
 					console.log("keyIndex:" + keyIndex);
 					RCU.A4Printer.printerCurrentStatus=RCU.A4Printer.printerStatus[keyIndex];
@@ -92,7 +93,10 @@ var RCU = {
 						RCU.A4Printer.printerCurrentStatus.message="打印完成";
 					}
 					console.log("currentStatus:" + RCU.A4Printer.printerCurrentStatus.code+":"+RCU.A4Printer.printerCurrentStatus.message);
-					eval(callbackName+"('"+RCU.A4Printer.printerCurrentStatus.code+"','"+RCU.A4Printer.printerCurrentStatus.message+"')");
+					console.log("callbackName:",json.callbackName);
+					var callback = json.callbackName+"('"+RCU.A4Printer.printerCurrentStatus.code+"','"+RCU.A4Printer.printerCurrentStatus.message+"')";
+					console.log("callback:",callback);
+					eval(callback);
 				},5000);
 			},
 			printerReset:function(){
@@ -106,12 +110,13 @@ var RCU = {
 				console.log("A4打印机打印本地文件,模拟器未实现:");
 			},
 			
-			printUrl:function(json){//打印网上文件，word或者图片等 
+			printUrl:function(jsonString){//打印网上文件，word或者图片等 
 				//首先判断打印机是否是就绪状态，如果是就绪状态则打印，否则直接返回错误。
-				json = JSON.parse(json);
+				var json = JSON.parse(jsonString);
+				console.log("printUrl",json);
 				if (RCU.A4Printer.printerCurrentStatus.code == "0"){
 					console.log("当前打印机可用，开始打印");
-					RCU.ThermoPrinter.printerStartPrint(json.callbackName);
+					RCU.A4Printer.printerStartPrint(json);
 				} else {
 					console.log("如果当前打印机不可用，则直接调用回调函数，告诉他错误");
 					eval(json.callbackName+"('"+RCU.A4Printer.printerCurrentStatus.code+"','"+RCU.ThermoPrinter.printerCurrentStatus.message+"')");
