@@ -289,7 +289,8 @@ function showProgressbar(){
 	$("#progressbar").empty();
 	$("#progressbar").append($("<span>"+value+"% Complete (success)</span>"));
 	if (value == 100){
-		$("#deployTerminal").text("发布为" + itemTitle + "类型");
+		$("#detectionContentTitle").html('检测成功 <a href="#" id="deployTerminal" onclick="deployTerminalAs()"></a>');
+		$("#deployTerminal").text("点击发布该为设备为" + itemTitle + "类型");
 	}
 }
 function resetItemStatus(id,success,errorMessage){
@@ -310,3 +311,18 @@ function resetItemStatus(id,success,errorMessage){
 	}
 	
 }
+function deployTerminalAs(){
+	if (!$("#deployTerminal").text()){
+		console.log("内容为空，不处理点击事件");
+		return;
+	}
+	var json = JSON.parse(RCU.Terminal.info());
+	$.restPut({
+        url: 'rest/cdcTerminal/deploy/'+itemCode + '/'+json.data.terminal,
+        success: function (data, status) {
+        	$("#terminalType").text("类型:"+itemTitle);
+        	$("#deployTerminal").text("");
+        	$("#detectionContentTitle").html('发布成功:' + itemTitle);
+        }
+    });
+};

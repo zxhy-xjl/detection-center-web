@@ -35,19 +35,6 @@ $(function () {
 });
 function init(){
 	XJL.initTerminalInfo();
-	$('#deployTerminal').on("click", function () {
-		if (!$("#deployTerminal").text()){
-			console.log("内容为空，不处理点击事件");
-			return;
-		}
-		$.restPut({
-	        url: 'rest/cdcTerminal/deploy/'+itemCode + '/'+json.data.terminal,
-	        success: function (data, status) {
-	        	$("#terminalType").text("当前终端类型:"+itemTitle);
-	        	$("#deployTerminal").text("");
-	        }
-	    });
-	});
 }
 </script>
 </head>
