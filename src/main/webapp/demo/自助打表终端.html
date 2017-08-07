@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<head>
+<title>终端机器系统演示Demo-自助打表终端</title>
+<style type='text/css'>
+	body {
+	     background-color: #CCC;
+	}
+</style>
+<link rel="stylesheet" href="../js/bootstrap/css/bootstrap.min.css" >
+<link rel="stylesheet" href="../js/bootstrap/css/bootstrap-theme.min.css" >
+<link rel="stylesheet" href="../js/bootstraptable/css/bootstrap-table-1.11.css">
+<link rel="stylesheet" href="../js/bootstrapselect/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="css/demo.css">
+<script src="../js/jquery/js/jquery-3.2.1.min.js"></script>
+<script src="../js/jquery/js/jquery-rest.js"></script>
+<script src="../js/bootstrap/js/bootstrap.min.js"></script>
+<script src="../js/bootstraptable/js/bootstrap-table-1.11.js"></script>
+<script src="../js/bootstraptable/js/bootstrap-table-zh-CN.js"></script>
+<script src="../js/bootstraptable/js/tableExport.js"></script>
+<script src="../js/bootstraptable/js/bootstrap-table-export.js"></script>
+<script src="../js/knockout/js/knockout-3.4.2.js"></script>
+<script src="../js/knockout/js/knockout.mapping-latest.js"></script>
+<script src="../js/bootstraptable/js/knockout.bootstraptable.js"></script>
+<script src="../js/bootstrapselect/js/bootstrap-select.min.js"></script>
+<script src="../js/bootstrapselect/js/i18n/defaults-zh_CN.min.js"></script>
+<script src="../js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
+<script src="../js/xjl/js/xjl.js"></script>
+<script src="../js/xjl/js/xjl-table.js"></script>
+<script src="js/demo.js"></script>
+<script type="text/javascript">
+modalCloseState=true;
+var formData = {
+		身份证号码:ko.observable(),
+		姓名:ko.observable(),
+		申请表名称:ko.observable(),
+		提示信息:ko.observable(),
+		url:ko.observable()
+};
+$(function () {
+	XJL.loadSimulator("init","../");
+});
+function init(){
+	XJL.initTerminalInfo();
+	ko.applyBindings(formData, document.getElementById("myModal"));
+	$('#申请表Table').bootstrapTable({
+		   columns: 
+		       [
+		           {
+		               field: 'id',
+		               radio: true,
+		               align: 'center',
+		               valign: 'middle'
+		           }, {
+		        	   field: '申请表Name',
+		               title: '申请表名称',
+		               sortable: true,
+		               align: 'center'
+		           }, {
+		               field: 'operate',
+		               title: '操作',
+		               align: 'center',
+		               events: operateEvents,
+		               formatter: operateFormatter
+		           }
+		       ]
+		    /* onDblClickRow:function(row,$element){
+				queryProjectModule(row.projectId);
+			}, */
+			/**
+			onClickRow:function(row,$element){
+				console.log("点击行",row);
+				打印申请表(row.申请表Name);
+			}
+		   */
+		});
+	$('#申请表Table').bootstrapTable('append',[{id:"11",申请表Name:"核名申请表"},{id:"22",申请表Name:"企业登记申请表"}]);
+}
+function 打印申请表(申请表名称){
+	formData.申请表名称(申请表名称);
+	$("#myModal").modal().on("shown.bs.modal", function () {
+		modalCloseState=false;
+		formData.提示信息("请刷身份证");
+		RCU.Audio.playText(JSON.stringify({text:"请刷身份证"}));
+		setTimeout(function(){
+			if (modalCloseState){
+				return;
+			}
+			formData.提示信息("正在读取身份证信息");
+			setTimeout(function(){
+				if (modalCloseState){
+					return;
+				}
+				var idCard = JSON.parse(RCU.IDCard.reader());
+				formData.身份证号码(idCard.data.no);
+				formData.姓名(idCard.data.name);
+				formData.提示信息("正在打印申请表");
+				var paramJson = JSON.stringify({身份证号码:"身份证号码:"+formData.身份证号码(),姓名:"姓名:" + formData.姓名()});
+				console.log("paramJson",paramJson);
+				var url = "../rest/demo/image/临时身份证/"+paramJson;
+				console.log("url",url);
+				formData.url(url);
+				RCU.A4Printer.printUrl(JSON.stringify({fileUrl:url,callbackName:'printCallback'}));
+			});
+		});
+	}).on("hidden.bs.modal", function () {
+		modalCloseState=true;
+		formData.身份证号码("");
+		formData.姓名("");
+		formData.申请表名称("");
+		formData.提示信息("");
+		formData.url("");
+	});;
+				
+	
+}
+function printCallback(code,message){
+	console.log("code",code);
+	console.log("message",message);
+	formData.提示信息("打印成功");
+	setTimeout(function(){
+		$("#myModal").modal('hide');
+	},2000);
+}
+window.operateEvents = {
+	    /* 'click .edit': function (e, value, row, index) {
+	        alert('You click like action, row: ' + JSON.stringify(row));
+	    	$('#projectModal').modal('show');
+	    }, */
+	    'click .print': function (e, value, row, index) {
+	    	打印申请表(row.申请表Name);
+	    }
+	};
+function operateFormatter(value, row, index) {
+    return [
+        /* '<a class="edit" href="javascript:void(0)" title="Like">',
+        '<i class="glyphicon glyphicon-heart"></i>',
+        '</a>  ', */
+        '<a class="print" href="javascript:void(0)" title="打印">',
+        '<i class="glyphicon glyphicon-heart"></i>',
+        '</a>'
+    ].join('');
+}	
+</script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="../../"><img class="navbar-brand" src="../images/xjl.png" height="30px"></a>
+    </div>
+	<!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+ 	  <ul class="nav navbar-nav">
+      	<li><a href="../">RCU</a></li>
+      	<li><a href="index.html">DEMO</a></li>
+      </ul>
+      <ul class="nav navbar-nav">
+       <li><span class="navbar-text" id="loadInfoPanel"></span></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+       <li class="dropdown">
+       		<a id="terminalNo" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">终端信息 <span class="caret"></span></a>
+	       <ul class="dropdown-menu">
+		       <li><a id="rcuNo">RCU</a></li>
+		       <li><a id="terminalType">类型</a></li>
+	       </ul>
+       </li>
+	  </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container" id="container" >
+	<div class="col-md-12 col-sm-12" id="申请表Bar">
+				1点击打印按钮，2刷身份证，3取申请表
+	</div>
+ 	<table id="申请表Table"
+	           data-toolbar="#申请表Bar"
+	           data-search="true"
+	           data-show-refresh="true"
+	           data-show-toggle="false"
+	           data-show-columns="true"
+	           data-show-export="false"
+	           data-show-pagination-switch="false"
+	           data-pagination="true"
+	           data-id-field="id"
+	           data-page-list="[5]"
+	           data-show-footer="false"
+	           data-click-to-select="true",
+	           data-single-select="true">
+	</table>
+</div>
+<div data-backdrop="false" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               <h4 class="modal-title" id="myModalLabel">正在打印申请表</h4>
+            </div>
+            <div class="modal-body" id="modalBody">
+            	申请表名称:<span data-bind="text:申请表名称"></span><p>
+            	姓名：<span data-bind="text:姓名"></span><p>
+            	身份证号码：<span data-bind="text:身份证号码"></span><p>
+            	
+            	<h1 data-bind="text:提示信息"></h1>
+            	<img data-bind="attr:{src:url}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

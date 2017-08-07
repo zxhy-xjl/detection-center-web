@@ -73,12 +73,16 @@ $(function () {
 			formData.办理时间(datetime);
 			
 			$("#myModal").modal('show');
+			var paramJson = JSON.stringify({身份证号码:"身份证号码:"+formData.身份证号码(),姓名:"姓名:" + formData.姓名()});
+			console.log("paramJson",paramJson);
+			var url = encodeURIComponent("../rest/demo/image/临时身份证/"+paramJson);
+			console.log("url",url);
 			formData.打印状态("正在打印身份证");
-			RCU.A4Printer.printUrl(JSON.stringify({callbackName:'printCallback'}));
+			$("#modalBody").append($("<img src='"+url+"'>"));
+			RCU.A4Printer.printUrl(JSON.stringify({fileUrl:url,callbackName:'printCallback'}));
 		} else {
 			formData.验证码提示("验证码输入错误，请输入2+4等于几");
 		}
-		
 	});
 	$("#取消").on("click",function(){
 		window.location.href="自助办理终端.html";
@@ -184,7 +188,6 @@ function printCallback(code,message){
             	身份证号码：<span data-bind="text:身份证号码"></span><p>
             	该临时身份证只使用于临时通行使用，有效期3天<p>
             	<h1 data-bind="text:打印状态"></h1>
-            	
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
