@@ -36,13 +36,14 @@ var demoList = [
 	{name:"电子宣传屏",url:"dzxcp.html"},
 	{name:"大厅导航机",url:"大厅导航机.html"},
 	{name:"自助办理终端",url:"自助办理终端.html"},
-	{name:"自助打表终端",url:"自助打表终端.html"}
+	{name:"自助打表终端",url:"自助打表终端.html"},
+	{name:"自助取证终端",url:"自助取证终端.html"}
 ];
 $(function () {
 	XJL.loadSimulator("init","../");
 });
 function init(){
-	XJL.initTerminalInfo();
+	XJL.initTerminalInfo("../");
 	var html="";
 	for (var i = 0;i<demoList.length;i++){
 	   html += '<div class="col-md-4" style="padding:10px;margin:10px;" onclick="showDemo(\''+i+'\')">'+

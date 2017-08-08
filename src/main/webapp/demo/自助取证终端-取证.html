@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <head>
-<title>终端机器系统演示Demo-自助打表终端</title>
+<title>终端机器系统演示Demo-自助取证终端-取证</title>
 <style type='text/css'>
 	body {
 	     background-color: #CCC;
@@ -36,17 +36,21 @@ modalCloseState=true;
 var formData = {
 		身份证号码:ko.observable(),
 		姓名:ko.observable(),
-		申请表名称:ko.observable(),
+		证件名称:ko.observable(),
 		提示信息:ko.observable(),
 		url:ko.observable()
 };
+var dataJson = [{证件id:"11",证件Name:"核名证件"},{证件id:"22",证件Name:"企业登记证件"},{证件id:"33",证件Name:"企业变更证件"}];
 $(function () {
+	formData.身份证号码(XJL.getUrlParam("No"));
+	formData.姓名(XJL.getUrlParam("Name"));
 	XJL.loadSimulator("init","../");
 });
 function init(){
 	XJL.initTerminalInfo("../");
+	ko.applyBindings(formData, document.getElementById("证件Bar"));
 	ko.applyBindings(formData, document.getElementById("myModal"));
-	$('#申请表Table').bootstrapTable({
+	$('#证件Table').bootstrapTable({
 		   columns: 
 		       [
 		           {
@@ -55,8 +59,8 @@ function init(){
 		               align: 'center',
 		               valign: 'middle'
 		           }, {
-		        	   field: '申请表Name',
-		               title: '申请表名称',
+		        	   field: '证件Name',
+		               title: '证件名称',
 		               sortable: true,
 		               align: 'center'
 		           }, {
@@ -73,25 +77,24 @@ function init(){
 			/**
 			onClickRow:function(row,$element){
 				console.log("点击行",row);
-				打印申请表(row.申请表Name);
+				打印证件(row.证件Name);
 			}
 		   */
 		});
-	$('#申请表Table').bootstrapTable('append',[{id:"11",申请表Name:"核名申请表"},{id:"22",申请表Name:"企业登记申请表"}]);
+	$('#证件Table').bootstrapTable('append',dataJson);
 	$("#myModal").on("shown.bs.modal", function () {
 		modalCloseState=false;
 		formData.提示信息("请刷身份证");
+		
 	}).on("hidden.bs.modal", function () {
 		modalCloseState=true;
-		formData.身份证号码("");
-		formData.姓名("");
-		formData.申请表名称("");
+		formData.证件名称("");
 		formData.提示信息("");
 		formData.url("");
 	});
 }
-function 打印申请表(申请表名称){
-	formData.申请表名称(申请表名称);
+function 打印证件(证件名称){
+	formData.证件名称(证件名称);
 	$("#myModal").modal('show');
 	RCU.Audio.playText(JSON.stringify({text:"请刷身份证"}));
 	setTimeout(function(){
@@ -104,26 +107,45 @@ function 打印申请表(申请表名称){
 				return;
 			}
 			var idCard = JSON.parse(RCU.IDCard.reader());
-			formData.身份证号码(idCard.data.no);
-			formData.姓名(idCard.data.name);
-			formData.提示信息("正在打印申请表");
-			var paramJson = JSON.stringify({身份证号码:"身份证号码:"+formData.身份证号码(),姓名:"姓名:" + formData.姓名()});
-			console.log("paramJson",paramJson);
-			var url = "../rest/demo/image/临时身份证/"+paramJson;
-			console.log("url",url);
-			formData.url(url);
-			RCU.A4Printer.printUrl(JSON.stringify({fileUrl:url,callbackName:'printCallback'}));
-		});
-	});
-				
+			if (idCard.data.no != formData.身份证号码()){
+				formData.提示信息("非"+formData.姓名()+"本人不可打印");
+				window.location.href="自助取证终端.html";
+			} else {
+				formData.身份证号码(idCard.data.no);
+				formData.姓名(idCard.data.name);
+				formData.提示信息("正在打印证件");
+				var paramJson = JSON.stringify({身份证号码:"身份证号码:"+formData.身份证号码(),姓名:"姓名:" + formData.姓名()});
+				console.log("paramJson",paramJson);
+				var url = "../rest/demo/image/临时身份证/"+paramJson;
+				console.log("url",url);
+				formData.url(url);
+				RCU.A4Printer.printUrl(JSON.stringify({fileUrl:url,callbackName:'printCallback'}));
+			}
+		},2000);
+	},2000);			
 	
 }
 function printCallback(code,message){
 	console.log("code",code);
 	console.log("message",message);
 	formData.提示信息("打印成功");
+	var arr = $('#证件Table').bootstrapTable('getSelections');
+	console.log("arr",arr);
+	var 证件id = arr[0].证件id;
+	console.log("证件id:" + 证件id);
+	$('#证件Table').bootstrapTable('remove', {
+        field: '证件id',
+        values: [证件id]
+    });
+	
 	setTimeout(function(){
 		$("#myModal").modal('hide');
+		var data = $('#证件Table').bootstrapTable().data()["bootstrap.table"].data;
+		console.log("data",data);
+		if (data.length==0){
+			window.location.href="自助取证终端.html";
+		}
+		
 	},2000);
 }
 window.operateEvents = {
@@ -132,7 +154,7 @@ window.operateEvents = {
 	    	$('#projectModal').modal('show');
 	    }, */
 	    'click .print': function (e, value, row, index) {
-	    	打印申请表(row.申请表Name);
+	    	打印证件(row.证件Name);
 	    }
 	};
 function operateFormatter(value, row, index) {
@@ -182,11 +204,11 @@ function operateFormatter(value, row, index) {
   </div><!-- /.container-fluid -->
 </nav>
 <div class="container" id="container" >
-	<div class="col-md-12 col-sm-12" id="申请表Bar">
-				1点击打印按钮，2刷身份证，3取申请表
+	<div class="col-md-12 col-sm-12" id="证件Bar">
+				<span data-bind="text:姓名"></span> (<span data-bind="text:身份证号码"></span>)	1点击打印按钮，2刷身份证，3取证件
 	</div>
- 	<table id="申请表Table"
-	           data-toolbar="#申请表Bar"
+ 	<table id="证件Table"
+	           data-toolbar="#证件Bar"
 	           data-search="true"
 	           data-show-refresh="true"
 	           data-show-toggle="false"
@@ -206,10 +228,10 @@ function operateFormatter(value, row, index) {
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-               <h4 class="modal-title" id="myModalLabel">正在打印申请表</h4>
+               <h4 class="modal-title" id="myModalLabel">正在打印证件</h4>
             </div>
             <div class="modal-body" id="modalBody">
-            	申请表名称:<span data-bind="text:申请表名称"></span><p>
+            	证件名称:<span data-bind="text:证件名称"></span><p>
             	姓名：<span data-bind="text:姓名"></span><p>
             	身份证号码：<span data-bind="text:身份证号码"></span><p>
             	

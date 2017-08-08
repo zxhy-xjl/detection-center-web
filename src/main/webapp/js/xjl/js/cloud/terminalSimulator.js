@@ -37,19 +37,17 @@ var RCU = {
 				{code:"5",message:"打印机缺纸"},
 				{code:"99",message:"其他错误"}
 			],
-			printerStartPrint:function(callbackName){
+			printerStartPrint:function(json){
 				//随机设置一个打印机状态，并在5秒钟之后回复可以使用的状态
-				
 				setTimeout(function(){
 					var keyIndex = parseInt(5*Math.random());
 					console.log("keyIndex:" + keyIndex);
 					RCU.ThermoPrinter.printerCurrentStatus=RCU.ThermoPrinter.printerStatus[keyIndex];
-					RCU.ThermoPrinter.printerReset();
 					if (RCU.ThermoPrinter.printerCurrentStatus.code == "0"){
 						RCU.ThermoPrinter.printerCurrentStatus.message="打印完成";
 					}
 					console.log("currentStatus:" + RCU.ThermoPrinter.printerCurrentStatus.code+":"+RCU.ThermoPrinter.printerCurrentStatus.message);
-					eval(callbackName+"('"+RCU.ThermoPrinter.printerCurrentStatus.code+"','"+RCU.ThermoPrinter.printerCurrentStatus.message+"')");
+					eval(json.callbackName+"('"+RCU.ThermoPrinter.printerCurrentStatus.code+"','"+RCU.ThermoPrinter.printerCurrentStatus.message+"')");
 				},5000);
 			},
 			printerReset:function(){
@@ -63,7 +61,7 @@ var RCU = {
 				//首先判断打印机是否是就绪状态，如果是就绪状态则打印，否则直接返回错误。
 				if (RCU.ThermoPrinter.printerCurrentStatus.code == "0"){
 					console.log("当前打印机可用，开始打印");
-					RCU.ThermoPrinter.printerStartPrint(json.callbackName);
+					RCU.ThermoPrinter.printerStartPrint(json);
 				} else {
 					console.log("当前打印机不可用，直接调用回调函数");
 					eval(json.callbackName+"('"+RCU.ThermoPrinter.printerCurrentStatus.code+"','"+RCU.ThermoPrinter.printerCurrentStatus.message+"')");
@@ -85,14 +83,13 @@ var RCU = {
 				//随机设置一个打印机状态，并在5秒钟之后回复可以使用的状态
 				console.log("printerStartPrint json",json);
 				setTimeout(function(){
-					console.log("printerStartPrint json::",json);
 					var keyIndex = parseInt(5*Math.random());
 					console.log("keyIndex:" + keyIndex);
 					RCU.A4Printer.printerCurrentStatus=RCU.A4Printer.printerStatus[keyIndex];
-					if (keyIndex == 0){
-						RCU.A4Printer.printerCurrentStatus.message="打印完成";
-					}
 					console.log("currentStatus:" + RCU.A4Printer.printerCurrentStatus.code+":"+RCU.A4Printer.printerCurrentStatus.message);
+					if (RCU.A4Printer.printerCurrentStatus.code=="0"){
+						RCU.A4Printer.printerCurrentStatus.message = "打印完成";
+					}
 					console.log("callbackName:",json.callbackName);
 					var callback = json.callbackName+"('"+RCU.A4Printer.printerCurrentStatus.code+"','"+RCU.A4Printer.printerCurrentStatus.message+"')";
 					console.log("callback:",callback);

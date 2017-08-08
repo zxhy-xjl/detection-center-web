@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <head>
-<title>终端机器系统演示Demo-自助打表终端</title>
+<title>终端机器系统演示Demo-自助取证终端</title>
 <style type='text/css'>
 	body {
 	     background-color: #CCC;
@@ -46,54 +46,18 @@ $(function () {
 function init(){
 	XJL.initTerminalInfo("../");
 	ko.applyBindings(formData, document.getElementById("myModal"));
-	$('#申请表Table').bootstrapTable({
-		   columns: 
-		       [
-		           {
-		               field: 'id',
-		               radio: true,
-		               align: 'center',
-		               valign: 'middle'
-		           }, {
-		        	   field: '申请表Name',
-		               title: '申请表名称',
-		               sortable: true,
-		               align: 'center'
-		           }, {
-		               field: 'operate',
-		               title: '操作',
-		               align: 'center',
-		               events: operateEvents,
-		               formatter: operateFormatter
-		           }
-		       ]
-		    /* onDblClickRow:function(row,$element){
-				queryProjectModule(row.projectId);
-			}, */
-			/**
-			onClickRow:function(row,$element){
-				console.log("点击行",row);
-				打印申请表(row.申请表Name);
-			}
-		   */
-		});
-	$('#申请表Table').bootstrapTable('append',[{id:"11",申请表Name:"核名申请表"},{id:"22",申请表Name:"企业登记申请表"}]);
 	$("#myModal").on("shown.bs.modal", function () {
 		modalCloseState=false;
-		formData.提示信息("请刷身份证");
+		
 	}).on("hidden.bs.modal", function () {
 		modalCloseState=true;
-		formData.身份证号码("");
-		formData.姓名("");
-		formData.申请表名称("");
 		formData.提示信息("");
-		formData.url("");
 	});
 }
-function 打印申请表(申请表名称){
-	formData.申请表名称(申请表名称);
-	$("#myModal").modal('show');
+function 刷身份证(){
+	formData.提示信息("请刷身份证");
 	RCU.Audio.playText(JSON.stringify({text:"请刷身份证"}));
+	$("#myModal").modal("show");
 	setTimeout(function(){
 		if (modalCloseState){
 			return;
@@ -106,45 +70,13 @@ function 打印申请表(申请表名称){
 			var idCard = JSON.parse(RCU.IDCard.reader());
 			formData.身份证号码(idCard.data.no);
 			formData.姓名(idCard.data.name);
-			formData.提示信息("正在打印申请表");
-			var paramJson = JSON.stringify({身份证号码:"身份证号码:"+formData.身份证号码(),姓名:"姓名:" + formData.姓名()});
-			console.log("paramJson",paramJson);
-			var url = "../rest/demo/image/临时身份证/"+paramJson;
-			console.log("url",url);
-			formData.url(url);
-			RCU.A4Printer.printUrl(JSON.stringify({fileUrl:url,callbackName:'printCallback'}));
-		});
-	});
-				
-	
-}
-function printCallback(code,message){
-	console.log("code",code);
-	console.log("message",message);
-	formData.提示信息("打印成功");
-	setTimeout(function(){
-		$("#myModal").modal('hide');
+			formData.提示信息("正在查询证件信息");
+			setTimeout(function(){
+				window.location.href="自助取证终端-取证.html?No="+formData.身份证号码()+"&Name="+formData.姓名();
+			},2000);
+		},2000);
 	},2000);
 }
-window.operateEvents = {
-	    /* 'click .edit': function (e, value, row, index) {
-	        alert('You click like action, row: ' + JSON.stringify(row));
-	    	$('#projectModal').modal('show');
-	    }, */
-	    'click .print': function (e, value, row, index) {
-	    	打印申请表(row.申请表Name);
-	    }
-	};
-function operateFormatter(value, row, index) {
-    return [
-        /* '<a class="edit" href="javascript:void(0)" title="Like">',
-        '<i class="glyphicon glyphicon-heart"></i>',
-        '</a>  ', */
-        '<a class="print" href="javascript:void(0)" title="打印">',
-        '<i class="glyphicon glyphicon-heart"></i>',
-        '</a>'
-    ].join('');
-}	
 </script>
 </head>
 <body>
@@ -182,39 +114,24 @@ function operateFormatter(value, row, index) {
   </div><!-- /.container-fluid -->
 </nav>
 <div class="container" id="container" >
-	<div class="col-md-12 col-sm-12" id="申请表Bar">
-				1点击打印按钮，2刷身份证，3取申请表
+	<div class="well well-lg text-center" onclick="刷身份证()">
+		<p>&nbsp;&nbsp;</p>
+		<h1>点击取证/文书/通知单</h1>
+		<p>&nbsp;&nbsp;</p>
 	</div>
- 	<table id="申请表Table"
-	           data-toolbar="#申请表Bar"
-	           data-search="true"
-	           data-show-refresh="true"
-	           data-show-toggle="false"
-	           data-show-columns="true"
-	           data-show-export="false"
-	           data-show-pagination-switch="false"
-	           data-pagination="true"
-	           data-id-field="id"
-	           data-page-list="[5]"
-	           data-show-footer="false"
-	           data-click-to-select="true",
-	           data-single-select="true">
-	</table>
 </div>
 <div data-backdrop="false" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-               <h4 class="modal-title" id="myModalLabel">正在打印申请表</h4>
+               <h4 class="modal-title" id="myModalLabel">请刷身份证</h4>
             </div>
             <div class="modal-body" id="modalBody">
-            	申请表名称:<span data-bind="text:申请表名称"></span><p>
             	姓名：<span data-bind="text:姓名"></span><p>
             	身份证号码：<span data-bind="text:身份证号码"></span><p>
             	
             	<h1 data-bind="text:提示信息"></h1>
-            	<img data-bind="attr:{src:url}">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>

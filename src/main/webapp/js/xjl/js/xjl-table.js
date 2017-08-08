@@ -20,6 +20,12 @@ jQuery.extend(XJL,{
 	            pageList: [pageSize,pageSize*2],        //可供选择的每页的行数（*）
 	        });
 	        ko.applyBindings(this.tableViewModel, document.getElementById(tableDiv));
+	        $("#myModal").on("shown.bs.modal", function () {
+            }).on('hidden.bs.modal', function () {
+                //关闭弹出框的时候清除绑定(这个清空包括清空绑定和清空注册事件)
+                ko.cleanNode(document.getElementById("myModal"));
+                XJL.afterHiddenModal();
+            });
 	    },
 	    initOperate:function (baseURL,domainModel) {
 	    	this.operateButtonStatus();
@@ -85,21 +91,17 @@ jQuery.extend(XJL,{
 	    //新增
 	    operateAdd: function(baseURL,domainModel){
 	        $('#btn_add').on("click", function () {
-	            $("#myModal").modal().on("shown.bs.modal", function () {
-	            	$("#myModalLabel").text("新增");
-	            	var emptyDomainModel={};
-	            	jQuery.each(domainModel, function(i, val) {  
-	            		emptyDomainModel[i] = ko.observable();
-	            	}); 
-	                ko.utils.extend(domainModel, emptyDomainModel);
-	                ko.applyBindings(domainModel, document.getElementById("myModal"));
-	                console.log("add pk,设置checked为false");
-	                XJL.beforeShowAdd();
-	                XJL.operateSave(baseURL+"/add",domainModel);
-	            }).on('hidden.bs.modal', function () {
-	                ko.cleanNode(document.getElementById("myModal"));
-	                XJL.afterHiddenModal();
-	            });
+	        	$("#myModal").modal("show");
+            	$("#myModalLabel").text("新增");
+            	var emptyDomainModel={};
+            	jQuery.each(domainModel, function(i, val) {  
+            		emptyDomainModel[i] = ko.observable();
+            	}); 
+                ko.utils.extend(domainModel, emptyDomainModel);
+                ko.applyBindings(domainModel, document.getElementById("myModal"));
+                console.log("add pk,设置checked为false");
+                XJL.beforeShowAdd();
+                XJL.operateSave(baseURL+"/add",domainModel);
 	        });
 	    },
 	    //编辑
@@ -110,19 +112,13 @@ jQuery.extend(XJL,{
 	            if (!XJL.operateCheck(arrselectedData)) { 
 	            	return; 
 	            }
+	            $("#myModal").modal("show");
 	            $("#myModalLabel").text("修改");
-	            $("#myModal").modal().on("shown.bs.modal", function () {
-	                //将选中该行数据有数据Model通过Mapping组件转换为viewmodel
-	                ko.utils.extend(oViewModel, ko.mapping.fromJS(arrselectedData[0]));
-	                ko.applyBindings(oViewModel, document.getElementById("myModal"));
-	                XJL.beforeShowUpdate(arrselectedData[0]);
-	                XJL.operateSave(baseURL+"/modify",oViewModel);
-	            }).on('hidden.bs.modal', function () {
-	                //关闭弹出框的时候清除绑定(这个清空包括清空绑定和清空注册事件)
-	                ko.cleanNode(document.getElementById("myModal"));
-	                XJL.afterHiddenModal();
-	                
-	            });
+                //将选中该行数据有数据Model通过Mapping组件转换为viewmodel
+                ko.utils.extend(oViewModel, ko.mapping.fromJS(arrselectedData[0]));
+                ko.applyBindings(oViewModel, document.getElementById("myModal"));
+                XJL.beforeShowUpdate(arrselectedData[0]);
+                XJL.operateSave(baseURL+"/modify",oViewModel);
 	        });
 	    },
 	    //删除

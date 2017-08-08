@@ -143,7 +143,7 @@ function testAudioPlay(){
 		return;
 	}
 	//检测播放声音方法
-	var mp3Url="sound/audioDemo2.mp3";
+	var mp3Url="sound/tishiyin.mp3";
 	var json = JSON.parse(RCU.Audio.play(JSON.stringify({url:mp3Url})));
 	if (json.state=="ok"){
 		//继续检测播放文字
