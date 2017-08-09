@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>RCU终端设备访问日志</title>
+    <style type='text/css'>
+	body {
+	     background-color: #CCC;
+	}
+    </style>
+    <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="js/bootstrap/css/bootstrap-theme.min.css" >
+    <link rel="stylesheet" href="js/bootstraptable/css/bootstrap-table-1.11.css">
+    <link rel="stylesheet" href="js/bootstrapdatetimepicker/css/bootstrap-datetimepicker.min.css" media="screen">
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <img class="navbar-brand" src="images/RCU.png" height="30px">
+            <label class="navbar-brand">自助服务云终端</label>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">终端云平台 <span class="sr-only">(current)</span></a></li>
+                <li><a href="rcuTerminal.html">RCU客户端</a></li>
+                <li><a href="rcu.html">出厂检测</a></li>
+                <li><a href="rcuSimulator.html">在线模拟检测</a></li>
+                <li><a href="API.html">API接口</a></li>
+                <li><a href="module.html">项目模块设置</a></li>
+                <li class="active"><a href="rcuTerminalLog.html">终端设备访问日志</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+	<ul class="nav nav-tabs" role="tablist">
+	  <li role="presentation" class="active"><a href="#tj" aria-controls="访问统计" role="tab" data-toggle="tab">访问统计</a></li>
+	  <li role="presentation"><a href="#mx" aria-controls="访问明细" role="tab" data-toggle="tab">访问明细</a></li>
+	</ul>
+	<div class="tab-content">
+	  <div role="tabpanel" class="tab-pane fade in active" id="tj">
+	  	<div class="row" >
+	        <div class="col-md-12 col-sm-12" id="tjlogBar">
+	            <form class="form-inline">
+	                <div class="form-group">
+	                    <label for="beginTime" class="control-label">开始时间</label>
+	                    <div class="input-group date form_datetime" data-link-field="tjbeginTime">
+	                        <input class="form-control" size="20" type="text" value="" readonly >
+	                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+	                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+	                    </div>
+	                    <input type="hidden" id="tjbeginTime" value="" /><br/>
+	                </div>
+	                <div class="form-group">
+	                    <label for="endTime" class="control-label">结束时间</label>
+	                    <div class="input-group date form_datetime" data-link-field="tjendTime">
+	                        <input class="form-control" size="20" type="text" value="" readonly>
+	                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+	                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+	                    </div>
+	                    <input type="hidden" id="tjendTime" value="" /><br/>
+	                </div>
+	                <button type="button" class="btn btn-default" onclick="querytjLog();">查 询</button>
+	            </form>
+	        </div>
+	        <div class="col-md-12 col-sm-12">
+	            <table id="tjlogTable"
+	           		   data-toolbar="#tjlogBar"
+	                   data-search="false"
+	                   data-show-refresh="false"
+	                   data-show-toggle="false"
+	                   data-show-columns="false"
+	                   data-show-export="false"
+	                   data-show-pagination-switch="false"
+	                   data-pagination="true"
+	                   data-id-field="logId"
+	                   data-page-list="[5]"
+	                   data-show-footer="false"
+	                   data-click-to-select="true",
+	                   data-single-select="true">
+	            </table>
+	        </div>
+	    </div>
+	  </div>
+	  <div role="tabpanel" class="tab-pane fade" id="mx">
+		  <div class="row" >
+	        <div class="col-md-12 col-sm-12" id="logBar">
+	            <form class="form-inline">
+	                <div class="form-group">
+	                    <label for="terminalGuid">设备唯一编号</label>
+	                    <input type="text" class="form-control" id="terminalGuid" placeholder="设备唯一编号">
+	                </div>
+	                <div class="form-group">
+	                    <label for="beginTime" class="control-label">开始时间</label>
+	                    <div class="input-group date form_datetime" data-link-field="beginTime">
+	                        <input class="form-control" size="20" type="text" value="" readonly >
+	                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+	                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+	                    </div>
+	                    <input type="hidden" id="beginTime" value="" /><br/>
+	                </div>
+	                <div class="form-group">
+	                    <label for="endTime" class="control-label">结束时间</label>
+	                    <div class="input-group date form_datetime" data-link-field="endTime">
+	                        <input class="form-control" size="20" type="text" value="" readonly>
+	                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+	                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+	                    </div>
+	                    <input type="hidden" id="endTime" value="" /><br/>
+	                </div>
+	                <button type="button" class="btn btn-default" onclick="queryLog();">查 询</button>
+	            </form>
+	        </div>
+	        <div class="col-md-12 col-sm-12">
+	            <table id="logTable"
+	           		   data-toolbar="#logBar"
+	                   data-search="false"
+	                   data-show-refresh="false"
+	                   data-show-toggle="false"
+	                   data-show-columns="false"
+	                   data-show-export="false"
+	                   data-show-pagination-switch="false"
+	                   data-pagination="true"
+	                   data-id-field="logId"
+	                   data-page-list="[5]"
+	                   data-show-footer="false"
+	                   data-click-to-select="true",
+	                   data-single-select="true">
+	            </table>
+	        </div>
+	    </div>
+	  </div>
+	</div>
+    
+</div>
+</body>
+
+<script src="js/jquery/js/jquery-3.2.1.min.js"></script>
+<script src="js/bootstrap/js/bootstrap.min.js"></script>
+<script src="js/jquery/js/jquery-rest.js"></script>
+<script src="js/bootstraptable/js/bootstrap-table-1.11.js"></script>
+<script src="js/bootstraptable/js/bootstrap-table-zh-CN.js"></script>
+<script type="text/javascript" src="js/bootstrapdatetimepicker/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="js/bootstrapdatetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+
+<script type="text/javascript">
+$(function () {
+    $('.form_datetime').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        format:'yyyy-mm-dd hh:ii:ss'
+    });
+    initTable();
+});
+function initTable() {
+   $('#logTable').bootstrapTable({
+	   columns:
+	       [
+	           {
+	               field: 'logId',
+	               title: "id",
+	               align: 'center',
+	               valign: 'middle',
+	               visible:false,
+	               cardVisible:false,
+	               switchable:false
+	           }, {
+	        	   field: 'terminalGuid',
+	               title: '设备唯一编码',
+	               sortable: true,
+	               valign: 'middle',
+	               align: 'center'
+	           }, {
+	               field: 'operateDesc',
+	               title: '操作描述',
+	               align: 'center',
+	               valign: 'middle',
+	               sortable: true
+	           }, {
+	               field: 'location',
+	               title: '终端位置',
+	               align: 'center',
+	               valign: 'middle',
+	               sortable: true
+	           }, {
+	               field: 'operateDate',
+	               title: '操作时间',
+	               align: 'center',
+	               valign: 'middle',
+	               sortable: true,
+	               formatter: dateFormatter
+	           }
+	       ]
+	});
+   $('#tjlogTable').bootstrapTable({
+	   columns:
+	       [
+	           {
+	        	   field: 'province',
+	               title: '省份',
+	               sortable: true,
+	               valign: 'middle',
+	               align: 'center'
+	           }, {
+	        	   field: 'city',
+	               title: '地区',
+	               sortable: true,
+	               valign: 'middle',
+	               align: 'center'
+	           }, {
+	               field: 'logCount',
+	               title: '访问次数',
+	               align: 'center',
+	               valign: 'middle',
+	               sortable: true
+	           }
+	       ]
+	});
+}
+Date.prototype.Format = function (fmt) { 
+    var o = {
+        "M+": this.getMonth() + 1, //月份 
+        "d+": this.getDate(), //日 
+        "h+": this.getHours(), //小时 
+        "m+": this.getMinutes(), //分 
+        "s+": this.getSeconds(), //秒 
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+        "S": this.getMilliseconds() //毫秒 
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+function dateFormatter(value){
+	return new Date(value).Format("yyyy-MM-dd hh:mm:ss");
+}
+function querytjLog(){
+	var beginTime = $("#tjbeginTime").val();
+	var endTime = $("#tjendTime").val();
+	$('#tjlogTable').bootstrapTable('removeAll');
+	$('#tjlogTable').bootstrapTable('showLoading');
+	$.restPost({
+        url: 'rest/cdcTerminalLog/queryByParamsTj',
+        data:{beginTime:beginTime,endTime:endTime},
+        success: function (data, status) {
+        	console.log("查询成功！");
+        	$('#tjlogTable').bootstrapTable('append',data.rows);
+            $('#tjlogTable').bootstrapTable('hideLoading');
+        }
+    });
+}
+function queryLog(){
+	var terminalGuid = $("#terminalGuid").val();
+	var beginTime = $("#beginTime").val();
+	var endTime = $("#endTime").val();
+	$('#logTable').bootstrapTable('removeAll');
+	$('#logTable').bootstrapTable('showLoading');
+	$.restPost({
+        url: 'rest/cdcTerminalLog/queryByParams',
+        data:{terminalGuid:terminalGuid,beginTime:beginTime,endTime:endTime},
+        success: function (data, status) {
+        	console.log("查询成功！");
+        	$('#logTable').bootstrapTable('append',data.rows);
+            $('#logTable').bootstrapTable('hideLoading');
+        }
+    });
+}
+</script>
+</html>
