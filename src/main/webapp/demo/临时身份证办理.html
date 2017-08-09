@@ -75,7 +75,7 @@ $(function () {
 			$("#myModal").modal('show');
 			var paramJson = JSON.stringify({身份证号码:"身份证号码:"+formData.身份证号码(),姓名:"姓名:" + formData.姓名()});
 			console.log("paramJson",paramJson);
-			var url = "../rest/demo/image/临时身份证/"+paramJson;
+			var url = "../rest/demo/image/" + XJL.encodeURI("临时身份证")+"/"+XJL.encodeURI(paramJson);
 			formData.打印状态("正在打印身份证");
 			$("#modalBody").append($("<img src='"+url+"'>"));
 			RCU.A4Printer.printUrl(JSON.stringify({fileUrl:url,callbackName:'printCallback'}));

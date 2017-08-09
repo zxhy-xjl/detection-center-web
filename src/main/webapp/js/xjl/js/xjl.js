@@ -95,6 +95,9 @@ var XJL = {
 			} else {
 				eval(callbackName+"()");
 			}
+		},
+		encodeURI:function(uri){//二次加密url路径，后端使用uriDecoder即可
+			return encodeURIComponent(encodeURIComponent(uri));
 		}
 }
 XJL.bindCloseWindowEvent();

@@ -33,6 +33,13 @@
 <script type="text/javascript">
 $(function () {
 	XJL.loadSimulator("init","../");
+	$("#企业核名").on("click",function(){
+		window.location.href="企业核名.html";
+	});
+	$("#企业注册").on("click",function(){
+		window.location.href="企业注册.html";
+	});
+	
 });
 function init(){
 	XJL.initTerminalInfo("../");
@@ -79,7 +86,7 @@ function 临时身份证办理(){
 <div class="container" id="container" >
  	<div class="row">
  		<div class="col-xs-6 col-md-3">
- 			<div class="well well-lg" style="text-align: center;">
+ 			<div class="well well-lg text-center" id="企业核名">
 	 			<p>&nbsp;&nbsp;</p>
 	 			<h1>企业核名</h1>
 	 			<p>开公司之前需要先核准名称</p>
@@ -87,7 +94,7 @@ function 临时身份证办理(){
  			</div>
  		</div>
  		<div class="col-xs-6 col-md-3">
- 			<div class="well well-lg" style="text-align: center;">
+ 			<div class="well well-lg text-center" id="企业注册">
  				<p>&nbsp;&nbsp;</p>
 	 			<h1>企业注册</h1>
 	 			<p>核完名称之后才可以进行公司注册</p>

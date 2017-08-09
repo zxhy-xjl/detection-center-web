@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <head>
-<title>终端机器系统演示Demo-自助打表终端</title>
+<title>终端机器系统演示Demo-企业注册</title>
 <style type='text/css'>
 	body {
 	     background-color: #CCC;
@@ -12,15 +12,14 @@
 </style>
 <link rel="stylesheet" href="../js/bootstrap/css/bootstrap.min.css" >
 <link rel="stylesheet" href="../js/bootstrap/css/bootstrap-theme.min.css" >
-<link rel="stylesheet" href="../js/bootstraptable/css/bootstrap-table-1.11.css">
+<link rel="stylesheet" href="../js/bootstraptable/css/bootstrap-table.min.css">
 <link rel="stylesheet" href="../js/bootstrapselect/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="css/demo.css">
 <script src="../js/jquery/js/jquery-3.2.1.min.js"></script>
 <script src="../js/jquery/js/jquery-rest.js"></script>
 <script src="../js/bootstrap/js/bootstrap.min.js"></script>
-<script src="../js/bootstraptable/js/bootstrap-table-1.11.js"></script>
-<script src="../js/bootstraptable/js/bootstrap-table-zh-CN.js"></script>
 <script src="../js/bootstraptable/js/tableExport.js"></script>
+<script src="../js/bootstraptable/js/bootstrap-table.js"></script>
 <script src="../js/bootstraptable/js/bootstrap-table-export.js"></script>
 <script src="../js/knockout/js/knockout-3.4.2.js"></script>
 <script src="../js/knockout/js/knockout.mapping-latest.js"></script>
@@ -32,119 +31,100 @@
 <script src="../js/xjl/js/xjl-table.js"></script>
 <script src="js/demo.js"></script>
 <script type="text/javascript">
-modalCloseState=true;
+modalCloseState=false;
 var formData = {
 		身份证号码:ko.observable(),
 		姓名:ko.observable(),
-		申请表名称:ko.observable(),
-		提示信息:ko.observable(),
-		url:ko.observable()
+		手机:ko.observable(),
+		企业名称:ko.observable(),
+		所属行业:ko.observable(),
+		申请注册:ko.observable(),
+		行业字典:[{name:'制造业'},{name:'服务业'},{name:'农业'}],
+		提示信息:ko.observable("请输入企业名称和所属行业"),
+		url:ko.observable(),
+		base64Img:ko.observable()
 };
 $(function () {
 	XJL.loadSimulator("init","../");
-});
-function init(){
-	XJL.initTerminalInfo("../");
+	ko.applyBindings(formData, document.getElementById("form"));
 	ko.applyBindings(formData, document.getElementById("myModal"));
-	$('#申请表Table').bootstrapTable({
-		   columns: 
-		       [
-		           {
-		               field: 'id',
-		               radio: true,
-		               align: 'center',
-		               valign: 'middle'
-		           }, {
-		        	   field: '申请表Name',
-		               title: '申请表名称',
-		               sortable: true,
-		               align: 'center'
-		           }, {
-		               field: 'operate',
-		               title: '操作',
-		               align: 'center',
-		               events: operateEvents,
-		               formatter: operateFormatter
-		           }
-		       ]
-		    /* onDblClickRow:function(row,$element){
-				queryProjectModule(row.projectId);
-			}, */
-			/**
-			onClickRow:function(row,$element){
-				console.log("点击行",row);
-				打印申请表(row.申请表Name);
-			}
-		   */
-		});
-	$('#申请表Table').bootstrapTable('append',[{id:"11",申请表Name:"核名申请表"},{id:"22",申请表Name:"企业登记申请表"}]);
 	$("#myModal").on("shown.bs.modal", function () {
 		modalCloseState=false;
 		formData.提示信息("请刷身份证");
 	}).on("hidden.bs.modal", function () {
 		modalCloseState=true;
-		formData.身份证号码("");
-		formData.姓名("");
-		formData.申请表名称("");
-		formData.提示信息("");
 		formData.url("");
 	});
-}
-function 打印申请表(申请表名称){
-	formData.申请表名称(申请表名称);
+});
+function init(){
+	XJL.initTerminalInfo("../");
 	$("#myModal").modal('show');
+	//1、刷身份证；2、高拍仪拍摄核名通知书
+	formData.提示信息("请刷身份证");
 	RCU.Audio.playText(JSON.stringify({text:"请刷身份证"}));
 	setTimeout(function(){
-		if (modalCloseState){
-			return;
-		}
 		formData.提示信息("正在读取身份证信息");
+		var idCard = JSON.parse(RCU.IDCard.reader());
 		setTimeout(function(){
-			if (modalCloseState){
-				return;
-			}
-			var idCard = JSON.parse(RCU.IDCard.reader());
 			formData.身份证号码(idCard.data.no);
 			formData.姓名(idCard.data.name);
-			formData.提示信息("正在打印申请表");
-			var paramJson = JSON.stringify({身份证号码:"身份证号码:"+formData.身份证号码(),姓名:"姓名:" + formData.姓名()});
-			console.log("paramJson",paramJson);
-			var url = "../rest/demo/image/" + XJL.encodeURI("临时身份证")+"/"+XJL.encodeURI(paramJson);
-			console.log("url",url);
-			formData.url(url);
-			RCU.A4Printer.printUrl(JSON.stringify({fileUrl:url,callbackName:'printCallback'}));
-		});
-	});
-				
+			formData.提示信息("正在放入名称预先核准通知书");
+			RCU.Audio.playText(JSON.stringify({text:"请放入名称预先核准通知书"}));
+			setTimeout(function(){
+				var result = JSON.parse(RCU.HSI.open(JSON.stringify({callbackName:'HSICallback'})));
+				if (!result.state){
+					formData.提示信息("打开高拍仪失败："+result.error.code + '(' + result.error.message + ')');
+				}
+			},2000);
+		},2000);
+	},2000);
 	
+	$("#申请注册").on("click",function(){
+		$("#myModal").modal('show');
+		setTimeout(function(){
+			formData.提示信息("正在打印受理通知书");
+			var date = new Date(); 
+			 var datetime = date.getFullYear() + "-" + ((date.getMonth() + 1) > 10 ? (date.getMonth() + 1) : "0"
+                     + (date.getMonth() + 1)) + "-" + (date.getDate() < 10 ? "0" + date.getDate() : date.getDate());
+			var paramJson = JSON.stringify({
+				身份证号码:"身份证号码:"+formData.身份证号码(),姓名:"姓名:" + formData.姓名(),
+				企业名称:"企业名称:"+formData.企业名称(),所属行业:"所属行业:"+formData.所属行业(),
+				日期:"核准日期:"+datetime,标题:'公司注册受理通知书'
+			});
+			console.log("paramJson",paramJson);
+			
+			var url = "../rest/demo/image/"+XJL.encodeURI("公司注册")+"/"+XJL.encodeURI(paramJson);
+			formData.url(url);
+			console.log("url",url);
+			RCU.A4Printer.printUrl(JSON.stringify({fileUrl:url,callbackName:'printCallback'}));
+		},2000);
+	});
+	$("#取消").on("click",function(){
+		window.location.href="自助办理终端.html";
+	});
 }
+
 function printCallback(code,message){
 	console.log("code",code);
 	console.log("message",message);
 	formData.提示信息("打印成功");
 	setTimeout(function(){
 		$("#myModal").modal('hide');
+		window.location.href="自助办理终端.html";
 	},2000);
 }
-window.operateEvents = {
-	    /* 'click .edit': function (e, value, row, index) {
-	        alert('You click like action, row: ' + JSON.stringify(row));
-	    	$('#projectModal').modal('show');
-	    }, */
-	    'click .print': function (e, value, row, index) {
-	    	打印申请表(row.申请表Name);
-	    }
-	};
-function operateFormatter(value, row, index) {
-    return [
-        /* '<a class="edit" href="javascript:void(0)" title="Like">',
-        '<i class="glyphicon glyphicon-heart"></i>',
-        '</a>  ', */
-        '<a class="print" href="javascript:void(0)" title="打印">',
-        '<i class="glyphicon glyphicon-print"></i>',
-        '</a>'
-    ].join('');
-}	
+function HSICallback(base64Image){
+	formData.base64Img('data:image/jpeg;base64,'+base64Image);
+	formData.提示信息("名称预先通知书拍摄成功，正在核验");
+	setTimeout(function(){
+		formData.企业名称("某某公司");
+		formData.所属行业("服务业");
+		$('#所属行业').selectpicker('refresh');
+		formData.申请注册(true);
+		$("#myModal").modal('hide');
+		formData.提示信息("核验成功，点击立即申请注册完成公司注册");
+	},2000);
+}
 </script>
 </head>
 <body>
@@ -182,38 +162,48 @@ function operateFormatter(value, row, index) {
   </div><!-- /.container-fluid -->
 </nav>
 <div class="container" id="container" >
-	<div class="col-md-12 col-sm-12" id="申请表Bar">
-				1点击打印按钮，2刷身份证，3取申请表
-	</div>
- 	<table id="申请表Table"
-	           data-toolbar="#申请表Bar"
-	           data-search="true"
-	           data-show-refresh="true"
-	           data-show-toggle="false"
-	           data-show-columns="true"
-	           data-show-export="false"
-	           data-show-pagination-switch="false"
-	           data-pagination="true"
-	           data-id-field="id"
-	           data-page-list="[5]"
-	           data-show-footer="false"
-	           data-click-to-select="true",
-	           data-single-select="true">
-	</table>
+	<form class="form-horizontal" id="form">
+	 	<div class="form-group">
+	        <label for="txt_企业名称" class="col-sm-2 control-label">企业名称</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_企业名称" data-bind="value:企业名称" class="form-control" id="txt_企业名称" placeholder="企业名称">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_所属行业" class="col-sm-2 control-label">所属行业</label>
+	        <div class="col-sm-8">
+	        	<select id="所属行业" class="selectpicker show-tick form-control" data-bind="options:行业字典,optionsText:'name',optionsValue:'name',value:所属行业,optionsCaption:'请选择行业'">
+				</select>
+	    	</div>
+	    </div>
+	     <div class="form-group">
+	        <label for="txt_名称预先核准通知书" class="col-sm-2 control-label">核名通知书</label>
+	        <div class="col-sm-8">
+	        	<img data-bind="attr:{src:base64Img}">
+	    	</div>
+	    </div>
+	    
+	   <span data-bind="text:提示信息" class="col-sm-offset-2 col-sm-8 text-center">请输入企业名称和所属行业</span>
+		<div class="form-group">
+		  <div class="col-sm-offset-2 col-sm-8 text-center">
+		    <button type="button" class="btn btn-default" data-bind="enable:申请注册" id="申请注册">立即申请注册</button>
+		    &nbsp;&nbsp;
+		    <button type="button" class="btn btn-default" id="取消">取消</button>
+		  </div>
+		</div>
+    </form>
 </div>
 <div data-backdrop="false" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-               <h4 class="modal-title" id="myModalLabel">正在打印申请表</h4>
+               <h4 class="modal-title" id="myModalLabel">企业名称申请</h4>
             </div>
             <div class="modal-body" id="modalBody">
-            	申请表名称:<span data-bind="text:申请表名称"></span><p>
-            	姓名：<span data-bind="text:姓名"></span><p>
-            	身份证号码：<span data-bind="text:身份证号码"></span><p>
-            	
-            	<h1 data-bind="text:提示信息"></h1>
+            	申请注册名称：<span data-bind="text:企业名称"></span>(<span data-bind="text:所属行业"></span>) <p>
+            	申请者的名称:<span data-bind="text:姓名"></span>(<span data-bind="text:身份证号码"></span>) <p>
+            	<h1 data-bind="text:提示信息"></h1><p>
             	<img data-bind="attr:{src:url}">
             </div>
             <div class="modal-footer">
