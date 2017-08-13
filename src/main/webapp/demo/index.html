@@ -31,13 +31,19 @@
 <script src="../js/xjl/js/xjl-table.js"></script>
 <script src="js/demo.js"></script>
 <script type="text/javascript">
-var demoList = [
-	{name:"排队取号机",url:"pdqhj.html"},
-	{name:"电子宣传屏",url:"dzxcp.html"},
-	{name:"大厅导航机",url:"大厅导航机.html"},
-	{name:"自助办理终端",url:"自助办理终端.html"},
-	{name:"自助打表终端",url:"自助打表终端.html"},
-	{name:"自助取证终端",url:"自助取证终端.html"}
+var demoTitleList = [
+	{title:"政务中心",list:[
+		{name:"排队取号机",url:"pdqhj.html"},
+		{name:"电子宣传屏",url:"dzxcp.html"},
+		{name:"大厅导航机",url:"大厅导航机.html"},
+		{name:"自助办理终端",url:"自助办理终端.html"},
+		{name:"自助打表终端",url:"自助打表终端.html"},
+		{name:"自助取证终端",url:"自助取证终端.html"}
+	]},
+	{title:"火车站",list:[
+		{name:"自助取票机",url:"自助取票机.html"}
+	]}
+	
 ];
 $(function () {
 	XJL.loadSimulator("init","../");
@@ -45,19 +51,26 @@ $(function () {
 function init(){
 	XJL.initTerminalInfo("../");
 	var html="";
-	for (var i = 0;i<demoList.length;i++){
-	   html += '<div class="col-md-4" style="padding:10px;margin:10px;" onclick="showDemo(\''+i+'\')">'+
-	   '<button type="button" class="btn btn-primary btn-lg btn-block" style="height: 100px;font-size: 20pt">'+
-	   demoList[i].name+
-	   '</button>'+
-	   '</div>';
-	  
+	for (var ti = 0; ti < demoTitleList.length; ti++){
+		var demoTitle = demoTitleList[ti];
+		html+='<div class="panel panel-default">'+
+		  '<div class="panel-heading">'+demoTitle.title+'</div>'+
+		  '<div class="panel-body">';
+		var demoList = demoTitle.list;    
+		for (var i = 0;i<demoList.length;i++){
+		   html += '<div class="col-md-3 col-sm-6" style="margin-bottom:20px;" onclick="showDemo(\''+demoList[i].url+'\')">'+
+		   '<button type="button" class="btn btn-primary btn-lg btn-block" style="height: 100px;font-size: 20pt">'+
+		   demoList[i].name+
+		   '</button>'+
+		   '</div>';
+		}
+		html+='</div></div>';
 	}
-	$("#bodyRow").html(html);
+	$("#container").html(html);
 	
 }
-function showDemo(i){
-	window.location.href=demoList[i].url;
+function showDemo(url){
+	window.location.href=url;
 }
 </script>
 </head>
@@ -94,15 +107,7 @@ function showDemo(i){
   </div><!-- /.container-fluid -->
 </nav>
 <div class="container" id="container" >
-	<div class="panel panel-default">
-	  <!-- Default panel contents -->
-	  <div class="panel-heading">自助终端系统演示Demo</div>
-	  <div class="panel-body">
-	      <div class="row" id="bodyRow">
-          
-          </div>
-      </div>
-    </div>
+	
 </div>
 
 </body>

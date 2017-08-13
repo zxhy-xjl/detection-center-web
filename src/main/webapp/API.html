@@ -71,6 +71,9 @@
 	    <li role="presentation"><a href="#热敏打印机" aria-controls="热敏打印机" role="tab" data-toggle="tab">热敏打印机</a></li>
 	    <li role="presentation"><a href="#A4打印机" aria-controls="A4打印机" role="tab" data-toggle="tab">A4打印机</a></li>
 	    <li role="presentation"><a href="#高拍仪" aria-controls="高拍仪" role="tab" data-toggle="tab">高拍仪</a></li>
+	    <li role="presentation"><a href="#摄像头" aria-controls="摄像头" role="tab" data-toggle="tab">摄像头</a></li>
+	    <li role="presentation"><a href="#声音" aria-controls="声音" role="tab" data-toggle="tab">声音</a></li>
+	  
 	  </ul>
 	<div class="tab-content">
 	  <div role="tabpanel" class="tab-pane fade in active" id="终端标识">
@@ -83,17 +86,17 @@
 	{
 	  state:ok/error,
 	  data:{
-	    rcu:1.0,
+	    rcu:版本信息,
 	    terminal:终端唯一编码信息
 	  },
 	  error:{
-	    code:1,
-	    message:没找到RCU
+	    code:异常代码,
+	    message:异常消息
 	  }
 	}
-异常
-    1没有找到rcu
-    9其他	
+错误/回调函数代码表：
+	{code:'01',message:'未授权'},
+	{code:'99',message:'未知错误'}	
         </pre>
 	  </div>
 	  <div role="tabpanel" class="tab-pane fade" id="身份证读卡器">
@@ -104,23 +107,23 @@
 	{
 	  state:ok/error,
 	  data:{
-	    no:<身份证号>,
-	    name:<姓名>,
-	    sex:<性别 男/女>,
-	    birthday:<出生年月 格式YYYYMMDD>,
-	    validThrough:<有效期至 格式YYYYMMDD>,
-	    photo:<经过base64编码后的照片>
+	    no:身份证号,
+	    name:姓名,
+	    sex:性别 男/女,
+	    birthday:出生年月 格式YYYYMMDD,
+	    validThrough:有效期至 格式YYYYMMDD,
+	    photo:经过base64编码后的照片
 	  },
 	  error:{
-	    code:<异常代码>,
-	    message:<异常消息>
+	    code:异常代码,
+	    message:异常消息
 	  }
 	}
 
-异常代码：
-    1没有找到设备
-    2无效身份证
-    9其他
+错误/回调函数代码表：
+	{code:'01',message:'找不到设备'},
+	{code:'02',message:'无效身份证'},
+	{code:'99',message:'未知错误'}
 		</pre>
 	  </div>
 	  <div role="tabpanel" class="tab-pane fade" id="热敏打印机">
@@ -130,7 +133,7 @@
 输入参数:序列化后的json对象：
 
 	{
-	  content: <经过base64编码过的图片数据> ,
+	  content: 经过base64编码过的图片数据 ,
 	  callback:回调函数名称
 	}
 
@@ -139,20 +142,27 @@
 样例
 	//调用打印
 	var img = 'base64编码的图片';
-	var content = {content:img,callbackName:'aCallbackName'};
+	var content = {content:img,callbackName:'ThermoPrinterCallbackName'};
 	var cont = JSON.stringify(content);
 	
 	RCU.ThermoPrinter.print(cont);
 	
 	//获取打印结果
-	function aCallbackName(code, message){
-	   if (code == 0){
+	function ThermoPrinterCallbackName(code, message){
+	   if (code == "00"){
 	     console.log("打印成功");
 	   } else {
 	     console.log("打印失败", code + "(" + message + ")");
 	   }
 	}
-    
+code代码
+	{code:'00',message:'打印机等待（打印成功）'},
+	{code:'01',message:'用户输入数据错误'},
+	{code:'02',message:'文件未找到'},
+	{code:'03',message:'打印机离线'},
+	{code:'04',message:'打印机忙碌'},
+	{code:'05',message:'打印机缺纸'},
+	{code:'99',message:'未知错误'}
 </pre>
 	</div>
 	  <div role="tabpanel" class="tab-pane fade" id="A4打印机">
@@ -161,8 +171,8 @@
 方法名称：RCU.A4Printer.printUrl() 
 输入参数:json数据格式
 	{
-	   fileUrl:<远端文件的地址，比如http://homepages.inf.ed.ac.uk/neilb/TestWordDoc.doc>,
-	   callbackName:<回调函数名称>
+	   fileUrl:远端文件的地址，比如http://www.xjlcloud.com/rcu/print/TestWordDoc.doc,
+	   callbackName:回调函数名称
 	}
 输出结果：无
 
@@ -172,25 +182,25 @@
 	function callbackName (code, message) {
 	}
 
-	code代码
-	0:打印机等待（打印成功）
-	1:用户输入数据错误
-	2:文件未找到
-	3:打印机离线
-	4:打印机忙碌
-	5:打印机缺纸
-	99:其他错误
+code代码
+	{code:'00',message:'打印机等待（打印成功）'},
+	{code:'01',message:'用户输入数据错误'},
+	{code:'02',message:'文件未找到'},
+	{code:'03',message:'打印机离线'},
+	{code:'04',message:'打印机忙碌'},
+	{code:'05',message:'打印机缺纸'},
+	{code:'99',message:'未知错误'}
 
 示例
 
-	var url = 'http://homepages.inf.ed.ac.uk/neilb/TestWordDoc.doc';
-	var content = {fileUrl:url,callbackName:'callbackName'};
+	var url = 'http://www.xjlcloud.com/rcu/print/TestWordDoc.doc';
+	var content = {fileUrl:url,callbackName:'A4PrinterCallbackName'};
 	var cont = JSON.stringify(content);
 	RCU.A4Printer.printUrl(cont);
 
 	//回调函数获取打印结果
-	function callbackName(code, message){
-	  if (code == 0){
+	function A4PrinterCallbackName(code, message){
+	  if (code == "00"){
 	    console.log("打印成功");
 	  } else {
 	    console.log("打印失败", code + "(" + message + ")");
@@ -210,23 +220,23 @@
 	{
 	  state:ok/error,
 	  error: {
-	    code: <错误代码>,
-	    message: <错误消息>
+	    code: 错误代码,
+	    message: 错误消息
 	  } 
 	}
 
-	code代码
-	1：高拍仪打开失败
-	2：回调函数为空
-	9：其他错误
+错误/回调函数代码表：
+	{code:'01',message:'设备打开失败'},
+	{code:'02',message:'回调函数为空'},
+	{code:'99',message:'未知错误'}
 
 回调函数（点击拍摄之后调用该回调函数）
 	// img: 经过base64编码的图像数据
-	function callbackName (img) {
+	function HSICallback (img) {
 	}
 
 示例
-	var content = {callbackName:'HSINewImage'};
+	var content = {callbackName:'HSICallback'};
 	var cont = JSON.stringify(content);
 	var ret = RCU.HSI.open(cont);
 	var result = JSON.parse(ret);
@@ -235,13 +245,190 @@
 	}
 
  	//回调函数获取图片
-	function HSINewImage(image){
+	function HSICallback(image){
 	  img.src = 'data:image/jpeg;base64,' + image;
 	}
 
 </pre>
 </div>
+<div role="tabpanel" class="tab-pane fade" id="摄像头">
+<div class="panel-group" id="摄像头accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="摄像头拍照Heading">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#摄像头accordion" href="#摄像头拍照" aria-expanded="true"  aria-controls="摄像头拍照">
+          摄像头拍照
+        </a>
+      </h4>
+    </div>
+    <div id="摄像头拍照" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="摄像头拍照Heading">
+      <div class="panel-body">
+<pre>
+方法名称：RCU.Camera.open() 
+输入参数：回调函数名称
+	{
+	  callbackName:'WebCamCallback'
+	}
+输出结果：摄像头状态
+	{
+	  state:ok/error,
+	  error: {
+	    code: 错误代码,
+	    message: 错误消息
+	  } 
+	}
 
+错误/回调函数代码表：
+	{code:'01',message:'设备打开失败'},
+	{code:'02',message:'回调函数为空'},
+	{code:'99',message:'未知错误'}
+
+回调函数（点击拍摄之后调用该回调函数）
+	// img: 经过base64编码的图像数据
+	function WebCamCallback (img) {
+	}
+
+示例
+	var content = {callbackName:'WebCamNewImage'};
+	var cont = JSON.stringify(content);
+	var ret = RCU.Camera.open(cont);
+	var result = JSON.parse(ret);
+	if (result.state != 'ok') {
+	  alert('摄像头打开错误'+ result.error.code + '(' + result.error.message + ')');
+	}
+
+
+ 	//回调函数获取图片
+	function WebCamNewImage(image){
+	  img.src = 'data:image/jpeg;base64,' + image;
+	}
+
+</pre>        
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="摄像头录像Heading">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#摄像头accordion" href="#摄像头录像" aria-expanded="false"  aria-controls="摄像头录像">
+          摄像头录像
+        </a>
+      </h4>
+    </div>
+    <div id="摄像头录像" class="panel-collapse collapse" role="tabpanel" aria-labelledby="摄像头录像Heading">
+      <div class="panel-body">
+<pre>
+方法名称：RCU.Camera.video() 
+输入参数：无
+输出结果：录像文件地址
+	{
+	  state:ok/error,
+	  data:{media:'录像文件地址'},
+	  error: {
+	    code: '错误代码',
+	    message: '错误消息'
+	  } 
+	}
+
+错误/回调函数代码表：
+	{code:'01',message:'摄像头打开失败'},
+	{code:'02',message:'回调函数为空'},
+	{code:'99',message:'其它错误'}
+
+
+示例
+	var ret = RCU.Camera.vedio();
+	var result = JSON.parse(ret);
+	if (result.state != 'ok') {
+	  alert('摄像头打开错误'+ result.error.code + '(' + result.error.message + ')');
+	} else {
+	  console.log("url:"+result.data.media);
+	}
+</pre>        
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div role="tabpanel" class="tab-pane fade" id="声音">
+<div class="panel-group" id="声音accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="播放一段声音Heading">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#声音accordion" href="#播放一段声音" aria-expanded="true"  aria-controls="播放一段声音">
+          播放一段声音
+        </a>
+      </h4>
+    </div>
+    <div id="播放一段声音" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="播放一段声音Heading">
+      <div class="panel-body">
+<pre>
+方法名称：RCU.Audio.play() 
+输入参数：
+	{
+  		url:"http://www.xjlcloud.com/rcu/sound/audioDemo.mp3",
+  		callbackName:"audioPlayCallback"
+	}
+输出结果：无
+	
+回调函数：function audioPlayCallback (code, message){...}
+
+错误/回调函数代码表：
+	{code:'00',message:'成功'},
+	{code:'01',message:'输入参数不正确'},
+	{code:'02',message:'播放出错'},
+	{code:'03',message:'文件下载失败'},
+	{code:'04',message:'语音服务不可用'},
+	{code:'99',message:'其它错误'}
+
+示例
+	RCU.Audio.play(JSON.Stringify({url:"http://www.xjlcloud.com/rcu/sound/audioDemo.mp3",callbackName:'audioPlayCallback'}));
+</pre>        
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="播放一段文字Heading">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#声音accordion" href="#播放一段文字" aria-expanded="false" aria-controls="播放一段文字">
+          播放一段文字
+        </a>
+      </h4>
+    </div>
+    <div id="播放一段文字" class="panel-collapse collapse" role="tabpanel" aria-labelledby="播放一段文字Heading">
+      <div class="panel-body">
+<pre>
+方法名称：RCU.Audio.playText() 
+输入参数：
+	{
+  		text:"请刷身份证"
+  		callbackName:"audioPlayCallback"
+	}
+输出结果：无
+	
+回调函数：function audioPlayCallback (code, message){...}
+
+错误/回调函数代码表：
+	{code:'00',message:'成功'},
+	{code:'01',message:'输入参数不正确'},
+	{code:'02',message:'播放出错'},
+	{code:'03',message:'文件下载失败'},
+	{code:'04',message:'语音服务不可用'},
+	{code:'99',message:'其它错误'}
+
+示例
+	RCU.Audio.playText(JSON.Stringify({text:"请刷身份证",callbackName:'audioPlayCallback'}));
+</pre>       
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  </div>
+
+</div>
 	</div>
 </div>
 </body>

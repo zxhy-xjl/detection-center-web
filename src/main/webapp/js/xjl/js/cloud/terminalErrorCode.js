@@ -1,0 +1,50 @@
+//RCU状态码
+var RCU_STATUS_CODE = [
+	{device:'RCU',status:[
+		{code:'01',message:'未授权'},
+		{code:'99',message:'其它错误'}
+		]
+	},{device:'身份证读卡器',status:[
+		{code:'01',message:'找不到设备'},
+		{code:'02',message:'无效身份证'},
+		{code:'99',message:'其它错误'}
+		]
+	},{device:'热敏打印机',status:[
+		{code:'00',message:'打印机等待（打印成功）'},
+		{code:'01',message:'用户输入数据错误'},
+		{code:'02',message:'文件未找到'},
+		{code:'03',message:'打印机离线'},
+		{code:'04',message:'打印机忙碌'},
+		{code:'05',message:'打印机缺纸'},
+		{code:'99',message:'其它错误'}
+		]
+	},{device:'A4打印机',status:[
+		{code:'00',message:'打印机等待（打印成功）'},
+		{code:'01',message:'用户输入数据错误'},
+		{code:'02',message:'文件未找到'},
+		{code:'03',message:'打印机离线'},
+		{code:'04',message:'打印机忙碌'},
+		{code:'05',message:'打印机缺纸'},
+		{code:'99',message:'其它错误'}
+		]
+	},{device:'高拍仪',status:[
+		{code:'01',message:'高拍仪打开失败'},
+		{code:'02',message:'回调函数为空'},
+		{code:'99',message:'其它错误'}
+		]
+	},{device:'摄像头',status:[
+		{code:'01',message:'摄像头打开失败'},
+		{code:'02',message:'回调函数为空'},
+		{code:'99',message:'其它错误'}
+		]
+	},{device:'声音',status:[
+		{code:'00',message:'成功'},
+		{code:'01',message:'输入参数不正确'},
+		{code:'02',message:'播放出错'},
+		{code:'03',message:'文件下载失败'},
+		{code:'04',message:'语音服务不可用'},
+		{code:'99',message:'其它错误'}
+		]
+	}
+	
+];
