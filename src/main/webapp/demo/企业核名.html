@@ -79,26 +79,8 @@ function init(){
 		RCU.Audio.playText(JSON.stringify({text:"请刷身份证"}));
 		setTimeout(function(){
 			formData.提示信息("正在读取身份证信息");
-			var idCard = JSON.parse(RCU.IDCard.reader());
-			setTimeout(function(){
-				formData.身份证号码(idCard.data.no);
-				formData.姓名(idCard.data.name);
-				formData.提示信息("正在打印名称预先核准通知书");
-				var date = new Date(); 
-				 var datetime = date.getFullYear() + "-" + ((date.getMonth() + 1) > 10 ? (date.getMonth() + 1) : "0"
-	                     + (date.getMonth() + 1)) + "-" + (date.getDate() < 10 ? "0" + date.getDate() : date.getDate());
-				var paramJson = JSON.stringify({
-					身份证号码:"身份证号码:"+formData.身份证号码(),姓名:"姓名:" + formData.姓名(),
-					企业名称:"企业名称:"+formData.企业名称(),所属行业:"所属行业:"+formData.所属行业(),
-					日期:"核准日期:"+datetime
-				});
-				console.log("paramJson",paramJson);
-				
-				var url = "../rest/demo/image/" + XJL.encodeURI("核名")+"/"+XJL.encodeURI(paramJson);
-				formData.url(url);
-				console.log("url",url);
-				RCU.A4Printer.printUrl(JSON.stringify({fileUrl:url,callbackName:'printCallback'}));
-			},2000);
+			RCU.IDCard.reader(JSON.stringify({callbackName:'IDCardCallback'}));
+			
 		},2000);
 	});
 	$("#取消").on("click",function(){
@@ -112,6 +94,28 @@ function printCallback(code,message){
 	setTimeout(function(){
 		$("#myModal").modal('hide');
 		window.location.href="自助办理终端.html";
+	},2000);
+}
+function IDCardCallback(jsonString){
+	var idCard = JSON.parse(jsonString);
+	setTimeout(function(){
+		formData.身份证号码(idCard.data.no);
+		formData.姓名(idCard.data.name);
+		formData.提示信息("正在打印名称预先核准通知书");
+		var date = new Date(); 
+		 var datetime = date.getFullYear() + "-" + ((date.getMonth() + 1) > 10 ? (date.getMonth() + 1) : "0"
+                 + (date.getMonth() + 1)) + "-" + (date.getDate() < 10 ? "0" + date.getDate() : date.getDate());
+		var paramJson = JSON.stringify({
+			身份证号码:"身份证号码:"+formData.身份证号码(),姓名:"姓名:" + formData.姓名(),
+			企业名称:"企业名称:"+formData.企业名称(),所属行业:"所属行业:"+formData.所属行业(),
+			日期:"核准日期:"+datetime
+		});
+		console.log("paramJson",paramJson);
+		
+		var url = "../rest/demo/image/" + XJL.encodeURI("核名")+"/"+XJL.encodeURI(paramJson);
+		formData.url(url);
+		console.log("url",url);
+		RCU.A4Printer.printUrl(JSON.stringify({fileUrl:url,callbackName:'printCallback'}));
 	},2000);
 }
 </script>

@@ -106,24 +106,27 @@ function 打印证件(证件名称){
 			if (modalCloseState){
 				return;
 			}
-			var idCard = JSON.parse(RCU.IDCard.reader());
-			if (idCard.data.no != formData.身份证号码()){
-				formData.提示信息("非"+formData.姓名()+"本人不可打印");
-				window.location.href="自助取证终端.html";
-			} else {
-				formData.身份证号码(idCard.data.no);
-				formData.姓名(idCard.data.name);
-				formData.提示信息("正在打印证件");
-				var paramJson = JSON.stringify({身份证号码:"身份证号码:"+formData.身份证号码(),姓名:"姓名:" + formData.姓名()});
-				console.log("paramJson",paramJson);
-				var url = "../rest/demo/image/"+XJL.encodeURI("临时身份证")+"/"+XJL.encodeURI(paramJson);
-				console.log("url",url);
-				formData.url(url);
-				RCU.A4Printer.printUrl(JSON.stringify({fileUrl:url,callbackName:'printCallback'}));
-			}
+			RCU.IDCard.reader(JSON.stringify({callbackName:'IDCardCallback'}));
 		},2000);
 	},2000);			
 	
+}
+function IDCardCallback(jsonString){
+	var idCard = JSON.parse(jsonString);
+	if (idCard.data.no != formData.身份证号码()){
+		formData.提示信息("非"+formData.姓名()+"本人不可打印");
+		window.location.href="自助取证终端.html";
+	} else {
+		formData.身份证号码(idCard.data.no);
+		formData.姓名(idCard.data.name);
+		formData.提示信息("正在打印证件");
+		var paramJson = JSON.stringify({身份证号码:"身份证号码:"+formData.身份证号码(),姓名:"姓名:" + formData.姓名()});
+		console.log("paramJson",paramJson);
+		var url = "../rest/demo/image/"+XJL.encodeURI("临时身份证")+"/"+XJL.encodeURI(paramJson);
+		console.log("url",url);
+		formData.url(url);
+		RCU.A4Printer.printUrl(JSON.stringify({fileUrl:url,callbackName:'printCallback'}));
+	}
 }
 function printCallback(code,message){
 	console.log("code",code);

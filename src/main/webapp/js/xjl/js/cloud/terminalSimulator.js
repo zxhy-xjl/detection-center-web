@@ -9,7 +9,8 @@ var RCU = {
 			}
 		},
 		IDCard:{//身份证读卡器
-			reader:function(callbackName){//读取身份证，使用json对象转换方式
+			reader:function(jsonString){//读取身份证，使用json对象转换方式
+				var callbackName = JSON.parse(jsonString).callbackName;
 				var json =  JSON.stringify({
 					state:"ok", 
 					data:{no:'32010620101111288X',name:'张三',sex:'男',birthday:'2010.8.1',validThrough:'2026.8.1',photo:'经过base64编码的照片'},
@@ -24,7 +25,7 @@ var RCU = {
 			}
 		},
 		ThermoPrinter:{//热敏打印机
-			printerCurrentStatus:{code:"0",message:"打印机等待"},//打印机当前状态
+			printerCurrentStatus:{code:"00",message:"打印机等待"},//打印机当前状态
 			printerStatus:[//打印机状态码
 				{code:'00',message:'打印机等待（打印成功）'},
 				{code:'01',message:'用户输入数据错误'},
@@ -40,7 +41,7 @@ var RCU = {
 					var keyIndex = parseInt(5*Math.random());
 					console.log("keyIndex:" + keyIndex);
 					RCU.ThermoPrinter.printerCurrentStatus=RCU.ThermoPrinter.printerStatus[keyIndex];
-					if (RCU.ThermoPrinter.printerCurrentStatus.code == "0"){
+					if (RCU.ThermoPrinter.printerCurrentStatus.code == "00"){
 						RCU.ThermoPrinter.printerCurrentStatus.message="打印完成";
 					}
 					console.log("currentStatus:" + RCU.ThermoPrinter.printerCurrentStatus.code+":"+RCU.ThermoPrinter.printerCurrentStatus.message);
@@ -56,7 +57,7 @@ var RCU = {
 				var json = JSON.parse(jsonString);
 				console.log("参数:",json);
 				//首先判断打印机是否是就绪状态，如果是就绪状态则打印，否则直接返回错误。
-				if (RCU.ThermoPrinter.printerCurrentStatus.code == "0"){
+				if (RCU.ThermoPrinter.printerCurrentStatus.code == "00"){
 					console.log("当前打印机可用，开始打印");
 					RCU.ThermoPrinter.printerStartPrint(json);
 				} else {
@@ -66,7 +67,7 @@ var RCU = {
 			}
 		},
 		A4Printer:{//A4打印机
-			printerCurrentStatus:{code:"0",message:"打印机等待"},//打印机当前状态
+			printerCurrentStatus:{code:"00",message:"打印机等待"},//打印机当前状态
 			printerStatus:[//打印机状态码
 				{code:'00',message:'打印机等待（打印成功）'},
 				{code:'01',message:'用户输入数据错误'},
@@ -84,7 +85,7 @@ var RCU = {
 					console.log("keyIndex:" + keyIndex);
 					RCU.A4Printer.printerCurrentStatus=RCU.A4Printer.printerStatus[keyIndex];
 					console.log("currentStatus:" + RCU.A4Printer.printerCurrentStatus.code+":"+RCU.A4Printer.printerCurrentStatus.message);
-					if (RCU.A4Printer.printerCurrentStatus.code=="0"){
+					if (RCU.A4Printer.printerCurrentStatus.code=="00"){
 						RCU.A4Printer.printerCurrentStatus.message = "打印完成";
 					}
 					console.log("callbackName:",json.callbackName);
@@ -108,7 +109,7 @@ var RCU = {
 				//首先判断打印机是否是就绪状态，如果是就绪状态则打印，否则直接返回错误。
 				var json = JSON.parse(jsonString);
 				console.log("printUrl",json);
-				if (RCU.A4Printer.printerCurrentStatus.code == "0"){
+				if (RCU.A4Printer.printerCurrentStatus.code == "00"){
 					console.log("当前打印机可用，开始打印");
 					RCU.A4Printer.printerStartPrint(json);
 				} else {
@@ -156,7 +157,7 @@ var RCU = {
 				console.log("喇叭播放声音地址:"+json.url);
 				new Audio(json.url).play();
 				if (json.callbackName){
-					eval(callbackName+"('00','成功')");
+					eval(json.callbackName+"('00','成功')");
 				}
 				
 			},
@@ -171,35 +172,17 @@ var RCU = {
 		},
 		BarCode:{//扫码器(枪)
 			scan:function(){
-				console.log("扫码");
-				return JSON.stringify({
-					state:"ok",
-					data:{barcode:"123456",barcode2:"这是二维码"},
-					error:{}
-				});
+				console.log("BarCode该方法暂不支持");
 			}
 		},
 		CertPrinters:{//证照打印
 			printFile:function(){//打印本地文件，word或者图片等
-				console.log("证照打印本地文件成功");
-				return JSON.stringify({
-					state:"error",
-					data:{},
-					error:{code:"3",message:"缺纸"}
-				});
+				console.log("CertPrinters该方法暂不支持");
 			},
 		},
 		SICard:{//社保卡
 			reader:function(){//读取社保卡
-				console.log("读取社保卡")
-				return JSON.stringify({
-					state:"ok", 
-					data:{no:"社保卡号码",id:"630101198801011234",
-				        mediNo:"6222028888333222",name:"岳云鹏",
-				        sex:"男",birthday:"19880101",validThrough:"20361010",
-				        amount:"4812.5",photo:"经过base64编码的照片"},
-					error:{}
-				});
+				console.log("SICard该方法暂不支持");
 			}
 		}
 }

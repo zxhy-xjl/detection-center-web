@@ -67,14 +67,17 @@ function 刷身份证(){
 			if (modalCloseState){
 				return;
 			}
-			var idCard = JSON.parse(RCU.IDCard.reader());
-			formData.身份证号码(idCard.data.no);
-			formData.姓名(idCard.data.name);
-			formData.提示信息("正在查询证件信息");
-			setTimeout(function(){
-				window.location.href="自助取证终端-取证.html?No="+formData.身份证号码()+"&Name="+formData.姓名();
-			},2000);
+			RCU.IDCard.reader(JSON.stringify({callbackName:'IDCardCallback'}));
 		},2000);
+	},2000);
+}
+function IDCardCallback(jsonString){
+	var idCard = JSON.parse(jsonString);
+	formData.身份证号码(idCard.data.no);
+	formData.姓名(idCard.data.name);
+	formData.提示信息("正在查询证件信息");
+	setTimeout(function(){
+		window.location.href="自助取证终端-取证.html?No="+formData.身份证号码()+"&Name="+formData.姓名();
 	},2000);
 }
 </script>

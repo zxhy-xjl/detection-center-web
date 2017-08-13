@@ -55,21 +55,24 @@ var formData = {
 $(function () {
 	XJL.loadSimulator("init","../");
 });
+function IDCardCallback(jsonString){
+	var idCard = JSON.parse(jsonString);
+	setTimeout(function(){
+		formData.身份证号码(idCard.data.no);
+		formData.姓名(idCard.data.name);
+		$("#刷身份证模态窗口").modal('hide');
+		formData.显示互联网取票(false);
+		formData.显示可打印列表(true);
+		formData.提示信息("请选择要打印的车票");
+	},2000);
+}
 function 显示可打印列表(){
 	$("#刷身份证模态窗口").modal('show');
 	formData.提示信息("请刷身份证");
 	RCU.Audio.playText(JSON.stringify({text:"请刷身份证"}));
 	setTimeout(function(){
 		formData.提示信息("正在读取身份证信息");
-		var idCard = JSON.parse(RCU.IDCard.reader());
-		setTimeout(function(){
-			formData.身份证号码(idCard.data.no);
-			formData.姓名(idCard.data.name);
-			$("#刷身份证模态窗口").modal('hide');
-			formData.显示互联网取票(false);
-			formData.显示可打印列表(true);
-			formData.提示信息("请选择要打印的车票");
-		},2000);
+		RCU.IDCard.reader(JSON.stringify({callbackName:'IDCardCallback'}));
 	},2000);
 }
 function 显示互联网取票(){

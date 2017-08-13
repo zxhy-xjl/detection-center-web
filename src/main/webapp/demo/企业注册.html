@@ -64,19 +64,8 @@ function init(){
 	RCU.Audio.playText(JSON.stringify({text:"请刷身份证"}));
 	setTimeout(function(){
 		formData.提示信息("正在读取身份证信息");
-		var idCard = JSON.parse(RCU.IDCard.reader());
-		setTimeout(function(){
-			formData.身份证号码(idCard.data.no);
-			formData.姓名(idCard.data.name);
-			formData.提示信息("正在放入名称预先核准通知书");
-			RCU.Audio.playText(JSON.stringify({text:"请放入名称预先核准通知书"}));
-			setTimeout(function(){
-				var result = JSON.parse(RCU.HSI.open(JSON.stringify({callbackName:'HSICallback'})));
-				if (!result.state){
-					formData.提示信息("打开高拍仪失败："+result.error.code + '(' + result.error.message + ')');
-				}
-			},2000);
-		},2000);
+		RCU.IDCard.reader(JSON.stringify({callbackName:'IDCardCallback'}));
+		
 	},2000);
 	
 	$("#申请注册").on("click",function(){
@@ -123,6 +112,21 @@ function HSICallback(base64Image){
 		formData.申请注册(true);
 		$("#myModal").modal('hide');
 		formData.提示信息("核验成功，点击立即申请注册完成公司注册");
+	},2000);
+}
+function IDCardCallback(jsonString){
+	var idCard = JSON.parse(jsonString);
+	setTimeout(function(){
+		formData.身份证号码(idCard.data.no);
+		formData.姓名(idCard.data.name);
+		formData.提示信息("正在放入名称预先核准通知书");
+		RCU.Audio.playText(JSON.stringify({text:"请放入名称预先核准通知书"}));
+		setTimeout(function(){
+			var result = JSON.parse(RCU.HSI.open(JSON.stringify({callbackName:'HSICallback'})));
+			if (!result.state){
+				formData.提示信息("打开高拍仪失败："+result.error.code + '(' + result.error.message + ')');
+			}
+		},2000);
 	},2000);
 }
 </script>
