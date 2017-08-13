@@ -106,7 +106,7 @@ function 打印证件(证件名称){
 			if (modalCloseState){
 				return;
 			}
-			RCU.IDCard.reader(JSON.stringify({callbackName:'IDCardCallback'}));
+			IDCardCallback(RCU.IDCard.reader());
 		},2000);
 	},2000);			
 	

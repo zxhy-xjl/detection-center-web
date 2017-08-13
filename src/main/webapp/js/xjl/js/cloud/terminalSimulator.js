@@ -9,18 +9,13 @@ var RCU = {
 			}
 		},
 		IDCard:{//身份证读卡器
-			reader:function(jsonString){//读取身份证，使用json对象转换方式
-				var callbackName = JSON.parse(jsonString).callbackName;
-				var json =  JSON.stringify({
+			reader:function(){//读取身份证，使用json对象转换方式
+				var jsonString =  JSON.stringify({
 					state:"ok", 
 					data:{no:'32010620101111288X',name:'张三',sex:'男',birthday:'2010.8.1',validThrough:'2026.8.1',photo:'经过base64编码的照片'},
 					error:{}
 				});
-				//模拟等待两秒返回数据
-				setTimeout(function(){
-					console.log("json",json);
-					eval(callbackName+"('"+json+"')");
-				},1000);
+				return jsonString;
 				
 			}
 		},

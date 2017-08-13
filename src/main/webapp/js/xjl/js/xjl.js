@@ -18,6 +18,18 @@ var XJL = {
 			console.log("返回",name + "的值" + this.urlParams[name]);
 			return this.urlParams[name];
 		},
+		getProjectURL:function(){
+			//获取当前网址，如： http://localhost:8080/Tmall/index.jsp 
+			var curWwwPath=window.document.location.href; 
+			//获取主机地址之后的目录如：/Tmall/index.jsp 
+			var pathName=window.document.location.pathname; 
+			//获取主机地址，如： http://localhost:8080 
+			var pos=curWwwPath.indexOf(pathName); 
+			var localhostPath=curWwwPath.substring(0,pos); 
+			//获取带"/"的项目名，如：/Tmall 
+			var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1); 
+			return localhostPath+projectName;
+		},
 		bindCloseWindowEvent:function(){
 			console.log("executeBindCloseWindow",this.executeBindCloseWindow);
 			console.log("绑定关闭窗口事件");

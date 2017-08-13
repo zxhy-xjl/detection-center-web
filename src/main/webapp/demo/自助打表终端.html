@@ -103,7 +103,7 @@ function 打印申请表(申请表名称){
 			if (modalCloseState){
 				return;
 			}
-			RCU.IDCard.reader(JSON.stringify({callbackName:'IDCardCallback'}));
+			IDCardCallback(RCU.IDCard.reader());
 		},2000);
 	},2000);
 				

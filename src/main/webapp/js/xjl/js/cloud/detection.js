@@ -16,11 +16,10 @@ function testTerminalInfo(){
 //身份证读卡器
 
 function testIDCardReader(){
-	RCU.IDCard.reader(JSON.stringify({callbackName:'testIdCardReaderCallback'}));
-	addItem("身份证读卡器::<span id='IDCard'>正在读取身份证</span>","waiting");
+	testIdCardReaderCallback(RCU.IDCard.reader());
+	
 }
 function testIdCardReaderCallback(jsonString){
-	setTimeout(function(){
 		console.log("jsonString",jsonString);
 		var json = JSON.parse(jsonString);
 		var msg = "";
@@ -29,9 +28,7 @@ function testIdCardReaderCallback(jsonString){
 		} else {
 			msg = json.error.message + "("+json.error.code+")";
 		}
-		
-		resetItemStatus("IDCard",json.state=="ok",msg);
-	},2000*(itemNow));
+		addItem("身份证读卡器::"+msg,json.state);
 }
 
 
@@ -104,7 +101,7 @@ function testAudioPlay(){
 		return;
 	}
 	//检测播放声音方法
-	var mp3Url="sound/tishiyin.mp3";
+	var mp3Url=XJL.getProjectURL()+"/sound/tishiyin.mp3";
 	RCU.Audio.play(JSON.stringify({url:mp3Url,callbackName:'testAudioPlayCallback'}));
 	
 }

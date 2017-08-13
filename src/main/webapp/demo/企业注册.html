@@ -64,7 +64,7 @@ function init(){
 	RCU.Audio.playText(JSON.stringify({text:"请刷身份证"}));
 	setTimeout(function(){
 		formData.提示信息("正在读取身份证信息");
-		RCU.IDCard.reader(JSON.stringify({callbackName:'IDCardCallback'}));
+		IDCardCallback(RCU.IDCard.reader());
 		
 	},2000);
 	

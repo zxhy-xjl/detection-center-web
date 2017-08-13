@@ -73,6 +73,7 @@
 	    <li role="presentation"><a href="#高拍仪" aria-controls="高拍仪" role="tab" data-toggle="tab">高拍仪</a></li>
 	    <li role="presentation"><a href="#摄像头" aria-controls="摄像头" role="tab" data-toggle="tab">摄像头</a></li>
 	    <li role="presentation"><a href="#声音" aria-controls="声音" role="tab" data-toggle="tab">声音</a></li>
+	  	<li role="presentation"><a href="#错误回调代码表" aria-controls="错误回调代码表" role="tab" data-toggle="tab">错误回调代码表</a></li>
 	  
 	  </ul>
 	<div class="tab-content">
@@ -134,7 +135,7 @@
 
 	{
 	  content: 经过base64编码过的图片数据 ,
-	  callback:回调函数名称
+	  callbackName:回调函数名称
 	}
 
 输出结果：无
@@ -216,37 +217,34 @@ code代码
 	{
 	  callbackName:HSICallback
 	}
-输出结果：高拍仪状态
-	{
-	  state:ok/error,
-	  error: {
-	    code: 错误代码,
-	    message: 错误消息
-	  } 
+输出结果：无
+回调函数参考格式
+{
+	state:ok/error,
+	data:{
+	  img:经过base64编码的图片
+	},
+	error:{
+	  code:异常代码,
+	  message:异常消息
 	}
+}
 
 错误/回调函数代码表：
 	{code:'01',message:'设备打开失败'},
 	{code:'02',message:'回调函数为空'},
 	{code:'99',message:'未知错误'}
 
-回调函数（点击拍摄之后调用该回调函数）
-	// img: 经过base64编码的图像数据
-	function HSICallback (img) {
-	}
 
 示例
 	var content = {callbackName:'HSICallback'};
 	var cont = JSON.stringify(content);
-	var ret = RCU.HSI.open(cont);
-	var result = JSON.parse(ret);
-	if (result.success != true) {
-	  alert('高拍仪打开错误'+ result.error.code + '(' + result.error.message + ')');
-	}
-
+	RCU.HSI.open(cont);
+	
  	//回调函数获取图片
-	function HSICallback(image){
-	  img.src = 'data:image/jpeg;base64,' + image;
+	function HSICallback(jsonString){
+	  var json = JSON.parse(jsonString);
+	  img.src = 'data:image/jpeg;base64,' + json.data.img;
 	}
 
 </pre>
@@ -269,85 +267,42 @@ code代码
 	{
 	  callbackName:'WebCamCallback'
 	}
-输出结果：摄像头状态
-	{
-	  state:ok/error,
-	  error: {
-	    code: 错误代码,
-	    message: 错误消息
-	  } 
+输出结果：无
+回调函数参考格式
+{
+	state:ok/error,
+	data:{
+	  img:经过base64编码的图片
+	},
+	error:{
+	  code:异常代码,
+	  message:异常消息
 	}
+}
 
 错误/回调函数代码表：
 	{code:'01',message:'设备打开失败'},
 	{code:'02',message:'回调函数为空'},
 	{code:'99',message:'未知错误'}
 
-回调函数（点击拍摄之后调用该回调函数）
-	// img: 经过base64编码的图像数据
-	function WebCamCallback (img) {
-	}
 
 示例
 	var content = {callbackName:'WebCamNewImage'};
 	var cont = JSON.stringify(content);
-	var ret = RCU.Camera.open(cont);
-	var result = JSON.parse(ret);
-	if (result.state != 'ok') {
-	  alert('摄像头打开错误'+ result.error.code + '(' + result.error.message + ')');
-	}
-
+	RCU.Camera.open(cont);
+	
 
  	//回调函数获取图片
-	function WebCamNewImage(image){
-	  img.src = 'data:image/jpeg;base64,' + image;
+	function WebCamNewImage(jsonString){
+	  var json = JSON.parse(jsonString);
+	  img.src = 'data:image/jpeg;base64,' + json.data.img;
 	}
 
 </pre>        
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="摄像头录像Heading">
-      <h4 class="panel-title">
-        <a role="button" data-toggle="collapse" data-parent="#摄像头accordion" href="#摄像头录像" aria-expanded="false"  aria-controls="摄像头录像">
-          摄像头录像
-        </a>
-      </h4>
-    </div>
-    <div id="摄像头录像" class="panel-collapse collapse" role="tabpanel" aria-labelledby="摄像头录像Heading">
-      <div class="panel-body">
-<pre>
-方法名称：RCU.Camera.video() 
-输入参数：无
-输出结果：录像文件地址
-	{
-	  state:ok/error,
-	  data:{media:'录像文件地址'},
-	  error: {
-	    code: '错误代码',
-	    message: '错误消息'
-	  } 
-	}
-
-错误/回调函数代码表：
-	{code:'01',message:'摄像头打开失败'},
-	{code:'02',message:'回调函数为空'},
-	{code:'99',message:'其它错误'}
-
-
-示例
-	var ret = RCU.Camera.vedio();
-	var result = JSON.parse(ret);
-	if (result.state != 'ok') {
-	  alert('摄像头打开错误'+ result.error.code + '(' + result.error.message + ')');
-	} else {
-	  console.log("url:"+result.data.media);
-	}
-</pre>        
-      </div>
-    </div>
-  </div>
+  
   </div>
 </div>
 
@@ -429,6 +384,64 @@ code代码
   </div>
 
 </div>
+
+	  <div role="tabpanel" class="tab-pane fade" id="错误回调代码表">
+<pre>
+
+//RCU状态码
+var RCU_STATUS_CODE = [
+	{device:'RCU',code:'00',status:[
+		{code:'01',message:'未授权'},
+		{code:'99',message:'其它错误'}
+		]
+	},{device:'身份证读卡器',code:'01',status:[
+		{code:'01',message:'找不到设备'},
+		{code:'02',message:'无效身份证'},
+		{code:'99',message:'其它错误'}
+		]
+	},{device:'热敏打印机',code:'02',status:[
+		{code:'00',message:'打印机等待（打印成功）'},
+		{code:'01',message:'用户输入数据错误'},
+		{code:'02',message:'文件未找到'},
+		{code:'03',message:'打印机离线'},
+		{code:'04',message:'打印机忙碌'},
+		{code:'05',message:'打印机缺纸'},
+		{code:'99',message:'其它错误'}
+		]
+	},{device:'A4打印机',code:'03',status:[
+		{code:'00',message:'打印机等待（打印成功）'},
+		{code:'01',message:'用户输入数据错误'},
+		{code:'02',message:'文件未找到'},
+		{code:'03',message:'打印机离线'},
+		{code:'04',message:'打印机忙碌'},
+		{code:'05',message:'打印机缺纸'},
+		{code:'99',message:'其它错误'}
+		]
+	},{device:'高拍仪',code:'04',status:[
+		{code:'01',message:'高拍仪打开失败'},
+		{code:'02',message:'回调函数为空'},
+		{code:'99',message:'其它错误'}
+		]
+	},{device:'摄像头',code:'05',status:[
+		{code:'01',message:'摄像头打开失败'},
+		{code:'02',message:'回调函数为空'},
+		{code:'99',message:'其它错误'}
+		]
+	},{device:'声音',code:'06',status:[
+		{code:'00',message:'成功'},
+		{code:'01',message:'输入参数不正确'},
+		{code:'02',message:'播放出错'},
+		{code:'03',message:'文件下载失败'},
+		{code:'04',message:'语音服务不可用'},
+		{code:'99',message:'其它错误'}
+		]
+	}
+	
+];
+
+</pre>
+</div>
+
 	</div>
 </div>
 </body>
