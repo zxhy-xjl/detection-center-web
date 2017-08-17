@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<head>
+<title>终端机器系统演示Demo-出证系统</title>
+<style type='text/css'>
+	body {
+	     background-color: #CCC;
+	}
+</style>
+<link rel="stylesheet" href="../js/bootstrap/css/bootstrap.min.css" >
+<link rel="stylesheet" href="../js/bootstrap/css/bootstrap-theme.min.css" >
+<link rel="stylesheet" href="../js/bootstraptable/css/bootstrap-table.min.css">
+<link rel="stylesheet" href="../js/bootstrapselect/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="css/demo.css">
+<script src="../js/jquery/js/jquery-3.2.1.min.js"></script>
+<script src="../js/jquery/js/jquery-rest.js"></script>
+<script src="../js/bootstrap/js/bootstrap.min.js"></script>
+<script src="../js/bootstraptable/js/tableExport.js"></script>
+<script src="../js/bootstraptable/js/bootstrap-table.js"></script>
+<script src="../js/bootstraptable/js/bootstrap-table-export.js"></script>
+<script src="../js/knockout/js/knockout-3.4.2.js"></script>
+<script src="../js/knockout/js/knockout.mapping-latest.js"></script>
+<script src="../js/bootstraptable/js/knockout.bootstraptable.js"></script>
+<script src="../js/bootstrapselect/js/bootstrap-select.min.js"></script>
+<script src="../js/bootstrapselect/js/i18n/defaults-zh_CN.min.js"></script>
+<script src="../js/bootstrapcheckbox/js/bootstrap-checkbox.min.js"></script>
+<script src="../js/xjl/js/xjl.js"></script>
+<script src="../js/xjl/js/xjl-table.js"></script>
+<script src="js/demo.js"></script>
+<script type="text/javascript">
+var FormData = function(){
+	self = this;
+	self.注册号=ko.observable(XJL.getUrlParam("注册号"));
+	self.名称=ko.observable(XJL.getUrlParam("名称"));
+	self.住所=ko.observable(XJL.getUrlParam("住所"));
+	self.法定代表人姓名=ko.observable(XJL.getUrlParam("法定代表人姓名"));
+	self.注册资本=ko.observable(XJL.getUrlParam("注册资本"));
+	self.公司类型=ko.observable(XJL.getUrlParam("公司类型"));
+	self.实收资本=ko.observable(XJL.getUrlParam("实收资本"));
+	self.经营范围=ko.observable(XJL.getUrlParam("经营范围"));
+	self.发证机关=ko.observable(XJL.getUrlParam("发证机关"));
+	self.成立日期=ko.observable(XJL.getUrlParam("成立日期"));
+	self.营业期限=ko.observable(XJL.getUrlParam("营业期限"));
+	self.发证年=ko.observable(XJL.getUrlParam("发证年"));
+	self.发证月=ko.observable(XJL.getUrlParam("发证月"));
+	self.发证日=ko.observable(XJL.getUrlParam("发证日"));
+	self.提示信息=ko.observable();
+	self.证照预览=ko.observable();
+	self.信息完整=ko.computed(function(){
+			var flag = self.注册号()&&self.名称()
+			&&self.住所()&&self.法定代表人姓名()&&self.注册资本()
+			&&self.公司类型()&&self.实收资本()&&self.经营范围()
+			&&self.发证机关()&&self.成立日期()&&self.营业期限()&&self.发证年()&&self.发证月()&&self.发证日()
+			;
+			if (flag){
+				self.提示信息("信息完整可以出证或者生成电子证照");
+			} else {
+				self.提示信息("信息不完整，请填写完整");
+			}
+			return flag;
+		},self);
+	
+};
+var formData = new FormData();
+$(function () {
+	XJL.loadSimulator("init","../");
+	ko.applyBindings(formData, document.getElementById("form"));
+	$("#打印证照").click(function(){
+			var paramJson = JSON.stringify(ko.mapping.toJS(formData));
+			console.log("paramJson",paramJson);
+			var url = "../rest/demo/image/" + XJL.encodeURI("营业执照") + "/"+XJL.encodeURI(paramJson);
+			console.log("length:"+url.length);
+		console.log("url",url);
+		window.open(url);
+	});
+});
+function init(){
+	XJL.initTerminalInfo("../");
+}
+
+</script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="../../"><img class="navbar-brand" src="../images/xjl.png" height="30px"></a>
+    </div>
+	<!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+ 	  <ul class="nav navbar-nav">
+      	<li><a href="../">RCU</a></li>
+      	<li><a href="index.html">DEMO</a></li>
+      </ul>
+      <ul class="nav navbar-nav">
+       <li><span class="navbar-text" id="loadInfoPanel"></span></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+       <li class="dropdown">
+       		<a id="terminalNo" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">终端信息 <span class="caret"></span></a>
+	       <ul class="dropdown-menu">
+		       <li><a id="rcuNo">RCU</a></li>
+		       <li><a id="terminalType">类型</a></li>
+	       </ul>
+       </li>
+	  </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container" id="container" >
+	<form class="form-horizontal" id="form">
+	 	<div class="form-group">
+	        <label for="txt_注册号" class="col-sm-2 control-label">注册号</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_注册号" data-bind="value:注册号" class="form-control" id="txt_注册号" placeholder="注册号">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_名称" class="col-sm-2 control-label">名称</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_名称" data-bind="value:名称" class="form-control" id="txt_名称" placeholder="名称">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_住所" class="col-sm-2 control-label">住所</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_住所" data-bind="value:住所" class="form-control" id="txt_住所" placeholder="住所">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_法定代表人姓名" class="col-sm-2 control-label">法定代表人姓名</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_法定代表人姓名" data-bind="value:法定代表人姓名" class="form-control" id="txt_法定代表人姓名" placeholder="法定代表人姓名">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_注册资本" class="col-sm-2 control-label">注册资本</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_注册资本" data-bind="value:注册资本" class="form-control" id="txt_注册资本" placeholder="注册资本">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_公司类型" class="col-sm-2 control-label">公司类型</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_公司类型" data-bind="value:公司类型" class="form-control" id="txt_公司类型" placeholder="公司类型">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_实收资本" class="col-sm-2 control-label">实收资本</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_实收资本" data-bind="value:实收资本" class="form-control" id="txt_实收资本" placeholder="实收资本">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_经营范围" class="col-sm-2 control-label">经营范围</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_经营范围" data-bind="value:经营范围" class="form-control" id="txt_经营范围" placeholder="经营范围">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_发证机关" class="col-sm-2 control-label">发证机关</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_发证机关" data-bind="value:发证机关" class="form-control" id="txt_发证机关" placeholder="发证机关">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_成立日期" class="col-sm-2 control-label">成立日期</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_成立日期" data-bind="value:成立日期" class="form-control" id="txt_成立日期" placeholder="成立日期">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_营业期限" class="col-sm-2 control-label">营业期限</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_营业期限" data-bind="value:营业期限" class="form-control" id="txt_营业期限" placeholder="营业期限">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_发证年" class="col-sm-2 control-label">发证年</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_发证年" data-bind="value:发证年" class="form-control" id="txt_发证年" placeholder="发证年">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_发证月" class="col-sm-2 control-label">发证月</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_发证月" data-bind="value:发证月" class="form-control" id="txt_发证月" placeholder="发证月">
+	    	</div>
+	    </div>
+	    <div class="form-group">
+	        <label for="txt_发证日" class="col-sm-2 control-label">发证日</label>
+	        <div class="col-sm-8">
+	        	<input name="txt_发证日" data-bind="value:发证日" class="form-control" id="txt_发证日" placeholder="发证日">
+	    	</div>
+	    </div>
+	    
+	   <span data-bind="text:提示信息" class="col-sm-offset-2 col-sm-8 text-center">出证信息</span>
+		<div class="form-group">
+		  <div class="col-sm-offset-2 col-sm-8 text-center">
+		    <button type="button" data-bind="enable:信息完整" class="btn btn-default" id="打印证照" >打印证照</button>
+		  </div>
+		</div>
+    </form>
+</div>
+</body>
+</html>

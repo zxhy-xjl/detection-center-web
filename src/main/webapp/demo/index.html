@@ -32,13 +32,19 @@
 <script src="js/demo.js"></script>
 <script type="text/javascript">
 var demoTitleList = [
-	{title:"政务中心",list:[
+	{title:"行政服务中心",list:[
 		{name:"排队取号机",url:"pdqhj.html"},
 		{name:"电子宣传屏",url:"dzxcp.html"},
 		{name:"大厅导航机",url:"大厅导航机.html"},
 		{name:"自助办理终端",url:"自助办理终端.html"},
 		{name:"自助打表终端",url:"自助打表终端.html"},
-		{name:"自助取证终端",url:"自助取证终端.html"}
+		{name:"自助取证终端",url:"自助取证终端.html"},
+		{name:"出证系统"},
+		{name:"电子证照系统"}
+	]},
+	{title:"社区服务中心",list:[
+		{name:"失业登记",url:"失业登记终端.html"},
+		{name:"低保登记",url:"低保登记终端.html"}
 	]},
 	{title:"火车站",list:[
 		{name:"自助取票机",url:"自助取票机.html"}
@@ -47,6 +53,22 @@ var demoTitleList = [
 		{name:"微信扫一扫付款",url:"微信扫一扫付款.html"},
 		{name:"支付宝扫一扫付款",url:"支付宝扫一扫付款.html"},
 		{name:"微信支付宝二合一扫一扫付款",url:"微信支付宝二合一扫一扫付款.html"}
+	]},
+	{title:"医院",path:true,list:[
+		{name:"挂号机"},
+		{name:"缴费机"},
+		{name:"自助取报告机"},
+		{name:"化验单"}
+	]},
+	{title:"学校",path:true,list:[
+		{name:"发卡机"},
+		{name:"充值机"},
+		{name:"洗衣机"},
+		{name:"借书机"}
+	]},
+	{title:"宾馆",path:true,list:[
+		{name:"开房机"},
+		{name:"退房机"}
 	]}
 	
 ];
@@ -63,7 +85,16 @@ function init(){
 		  '<div class="panel-body">';
 		var demoList = demoTitle.list;    
 		for (var i = 0;i<demoList.length;i++){
-		   html += '<div class="col-md-3 col-sm-6" style="margin-bottom:20px;" onclick="showDemo(\''+demoList[i].url+'\')">'+
+			var url = "";
+			if (demoList[i].url){
+				url = demoList[i].url;
+			} else {
+				url = demoList[i].name+".html";
+			}
+			if (demoTitle.path){
+				url = demoTitle.title+"/"+url;	
+			}
+		   html += '<div class="col-md-3 col-sm-6" style="margin-bottom:20px;" onclick="showDemo(\''+url+'\')">'+
 		   '<button type="button" class="btn btn-primary btn-lg btn-block" style="height: 100px;font-size: 20pt">'+
 		   demoList[i].name+
 		   '</button>'+

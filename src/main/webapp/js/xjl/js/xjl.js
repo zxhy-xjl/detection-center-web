@@ -4,7 +4,7 @@ var XJL = {
 			if (!this.urlParams){
 				console.log("urlParams为空，开始构建");
 				this.urlParams=new Object();   
-				var query=location.search.substring(1);//获取查询串   
+				var query=decodeURIComponent(location.search.substring(1));//获取查询串   
 				var pairs=query.split("&");//在逗号处断开   
 				for(var   i=0;i<pairs.length;i++) {   
 						var pos=pairs[i].indexOf('=');//查找name=value   
