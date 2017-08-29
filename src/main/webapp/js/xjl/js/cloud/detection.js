@@ -181,6 +181,16 @@ function detectionZZQZZD(){
 	testCameraOpen();
 	testAudioPlay();
 }
+function detectionCKZHSLZD(){
+	addTitle("C3","窗口综合受理终端",	6);
+	cleanGroup();
+	testTerminalInfo();
+	testIDCardReader();
+	testA4PrinterPrintUrl();
+	testCameraOpen();
+	testHSICatch();
+	testAudioPlay();
+}
 var itemCode;
 var itemTitle;
 //总检测数量
@@ -222,7 +232,7 @@ function addItem(item,state){
 }
 function showProgressbar(){
 	console.log("显示进度条:",itemNow);
-	var value = (itemSuccess/itemCount).toFixed(2)*100;
+	var value = Math.round((itemSuccess/itemCount).toFixed(2)*100);
 	$("#progressbar").attr("aria-valuenow",value);
 	$("#progressbar").attr("style","width: "+value+"%");
 	$("#progressbar").empty();
