@@ -35,17 +35,21 @@ $(function () {
 });
 function init(){
 	XJL.initTerminalInfo();
+	var terminalData = JSON.parse(RCU.Terminal.info()).data;
+	var terminalID = XJL.getUrlParam("clientID");
+	if (terminalID){
+		terminalData.terminal=terminalID;
+	}
 	$('#setURL').on("click", function () {
 		if (!$("#HomePage").val()){
-			console.log("主页内容为空，不处理点击事件");
+			alert("主页内容为空，不处理点击事件");
 			return;
 		}
 		var module=$("#HomePage").val().split("$$");
 		$.restPost({
-	        url: 'rest/cdcTerminal/setURL/'+json.data.terminal,
+	        url: 'rest/cdcTerminal/setURL/'+terminalData.terminal,
 	        data:{moduleId:module[0],url:module[1]},
 	        success: function (data, status) {
-	        	console.log("设置成功,自动跳转到对应的url界面");
 	        	window.location.href=module[1];
 	        }
 	    });
