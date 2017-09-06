@@ -102,6 +102,7 @@ function testAudioPlay(){
 	}
 	//检测播放声音方法
 	var mp3Url=XJL.getProjectURL()+"/sound/tishiyin.mp3";
+	console.log("mp3Url:"+mp3Url);
 	RCU.Audio.play(JSON.stringify({url:mp3Url,callbackName:'testAudioPlayCallback'}));
 	
 }
@@ -136,10 +137,10 @@ function detectionPDQHJ(){
 }
 //电子宣传屏
 function detectionDZXCP(){
-	addTitle("A2","电子宣传屏",2);
+	addTitle("A2","电子宣传屏",1);
 	cleanGroup();
 	testTerminalInfo();
-	testAudioPlay();
+	//testAudioPlay();
 }
 //大厅导航机
 function detectionDTDHJ(){

@@ -73,6 +73,7 @@
 	    <li role="presentation"><a href="#高拍仪" aria-controls="高拍仪" role="tab" data-toggle="tab">高拍仪</a></li>
 	    <li role="presentation"><a href="#摄像头" aria-controls="摄像头" role="tab" data-toggle="tab">摄像头</a></li>
 	    <li role="presentation"><a href="#声音" aria-controls="声音" role="tab" data-toggle="tab">声音</a></li>
+	    <li role="presentation"><a href="#扫码" aria-controls="扫码" role="tab" data-toggle="tab">扫码</a></li>
 	  	<li role="presentation"><a href="#错误回调代码表" aria-controls="错误回调代码表" role="tab" data-toggle="tab">错误回调代码表</a></li>
 	  
 	  </ul>
@@ -385,7 +386,27 @@ code代码
 
 </div>
 
-	  <div role="tabpanel" class="tab-pane fade" id="错误回调代码表">
+	  <div role="tabpanel" class="tab-pane fade" id="扫码">
+<pre>
+方法名称：RCU.BarCode.scan() 扫码（支持条码和二维码）
+输入参数：
+	{ callbackName:'scanCallback',timeoutSeconds:10}
+输出结果：无
+回调函数参考格式
+{
+  state:ok/error,
+  data:{code:条码},
+  error:{code:01,message:扫码器打开失败}
+}
+
+错误/回调函数代码表：
+	{code:'01',message:'扫码器打开失败'},
+	{code:'02',message:'回调函数为空'},
+	{code:'99',message:'未知错误'}
+
+</pre>
+</div>
+<div role="tabpanel" class="tab-pane fade" id="错误回调代码表">
 <pre>
 
 //RCU状态码
@@ -435,13 +456,18 @@ var RCU_STATUS_CODE = [
 		{code:'04',message:'语音服务不可用'},
 		{code:'99',message:'其它错误'}
 		]
+	},{device:'扫码',code:'07',status:[
+		{code:'00',message:'成功'},
+		{code:'01',message:'扫码器打开失败'},
+		{code:'02',message:'回调函数为空'},
+		{code:'99',message:'其它错误'}
+		]
 	}
 	
 ];
 
 </pre>
 </div>
-
 	</div>
 </div>
 </body>
