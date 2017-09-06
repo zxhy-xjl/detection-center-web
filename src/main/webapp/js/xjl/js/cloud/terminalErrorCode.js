@@ -45,6 +45,12 @@ var RCU_STATUS_CODE = [
 		{code:'04',message:'语音服务不可用'},
 		{code:'99',message:'其它错误'}
 		]
+	},{device:'扫码',status:[
+		{code:'00',message:'成功'},
+		{code:'01',message:'扫码器打开失败'},
+		{code:'02',message:'回调函数为空'},
+		{code:'99',message:'其它错误'}
+		]
 	}
 	
 ];

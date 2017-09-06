@@ -48,15 +48,16 @@ function ThermoPrinterCallback(code,message){
 }
 function testHSICatch(){
 	addItem("高拍仪拍照::<span id='HSICatch'>正在拍摄</span>","waiting");
-	var ret = RCU.HSI.open(JSON.stringify({callbackName:'HSICatchCallback'}));
-	var result = JSON.parse(ret);
-	if (result.state != "ok") {
-		resetItemStatus("HSICatch",false,result.error.code + '(' + result.error.message + ')');
-	}
+	RCU.HSI.open(JSON.stringify({callbackName:'HSICatchCallback'}));
 }
-function HSICatchCallback(img){
+function HSICatchCallback(jsonString){
+	console.log("HSICatchCallback:"+ jsonString);
+	var json = JSON.parse(jsonString);
+	console.log("HSICatchCallback:",json);
 	setTimeout(function(){
-		resetItemStatus("HSICatch",true,"");
+		var success = json.state=="ok";
+		var message = json.error.code + ":" + json.error.message
+		resetItemStatus("HSICatch",success,message);
 	},2000*(itemNow));
 }
 
@@ -78,11 +79,15 @@ function testCameraOpen(){
 	addItem("摄像头拍照::<span id='CameraOpen'>正在打开摄像头</span>","waiting");
 	RCU.Camera.open(JSON.stringify({callbackName:'testCameraOpenCallback'}));
 }
-function testCameraOpenCallback(imgBase64) {
-		
-	  setTimeout(function(){
-		  	resetItemStatus("CameraOpen",true,"(00)");
-		},2000*(itemNow));
+function testCameraOpenCallback(jsonString) {
+	console.log("testCameraOpenCallback:"+ jsonString);
+	var json = JSON.parse(jsonString);
+	console.log("testCameraOpenCallback:",json);
+	setTimeout(function(){
+		var success = json.state=="ok";
+		var message = json.error.code + ":" + json.error.message
+		resetItemStatus("CameraOpen",success,message);
+	},2000*(itemNow));
 }
 
 function testCameraVideo(){
@@ -125,7 +130,31 @@ function testAudioPlayTextCallback(code, message){
 	}
 	addItem("喇叭播放声音::" + message,ok);
 }
-
+function testBarCode(){
+	if (typeof RCU.BarCode == "undefined"){
+		addItem("扫码::该接口未实现","error");
+		return;
+	}
+	addItem("扫码::<span id='BarCode'>正在扫码</span>","waiting");
+	RCU.BarCode.scan(JSON.stringify({callbackName:'testBarCodeCallback',timeoutSeconds:10}));
+	
+}
+function testBarCodeCallback(jsonString){
+	console.log("testBarCodeCallback："+jsonString)
+	var json = JSON.parse(jsonString);
+	setTimeout(function(){
+		var success = true;
+		var message = "";
+		if (json.state=="ok"){
+			success = true;
+			message = "扫码结果:"+json.data.code;
+		} else {
+			success = false;
+			message = json.error.code + ":" + json.error.message;
+		}
+		resetItemStatus("BarCode",success,message);
+	},2000*(itemNow));
+}
 //排队取号机
 function detectionPDQHJ(){
 	addTitle("A1","排队取号机",4);
@@ -153,7 +182,7 @@ function detectionDTDHJ(){
 	
 }//自助办理终端
 function detectionZZBLZD(){
-	addTitle("B1","自助办理终端",7);
+	addTitle("B1","自助办理终端",8);
 	cleanGroup();
 	testTerminalInfo();
 	testIDCardReader();
@@ -162,6 +191,7 @@ function detectionZZBLZD(){
 	testA4PrinterPrintUrl();
 	testCameraOpen();
 	testAudioPlay();
+	testBarCode();
 }//自助打表终端
 function detectionZZDBZD(){
 	addTitle("B2","自助打表终端",5);
