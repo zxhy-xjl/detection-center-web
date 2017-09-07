@@ -55,7 +55,10 @@ function HSICatchCallback(jsonString){
 	var json = JSON.parse(jsonString);
 	console.log("HSICatchCallback:",json);
 	var success = json.state=="ok";
-	var message = json.error.code + ":" + json.error.message
+	var message="";
+	if (!success){
+		message= json.error.code + ":" + json.error.message
+	}
 	resetItemStatus("HSICatch",success,message);
 	startNextCheckItem();
 }
@@ -82,7 +85,10 @@ function testCameraOpenCallback(jsonString) {
 	var json = JSON.parse(jsonString);
 	console.log("testCameraOpenCallback:",json);
 	var success = json.state=="ok";
-	var message = json.error.code + ":" + json.error.message
+	var message="";
+	if (!success){
+		message= json.error.code + ":" + json.error.message
+	}
 	resetItemStatus("CameraOpen",success,message);
 	startNextCheckItem();
 }
