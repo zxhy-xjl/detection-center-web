@@ -159,7 +159,7 @@ var RCU = {
 				console.log("喇叭播放声音内容:"+json.text);
 				var text = json.text;
 				var terminal = JSON.parse(RCU.Terminal.info()).data.terminal;
-				var soundURL="http://tsn.baidu.com/text2audio?tex="+text+"&lan=zh&cuid="+terminal+"&ctp=1&tok=24.80f7710159b1c0a7f6bafe0f7ac965e8.2592000.1504408047.282335-9968802";
+				var soundURL="http://tsn.baidu.com/text2audio?tex="+text+"&lan=zh&cuid="+terminal+"&ctp=1&tok=24.c28b43aa0095b60b143d867cf1cc2e15.2592000.1507371135.282335-9968802";
 				this.play(JSON.stringify({url:soundURL,callbackName:json.callbackName}));
 			}
 		},
