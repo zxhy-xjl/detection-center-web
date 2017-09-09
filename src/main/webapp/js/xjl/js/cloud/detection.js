@@ -307,12 +307,23 @@ function resetItemStatus(id,success,errorMessage){
 }
 function showProgressbar(){
 	console.log("显示进度条:",itemNow);
-	var value = Math.round((itemSuccess/itemCount).toFixed(2)*100);
+	var value = Math.round((itemNow/itemCount).toFixed(2)*100);
+	if (itemNow==itemSuccess){
+		$("#progressbar").removeClass("progress-bar-danger");
+		$("#progressbar").addClass("progress-bar-success");
+	} else {
+		$("#progressbar").removeClass("progress-bar-success");
+		$("#progressbar").addClass("progress-bar-danger");
+	}
 	$("#progressbar").attr("aria-valuenow",value);
 	$("#progressbar").attr("style","width: "+value+"%");
 	$("#progressbar").empty();
-	$("#progressbar").append($("<span>"+value+"% Complete (success)</span>"));
-	if (value == 100){
+	if (itemNow==itemSuccess){
+		$("#progressbar").append($("<span>"+value+"% </span>"));
+	} else {
+		$("#progressbar").append($("<span>"+value+"% &nbsp;&nbsp;"+(itemNow-itemSuccess)+"项失败</span>"));
+	}
+	if (itemSuccess == itemCount){
 		$("#detectionContentTitle").html('检测成功 <a href="#" id="deployTerminal" onclick="deployTerminalAs()"></a>');
 		$("#deployTerminal").text("点击发布该为设备为" + itemTitle + "类型");
 	}
