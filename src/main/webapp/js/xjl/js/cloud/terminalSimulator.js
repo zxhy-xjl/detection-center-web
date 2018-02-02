@@ -9,14 +9,20 @@ var RCU = {
 			}
 		},
 		IDCard:{//身份证读卡器
-			reader:function(){//读取身份证，使用json对象转换方式
-				var jsonString =  JSON.stringify({
-					state:"ok", 
-					data:{no:'32010620101111288X',name:'张三',sex:'男',birthday:'2010.8.1',validThrough:'2026.8.1',photo:'经过base64编码的照片'},
-					error:{}
-				});
-				return jsonString;
-				
+			reader:function(jsonString){//读取身份证，使用json对象转换方式
+				var json = JSON.parse(jsonString);
+				console.log("IdCard reader json",json);
+				RCU.Audio.playText(JSON.stringify({text:"请刷身份证"}));
+				setTimeout(function(){
+					var data =  JSON.stringify({
+						state:"ok", 
+						data:{no:'32010620101111288X',name:'张三',sex:'男',birthday:'2010.8.1',validThrough:'2026.8.1',photo:'经过base64编码的照片'},
+						error:{}
+					});
+					var callback = json.callbackName+"('"+data+"')";
+					console.log("callback:",callback);
+					eval(callback);
+				},json.timeoutSeconds*1000);
 			}
 		},
 		ThermoPrinter:{//热敏打印机
@@ -165,7 +171,8 @@ var RCU = {
 				console.log("喇叭播放声音内容:"+json.text);
 				var text = json.text;
 				var terminal = JSON.parse(RCU.Terminal.info()).data.terminal;
-				var soundURL="http://tsn.baidu.com/text2audio?tex="+text+"&lan=zh&cuid="+terminal+"&ctp=1&tok=24.c28b43aa0095b60b143d867cf1cc2e15.2592000.1507371135.282335-9968802";
+				
+				var soundURL="http://tsn.baidu.com/text2audio?tex="+text+"&lan=zh&cuid="+terminal+"&ctp=1&tok=24.ccdf18f27e8fc0b0845fb0ea3ee22e27.2592000.1520171527.282335-9968802";
 				this.play(JSON.stringify({url:soundURL,callbackName:json.callbackName}));
 			}
 		},

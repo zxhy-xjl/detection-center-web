@@ -72,7 +72,7 @@ function 显示可打印列表(){
 	RCU.Audio.playText(JSON.stringify({text:"请刷身份证"}));
 	setTimeout(function(){
 		formData.提示信息("正在读取身份证信息");
-		IDCardCallback(RCU.IDCard.reader());
+		RCU.IDCard.reader(JSON.stringify({callbackName:"IDCardCallback",timeoutSeconds:5}));
 	},2000);
 }
 function 显示互联网取票(){

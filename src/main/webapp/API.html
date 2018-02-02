@@ -104,8 +104,14 @@
 	  <div role="tabpanel" class="tab-pane fade" id="身份证读卡器">
 		<pre>
 方法名称：RCU.IDCard.reader() 读取身份证信息
-输入参数：无
-输出结果：输出结果为序列化后的json对象，如下：
+输入参数：序列化后的json对象：
+
+	{
+	  callbackName:回调函数名称，
+	  timeoutSeconds:超时秒数
+	}
+
+回调参数：输出结果为序列化后的json对象，如下：
 	{
 	  state:ok/error,
 	  data:{

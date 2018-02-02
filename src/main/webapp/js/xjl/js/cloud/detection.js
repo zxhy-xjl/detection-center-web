@@ -17,10 +17,11 @@ function testTerminalInfo(){
 //身份证读卡器
 
 function testIDCardReader(){
-	testIdCardReaderCallback(RCU.IDCard.reader());
+	addItemStatus("身份证读卡器::<span id='IDCardReader'>请刷身份证</span>","waiting");
+	RCU.IDCard.reader(JSON.stringify({callbackName:'IdCardReaderCallback',timeoutSeconds:10}));
 	
 }
-function testIdCardReaderCallback(jsonString){
+function IdCardReaderCallback(jsonString){
 		console.log("jsonString",jsonString);
 		var json = JSON.parse(jsonString);
 		var msg = "";
@@ -29,7 +30,7 @@ function testIdCardReaderCallback(jsonString){
 		} else {
 			msg = json.error.message + "("+json.error.code+")";
 		}
-		addItemStatus("身份证读卡器::"+msg,json.state);
+		resetItemStatus("IDCardReader",json.state=="ok",msg);
 		startNextCheckItem();
 }
 
@@ -41,7 +42,9 @@ function testThermoPrinter(){
 function ThermoPrinterCallback(code,message){
 		var errorMessage = "("+message+")&nbsp;&nbsp;";
 		if (isSimulator()){
-			errorMessage+='<span><a href="#" onclick="RCU.ThermoPrinter.printerReset();">重置打印机</a></span>';
+			if (code != "00"){
+				errorMessage+='<span><a href="#" onclick="RCU.ThermoPrinter.printerReset();">重置打印机</a></span>';
+			}
 		}
 		resetItemStatus("ThermoPrinter",code == "00",errorMessage);
 		startNextCheckItem();	
@@ -109,30 +112,36 @@ function testAudioPlay(){
 		return;
 	}
 	//检测播放声音方法
+	addItemStatus("喇叭播放声音::<span id='AudioPlay'>正在测试播放mp3文件</span>","waiting");
 	var mp3Url=XJL.getProjectURL()+"/sound/tishiyin.mp3";
 	console.log("mp3Url:"+mp3Url);
 	RCU.Audio.play(JSON.stringify({url:mp3Url,callbackName:'testAudioPlayCallback'}));
-	
 }
+function testAudioPlayText(){
+	if (typeof RCU.Audio == "undefined"){
+		addItemStatus("喇叭播放声音::该接口未实现","error");
+		startNextCheckItem();
+		return;
+	}
+	//检测播放声音方法
+	addItemStatus("喇叭播放文字::<span id='AudioPlayText'>正在测试播放文字</span>","waiting");
+	RCU.Audio.playText(JSON.stringify({text:'欢迎使用',callbackName:'testAudioPlayTextCallback'}));
+}
+
 function testAudioPlayCallback(code, message){
-	if (code=="00"){
-		//继续检测播放文字
-		RCU.Audio.playText(JSON.stringify({text:"请刷身份证",callbackName:'testAudioPlayTextCallback'}));
-	} else {
 		var ok = "ok";
 		if (code != "00"){
 			ok = "error";
 		}
-		addItemStatus("喇叭播放声音::" + message,ok);
+		resetItemStatus("AudioPlay",ok,message);
 		startNextCheckItem();
-	}
 }
 function testAudioPlayTextCallback(code, message){
 	var ok = "ok";
 	if (code != "00"){
 		ok = "error";
 	}
-	addItemStatus("喇叭播放声音::" + message,ok);
+	resetItemStatus("AudioPlayText",ok,message);
 	startNextCheckItem();
 }
 function testBarCode(){
@@ -165,19 +174,26 @@ function detectionPDQHJ(){
 	checkItem("A1","排队取号机",["testTerminalInfo",
 		"testIDCardReader",
 		"testThermoPrinter",
-		"testAudioPlay"]);
+		"testAudioPlay",
+		"testAudioPlayText"]);
 }
 //电子宣传屏
 function detectionDZXCP(){
-	checkItem("A2","电子宣传屏",["testTerminalInfo","testAudioPlay"]);
+	checkItem("A2","电子宣传屏",[
+		"testTerminalInfo",
+		"testAudioPlay",
+		"testAudioPlayText"
+	]);
 }
 //大厅导航机
 function detectionDTDHJ(){
 	checkItem("A3","大厅导航机",[
-	"testTerminalInfo",
-	"testIDCardReader",
-	"testThermoPrinter",
-	"testAudioPlay"]);
+		"testTerminalInfo",
+		"testIDCardReader",
+		"testThermoPrinter",
+		"testAudioPlay",
+		"testAudioPlayText"
+	]);
 	
 }//自助办理终端
 function detectionZZBLZD(){
@@ -189,6 +205,7 @@ function detectionZZBLZD(){
 		"testA4PrinterPrintUrl",
 		"testCameraOpen",
 		"testAudioPlay",
+		"testAudioPlayText",
 		"testBarCode"
 	]);
 }//自助打表终端
@@ -198,7 +215,8 @@ function detectionZZDBZD(){
 		"testIDCardReader",
 		"testA4PrinterPrintUrl",
 		"testCameraOpen",
-		"testAudioPlay"
+		"testAudioPlay",
+		"testAudioPlayText"
 	]);
 	
 }//自助取证终端
@@ -208,7 +226,8 @@ function detectionZZQZZD(){
 		"testIDCardReader",
 		"testA4PrinterPrintUrl",
 		"testCameraOpen",
-		"testAudioPlay"
+		"testAudioPlay",
+		"testAudioPlayText"
 	]);
 }
 function detectionCKZHSLZD(){
@@ -218,7 +237,8 @@ function detectionCKZHSLZD(){
 		"testA4PrinterPrintUrl",
 		"testCameraOpen",
 		"testHSICatch",
-		"testAudioPlay"
+		"testAudioPlay",
+		"testAudioPlayText"
 	]);
 }
 var checkItems = [];
@@ -288,16 +308,19 @@ function addItemStatus(item,state){
 	}
 
 }
-function resetItemStatus(id,success,errorMessage){
+function resetItemStatus(id,success,message){
 	var span = $("#"+id);
 	if (!success){
 		span.empty();
-		span.append($("<span>失败"+ errorMessage+"</span>"));
+		span.append($("<span>失败"+ message+"</span>"));
 		span.parent().attr("class","list-group-item list-group-item-danger");
 		span.parent().find("span").first().attr("style","color:red");
 		span.parent().find("span").first().html("&nbsp;&nbsp;X&nbsp;&nbsp;");
 	} else {
-		span.text("成功");
+		if (!message){
+			message = "成功";
+		}
+		span.text(message);
 		span.parent().attr("class","list-group-item");
 		span.parent().find("span").first().attr("style","");
 		span.parent().find("span").first().html("OK");

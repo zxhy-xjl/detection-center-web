@@ -77,7 +77,7 @@ function init(){
 				if (modalCloseState){
 					return;
 				}
-				IDCardCallback(RCU.IDCard.reader());
+				RCU.IDCard.reader(JSON.stringify({callbackName:"IDCardCallback",timeoutSeconds:5}));
 			},2000);
 		},2000);
 	});
