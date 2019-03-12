@@ -84,6 +84,10 @@ function init(){
 }
 function IDCardCallback(idCardString){
 	var idCard = JSON.parse(idCardString);
+	if (idCard.state!='ok'){
+		$("#提示信息").text("错误代码:"+idCard.error.code + " 错误信息:"+idCard.error.message);
+		return;
+	}
 	$("#身份证信息").html("姓名：" + idCard.data.name + " &nbsp;&nbsp;&nbsp;&nbsp;身份证号码:" + idCard.data.no);
 	$("#提示信息").text("正在读取预约信息");
 	setTimeout(function(){
